@@ -2,7 +2,7 @@
 
 Dieses Projekt dient einen Einstiegspunkt für die Entwicklung einer [flask](https://flask.palletsprojects.com/en/) Applikation.\
 Das README erkl&auml;rt auch gewisse Python-Basics 🐍\
-Das folgende Projekt funktioniert nicht auf dem EAP. Es muss an den privaten Laptop versendet werden.
+Das folgende Projekt funktioniert nicht auf dem EAP. Es muss am privaten Laptop gearbeitet werden.
 
 ## Was ist flask
 
@@ -69,18 +69,6 @@ Um die WebApplikation zu starten musst du die Abhängigkeiten installieren (sieh
 
 ```command
 python main.py
-```
-
-Oder &uuml;ber deine bevorzugte IDE
-
-## unittests 👨🏽‍🔬
-
-Alle unittests werden im Verzeichnis tests abgelegt (siehe Beispiel).
-Dann werden alle Tests mit dem Python CLI gestartet aus dem root Verzeichnis (wichtig, wegen den relativen imports von python)
-
-```command
-# venv aktivieren
-python -m unittest
 ```
 
 ## Weitere Infos
