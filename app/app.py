@@ -45,7 +45,6 @@ def home():
     app.logger.info("Rendering home page")
     return render_template("home.html")
 
-# Route with a parameter in the URL
 @app.route('/result/', defaults={'name': 'Guest'})
 @app.route('/result/<name>')
 def result(name) -> str:
@@ -59,9 +58,7 @@ def about() -> str:
 @app.route("/submit", methods=["POST"])
 def submit():
     app.logger.info("Form submitted")
-    # Access form data (request body parameters)
     name = request.form.get("name")
-    # Redirect to a new URL, passing a parameter in the URL
     return redirect(url_for("result", name=name))
 
 if __name__ == '__main__':
