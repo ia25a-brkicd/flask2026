@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% block title %}Contact & Support{% endblock %}
 {% block content %}
+
+<body>
 <h1>Contact</h1>
 <p></p>
 <p>Vorname</p>
     <input type="text" id="name" name="name" rows="1" cols="20">
 
 <p>E-Mail</p>
-    <input type="text" id="name" name="name">
+    <input type="text" id="name" name="name" rows="1" cols="20">
 
 <p>Nachricht</p>    
     <textarea id="name" name="name" rows="5" cols="40"></textarea>
@@ -16,4 +18,7 @@
 
 
     <button type="submit">absenden</button>
+
+
 {% endblock %}
+</body>

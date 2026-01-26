@@ -1,0 +1,13 @@
+body{
+    background-color: #E38E85;
+    color: black;
+}
+
+h1{
+    font-size: 40px;
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+p{
+    font-size: 20px;
+}
