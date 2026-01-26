@@ -6,16 +6,33 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
-    <nav>
-      <a href="{{ url_for('shop') }}">Shop</a>
-      <a href="{{ url_for('about_us') }}">About Us</a>
-      <a href="{{ url_for('contact') }}">Contact</a>
-      <a href="{{ url_for('searchbar') }}">Searchbar</a>
-      <a href="{{ url_for('warenkorb') }}">Warenkorb</a>
-      <a href="{{ url_for('profil') }}">Profil</a>
-    </nav>
-    {% block content %}{% endblock %}
+    <header class="main-header">
+      <div class="header-container">
+        <nav class="nav-left">
+          <a href="{{ url_for('shop') }}" class="nav-link">Shop</a>
+          <a href="{{ url_for('about_us') }}" class="nav-link">about us</a>
+          <a href="{{ url_for('contact') }}" class="nav-link">contact</a>
+        </nav>
+
+        <div class="logo" aria-label="Floravis">
+          <img src="../static/floravis.png" alt="Floravis" class="logo-img" />
+          <span class="visually-hidden">Floravis</span>
+        </div>
+
+        <div class="nav-right">
+          <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+          <a href="#" class="nav-link">Searchbar</a>
+          <a href="{{ url_for('warenkorb') }}" class="nav-link">Warenkorb</a>
+          <a href="{{ url_for('profil') }}" class="nav-link">Profil</a>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">{% block content %}{% endblock %}</main>
   </body>
 </html>
