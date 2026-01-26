@@ -1,25 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}About{% endblock %}
+{% block title %}About Us{% endblock %}
 
 {% block content %}
-<h1>Programming Languages</h1>
+<h1>Flor'Avis</h1>
 <table border="1">
     <caption>programming languages</caption>
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Creator</th>
-            <th>Year</th>
-        </tr>
+       
     </thead>
     <tbody>
-        {% for language in languages %}
-        <tr>
-            <td>{{ language.name }}</td>
-            <td>{{ language.creator }}</td>
-            <td>{{ language.year }}</td>
-        </tr>
+        
+        
         {% endfor %}
     </tbody>
 </table>
