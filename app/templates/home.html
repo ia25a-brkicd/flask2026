@@ -1,15 +1,2 @@
-{% extends 'base.html' %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
-<h1>Home</h1>
-<p>Willkommen!</p>
-
-<form action="{{ url_for('submit') }}" method="post">
-    <label for="name">Enter your name:</label>
-    <input type="text" id="name" name="name">
-    <button type="submit">Submit</button>
-</form>
-
-{% endblock %}
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%} {# Leere Home-Seite: nur der Header wird angezeigt #} {% endblock %}
