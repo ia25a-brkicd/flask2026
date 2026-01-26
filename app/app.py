@@ -65,5 +65,10 @@ def submit():
 def warenkorb() -> str:
     return render_template("warenkorb.html", languages=languages)
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+
 if __name__ == '__main__':
     app.run(port=5000)
