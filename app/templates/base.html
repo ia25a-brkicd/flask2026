@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}"></head>
+<head>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet"><title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/warenkorb.css') }}">
+</head>
 <body>
     <nav>
         <a href="{{ url_for('home') }}">Home</a>
