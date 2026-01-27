@@ -2,13 +2,15 @@ body{
     background-color: #f6cec1;
     color: black;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    
+    
 }
 
 h1{
     font-size: 60px;
-    font-family: "Allura", cursive;
+    font-family:"Inter", sans-serif;
+    justify-content: center;
 
 }
 
