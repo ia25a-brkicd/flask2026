@@ -3,13 +3,57 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Home</h1>
-<p>Willkommen!</p>
-
-<form action="{{ url_for('submit') }}" method="post">
-    <label for="name">Enter your name:</label>
-    <input type="text" id="name" name="name">
-    <button type="submit">Submit</button>
-</form>
+<div class="home">
+<div class="homeContent">
+    <img class="homeImage"
+    src="{{ url_for('static', filename='styles/image/WebsiteChunkyCharcoalSoapBlock.png') }}"
+    alt="Chunky Charcoal Soap"
+    >
+    <div class="homeTextOverlay">
+        <p class="homeSlogan">Crafted with passion.<br> Defined by purity</p>
+        <button class="homeShopNow">Shop Now</button>
+    </div>
+</div>
+<div class="filler"></div>
+<div class="homeFooter">
+    <div class="homeFooterRight">
+        <p id="floravisTitel">Flor'avis</p>
+        <p id="floravisContent">A revolution in the soap industry</p>
+        <div class="socialMedia">
+            <button class="ttButton"><img class="ttImage"
+    src="{{ url_for('static', filename='styles/image/tiktokLogo.webp') }}"
+    alt="tiktok Image"
+    ></button>
+            <button class="instaButton"><img class="instaImage"
+    src="{{ url_for('static', filename='styles/image/instaLogo.png') }}"
+    alt="instagram Image"
+    ></button>
+        </div>
+    </div>
+    <div class="homeFooterLeft">
+        <div class="brandInfo">
+            <p id="brandTitel">Brand<br></p>
+            <p id="brandContent">Why Natural Products?<br>
+            The Flor'avis Difference<br>
+            No Harmful<br> 
+            Ingredients</p>
+        </div>
+        <div class="shopInfo">
+            <p id="shopTitel">Shop<br></p>
+            <p id="shopContent">Block soap<br>
+            Best seller<br>
+            Bundels<br> 
+            Announcements</p>
+        </div>
+        <div class="supportInfo">
+            <p id="supportTitel">Support<br></p>
+            <p id="supportContent">FAQ<br>
+            Contact us<br>
+            Store Policies<br> 
+            Shipping Policy</p>
+        </div>
+    </div>
+</div>
+</div>
 
 {% endblock %}
