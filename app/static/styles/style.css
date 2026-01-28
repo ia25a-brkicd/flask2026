@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --bg: #f6cec1;
     --panel: #f6cec1;
     --text: #2f221c;
@@ -32,7 +32,6 @@ body.menu-open {
     position: sticky;
     top: 0;
     z-index: 1000;
-    transition: all 0.3s ease;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border-bottom: 1px solid var(--line);
 }
@@ -49,7 +48,6 @@ body.menu-open {
     justify-content: space-between;
     padding: 2.25rem 2.5rem 1.75rem;
     gap: 1.5rem;
-    transition: padding 0.3s ease;
 }
 
 .main-header.scrolled .header-container {
@@ -70,9 +68,7 @@ body.menu-open {
     justify-content: flex-end;
 }
 
-.nav-right .nav-link {
-    transition: color 0.2s ease;
-}
+
 
 .logo {
     flex: 0 0 240px;
@@ -87,7 +83,6 @@ body.menu-open {
     max-height: 95px;
     width: auto;
     object-fit: contain;
-    transition: max-height 0.3s ease;
 }
 
 .main-header.scrolled .logo-img {
@@ -111,14 +106,12 @@ body.menu-open {
     text-decoration: none;
     font-size: 1.05rem;
     font-weight: 600;
-    transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
     letter-spacing: 0.03em;
     position: relative;
 }
 
 .nav-link:hover {
     color: var(--accent-strong);
-    transform: translateY(-1px);
 }
 
 .nav-link.active {
@@ -148,11 +141,9 @@ body.menu-open {
 
 .nav-link-with-icon i {
     font-size: 1.1rem;
-    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .nav-link-with-icon:hover i {
-    transform: scale(1.08);
     color: var(--accent-strong);
 }
 
@@ -164,7 +155,6 @@ body.menu-open {
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
-    transition: color 0.2s ease;
 }
 
 .mobile-menu-toggle:hover {
@@ -181,7 +171,6 @@ body.menu-open {
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
     opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 .mobile-menu-overlay.active {
@@ -204,8 +193,6 @@ body.menu-open {
     min-width: 200px;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
     z-index: 1001;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(231, 216, 207, 0.9);
@@ -219,7 +206,6 @@ body.menu-open {
 .nav-item-with-dropdown:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
 }
 
 .dropdown-item {
@@ -230,7 +216,6 @@ body.menu-open {
     color: var(--text);
     text-decoration: none;
     font-size: 0.95rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
     border-radius: 10px;
     margin: 0.25rem 0.5rem;
 }
@@ -248,7 +233,6 @@ body.menu-open {
     width: 20px;
     text-align: center;
     color: var(--muted);
-    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .dropdown-item:hover {
@@ -257,7 +241,6 @@ body.menu-open {
 }
 
 .dropdown-item:hover i {
-    transform: translateX(3px);
     color: var(--accent-strong);
 }
 
@@ -286,16 +269,6 @@ body.menu-open {
     font-size: 0.75rem;
     font-weight: 700;
     box-shadow: 0 3px 10px rgba(178, 59, 59, 0.25);
-    animation: badge-pulse 2s ease-in-out infinite;
-}
-
-@keyframes badge-pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
 }
 
 .search-toggle {
@@ -309,7 +282,6 @@ body.menu-open {
     place-items: center;
     cursor: pointer;
     font-size: 1.1rem;
-    transition: color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .search-toggle:hover {
@@ -325,7 +297,6 @@ body.menu-open {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 
 .main-header.search-active .search-bar-container {
@@ -345,13 +316,11 @@ body.menu-open {
     width: 100%;
     max-width: 100%;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .search-form:focus-within {
     border-color: var(--accent);
     box-shadow: 0 12px 32px rgba(201, 154, 138, 0.22);
-    transform: translateY(-1px);
 }
 
 .search-form input[type="search"] {
@@ -380,12 +349,10 @@ body.menu-open {
     cursor: pointer;
     flex-shrink: 0;
     font-size: 1.1rem;
-    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .search-form button:hover {
     color: var(--accent-strong);
-    transform: translateY(-1px);
 }
 
 .search-spinner {
@@ -398,16 +365,6 @@ body.menu-open {
 }
 
 .search-spinner i {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .main-content {
@@ -489,7 +446,7 @@ body.menu-open {
         align-items: flex-start;
         padding: 5rem 1.5rem 2rem;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-        transition: left 0.3s ease;
+        
         z-index: 1000;
         overflow-y: auto;
         flex: none;
