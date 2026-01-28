@@ -83,7 +83,9 @@ def contact():
 def warenkorb() -> str:
     return render_template("warenkorb.html", languages=languages)
 
-
+@app.route("/profil")
+def profil() -> str:
+    return render_template("profil.html", languages=languages)
 
 
 if __name__ == '__main__':
