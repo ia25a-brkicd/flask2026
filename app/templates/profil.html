@@ -10,7 +10,10 @@
 {% endblock %}
 
 {% block content %}
-<h1>Your Profile</h1>
+<div class="profile-header">
+    <h1>Profile</h1>
+    <div class="profile-image-placeholder"></div>
+</div>
 
 <form action="{{ url_for('profil') }}" method="post">
 <div class="header">
@@ -24,8 +27,8 @@
     <p>E-Mail</p>
     <input id="email" name="email" rows="1" cols="100"></input>
 
-    <p>Nachricht</p>    
-    <textarea id="message" name="message" rows="20" cols="100"></textarea>
+    <p>Passwort</p>
+    <input id="password" name="password" rows="1" cols="100"></input>
 </div>
 
 <button type="submit">Absenden</button>
