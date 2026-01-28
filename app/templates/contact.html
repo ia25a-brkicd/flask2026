@@ -3,20 +3,32 @@
 {% block title %}Contact & Support{% endblock %}
 
 {% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% endblock %}
 
 {% block content %}
 <h1>Contact</h1>
 
-<p>Vorname</p>
-<input type="text" id="firstname" name="firstname"rows="2" cols="40">
+<form action="{{ url_for('contact') }}" method="post">
+<div class="header">
 
-<p>E-Mail</p>
-<input type="email" id="email" name="email" rows="" cols="40">
+    <p>Name</p>
+    <input id="lastname" name="lastname" rows="1" cols="100"></input>
 
-<p>Nachricht</p>    
-<textarea id="message" name="message" rows="5" cols="40"></textarea>
+    <p>Vorname</p>
+    <input id="firstname" name="firstname" rows="1" cols="100"></input>
 
-<button type="submit">absenden</button>
+    <p>E-Mail</p>
+    <input id="email" name="email" rows="1" cols="100"></input>
+
+    <p>Nachricht</p>    
+    <textarea id="message" name="message" rows="20" cols="100"></textarea>
+</div>
+
+<button type="submit">Absenden</button>
+</form>
+
 {% endblock %}

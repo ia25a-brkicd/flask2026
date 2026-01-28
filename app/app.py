@@ -61,13 +61,29 @@ def submit():
     name = request.form.get("name")
     return redirect(url_for("result", name=name))
 
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        app.logger.info("Form submitted")
+        lastname = request.form.get("lastname")
+        firstname = request.form.get("firstname")
+        email = request.form.get("email")
+        message = request.form.get("message")
+        
+        print("=== Contact Form Data ===")
+        print(f"Name: {lastname}")
+        print(f"Vorname: {firstname}")
+        print(f"E-Mail: {email}")
+        print(f"Nachricht: {message}")
+        print("========================")
+    return render_template("contact.html")
+
+
 @app.route("/warenkorb")
 def warenkorb() -> str:
     return render_template("warenkorb.html", languages=languages)
 
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
+
 
 
 if __name__ == '__main__':
