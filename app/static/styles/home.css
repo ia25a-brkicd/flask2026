@@ -1,5 +1,7 @@
 /* Home Page Specific Styles */
 
+.main-content { max-width: 1400px; margin: 2.5rem auto 3rem; padding: 0 3.25rem; }
+
 .home-container {
     background-color: white;
     border-radius: 15px;
