@@ -24,6 +24,7 @@ h1{
     gap: 40px;
     margin-top: 70px;
     margin-bottom: 40px;
+    width: 100%;
 }
 
 .profile-image-placeholder {
@@ -55,8 +56,8 @@ button:hover {
 }
 
 .header{
-    width: 120%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 600px;
 }
 
 #lastname {

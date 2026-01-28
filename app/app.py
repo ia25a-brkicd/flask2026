@@ -83,10 +83,22 @@ def contact():
 def warenkorb() -> str:
     return render_template("warenkorb.html", languages=languages)
 
-@app.route("/profil")
-def profil() -> str:
-    return render_template("profil.html", languages=languages)
-
+@app.route("/profil", methods=["GET", "POST"])
+def profil():
+    if request.method == "POST":
+        app.logger.info("Form submitted")
+        lastname = request.form.get("lastname")
+        firstname = request.form.get("firstname")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        print("=== Profil Form Data ===")
+        print(f"Name: {lastname}")
+        print(f"Vorname: {firstname}")
+        print(f"E-Mail: {email}")
+        print(f"Passwort: {password}")
+        print("========================")
+    return render_template("profil.html")
 
 if __name__ == '__main__':
     app.run(port=5000)
