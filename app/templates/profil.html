@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact & Support{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/profil.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>Willkommen Vor-Nachname</h1>
+<div class="profile-image-placeholder">
+    <img src="../static/images/profil.jpg" alt="Profile picture">
+</div>
+
+<div class="profile-header">
+    <h1>Anmeldung</h1>
+</div>
+
+<form action="{{ url_for('profil') }}" method="post">
+<div class="header">
+
+    <p>Name</p>
+    <input id="lastname" name="lastname" rows="1" cols="100"></input>
+
+    <p>Vorname</p>
+    <input id="firstname" name="firstname" rows="1" cols="100"></input>
+
+    <p>E-Mail</p>
+    <input id="email" name="email" rows="1" cols="100"></input>
+
+    <p>Passwort</p>
+    <input id="password" name="password" rows="1" cols="100"></input>
+</div>
+
+<button type="submit">Registrieren</button>
+
+<div class="alternative-account">
+    <div class="alternative-text">
+        <h1>Anderes Konto verwenden</h1>
+    </div>
+    <img src="../static/images/ChatGPT Image 2. Feb. 2026, 13_47_24.png" alt="Profile picture">
+</div>
+
+</form>
+
+{% endblock %}
