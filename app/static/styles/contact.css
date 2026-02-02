@@ -1,0 +1,89 @@
+body{
+    background-color: #f6cec1;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    font-size: 60px;
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+p{
+    font-size: 20px;
+    margin-bottom: 2%;
+}
+
+button{
+    justify-content: left;
+    align-items: start;
+    font-size: 18px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 1%;
+     transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #fda78f;
+}
+
+header{
+    width: 80%;
+}
+
+#lastname {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#lastname:hover {
+    background-color: #fda78f;
+}
+
+#firstname{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#firstname:hover {
+    background-color: #fda78f;
+}
+
+#email{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#email:hover {
+    background-color: #fda78f;
+}
+
+#message{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    resize: none;   /* User kann sie nicht größer ziehen */
+
+}

@@ -20,6 +20,8 @@ body {
     background: var(--bg);
     min-height: 100vh;
     color: var(--text);
+    margin: 0;
+    background-color: #F6CEC1;
 }
 
 body.menu-open { overflow: hidden; }
@@ -334,3 +336,4 @@ body.menu-open { overflow: hidden; }
     .search-bar-container { padding: 0 1rem; }
     .main-header.search-active .search-bar-container { padding: 0 1rem 1rem; max-height: none; }
 }
+

@@ -4,7 +4,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='styles/style.css') }}"
+      href="{{ url_for('static', filename='styles/base.css') }}"
     />
     <link
       rel="stylesheet"
@@ -16,6 +16,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    {% block head %}{% endblock %}
   </head>
   <body data-page="{{ request.endpoint }}">
     <header class="main-header">
