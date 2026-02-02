@@ -79,9 +79,7 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/warenkorb")
-def warenkorb() -> str:
-    return render_template("warenkorb.html", languages=languages)
+
 
 @app.route("/profil", methods=["GET", "POST"])
 def profil():
