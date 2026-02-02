@@ -7,4 +7,4 @@ app/__pycache__/config.cpython-314.pyc
 app/__pycache__/db.cpython-314.pyc
 app/services/__pycache__/math_service.cpython-314.pyc
 .venv
-**/__pycache__/
+**/__pycache__

@@ -1,0 +1,183 @@
+*{
+    outline:1px solid red; /* Zum Debuggen, kann entfernt werden */
+}
+
+/* === ALLGEMEINE LAYOUT & BODY === */
+body{
+    background-color: #f6cec1;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* === ÜBERSCHRIFTEN (h1 "Vor- Nachname" & h1 "Anmeldung") === */
+h1,
+h2{
+    font-size: 50px;
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 1%;
+}
+
+/* === HEADER BEREICH (Div mit "Anmeldung" h1) === */
+.profile-header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+/* === PROFILBILD PLATZHALTER (Quadrat 220x220px) === */
+.profile-image-placeholder {
+    width: 280px;
+    height: 280px;
+    border-radius: 0;
+    background-color: white;
+    margin-top: 3%;
+    margin-bottom: 7%;
+}
+
+.profile-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* === FORMULAR ELEMENTE === */
+/* Alle Texte/Labels im Formular */
+p{
+    font-size: 20px;
+    margin-bottom: 2%;
+}
+
+/* "Registrieren" Button */
+button{
+    justify-content: left;
+    align-items: start;
+    font-size: 18px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 2%;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #fda78f;
+}
+
+/* === ALTERNATIVE ACCOUNT SECTION === */
+/* Dunkelblaue Box mit weißer Schrift für "anderes konto verwenden" */
+.alternative-account {
+    background-color: #f08669;
+    width: 90%;
+    padding: 30px;
+    margin-top: 10%;
+    text-align: center;
+}
+
+.alternative-account h1 {
+    color: white;
+    margin: 0;
+ 
+}
+
+.alternative-account img {
+    width: 400px;
+    height: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+/* Formular Container (Name, Vorname, E-Mail, Passwort) */
+.header{
+    width: 100%;
+    max-width: 655px;
+}
+
+/* === FORMULAR INPUT FELDER === */
+/* Lastname Input */
+#lastname {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#lastname:hover {
+    background-color: #fda78f;
+}
+
+/* Firstname Input */
+#firstname{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#firstname:hover {
+    background-color: #fda78f;
+}
+
+/* Email Input */
+#email{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#email:hover {
+    background-color: #fda78f;
+}
+
+/* Password Input */
+#password{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#password:hover {
+    background-color: #fda78f;
+}
+
+/* Message/Text-Area (Kontaktformular) */
+#message{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;   /* User kann sie nicht größer ziehen */
+    transition: background-color 0.3s ease;
+}
+
+#message:hover {
+    background-color: #fda78f;
+}
