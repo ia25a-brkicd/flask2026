@@ -99,6 +99,9 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
     return render_template("profil.html")
+@app.route("/warenkorb")
+def warenkorb() -> str:
+    return render_template("warenkorb.html")    
 
 if __name__ == '__main__':
     app.run(port=5000)
