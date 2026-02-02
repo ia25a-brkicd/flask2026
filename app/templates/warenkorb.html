@@ -1,11 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Warenkorb{% endblock %}
+
+{% block content %}
+    <h1 class="title">shopping cart</h1>
+    <hr class="section-line">
+    <div class="shoppingcart-header">
+        <div class="title-shoppingcart">Shopping cart</div>
+        <div class="title-shoppingcart-description">You have 3 items in your cart</div>
+    </div>
+    <div class="shoppingcart">
+        <div class="item">
+            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
+            <div class="shoppingcart-Itemname">Flor'avis Green Apple soap</div>
+            <div class="count">1</div>
+            <div class="count-button">
+                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+            </div>
+            <div class="price">CHF 234</div>
+            <div class="delete-buttons">
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+            </div>
+        </div>
+        <div class="item">
+            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
+            <div class="shoppingcart-Itemname">Flor'avis Vanilla soap</div>
+            <div class="count">1</div>
+            <div class="count-button">
+                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+            </div>
+            <div class="price">CHF 234</div>
+            <div class="delete-buttons">
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+            </div>
+        </div>
+        <div class="item">
+            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
+            <div class="shoppingcart-Itemname">Flor'avis Lemon soap</div>
+            <div class="count">1</div>
+            <div class="count-button">
+                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+            </div>
+            <div class="price">CHF 234</div>
+            <div class="delete-buttons">
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+            </div>
+        </div>
+    </div>
+    <hr class="section-line">
+    <div class="addres-card-container">
+        <div class="addres-details">
+            <div class="addres-details-title">Adress Details</div>
+        </div>
+        <div class="card-details">
+            <div class="card-details-title">Card Details</div>
+        </div>
+    </div>
+    {% endblock %}
