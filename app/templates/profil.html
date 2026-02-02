@@ -10,8 +10,13 @@
 {% endblock %}
 
 {% block content %}
+<h1>Willkommen Vor-Nachname</h1>
+<div class="profile-image-placeholder">
+    <img src="../static/images/profil.jpg" alt="Profile picture">
+</div>
+
 <div class="profile-header">
-    <h1>Profile</h1>
+    <h1>Anmeldung</h1>
 </div>
 
 <form action="{{ url_for('profil') }}" method="post">
@@ -30,7 +35,15 @@
     <input id="password" name="password" rows="1" cols="100"></input>
 </div>
 
-<button type="submit">Absenden</button>
+<button type="submit">Registrieren</button>
+
+<div class="alternative-account">
+    <div class="alternative-text">
+        <h1>Anderes Konto verwenden</h1>
+    </div>
+    <img src="../static/images/ChatGPT Image 2. Feb. 2026, 13_47_24.png" alt="Profile picture">
+</div>
+
 </form>
 
 {% endblock %}

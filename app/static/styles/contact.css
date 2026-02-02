@@ -42,6 +42,9 @@ header{
 #lastname {
     width: 100%;
     box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
@@ -52,6 +55,9 @@ header{
 #firstname{
     width: 100%;
     box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
@@ -62,6 +68,9 @@ header{
 #email{
     width: 100%;
     box-sizing: border-box;
+    padding: 10px;
+    border-radius: 1px solid #ccc;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
@@ -72,6 +81,9 @@ header{
 #message{
     width: 100%;
     box-sizing: border-box;
+    border-radius: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
     resize: none;   /* User kann sie nicht größer ziehen */
 
 }

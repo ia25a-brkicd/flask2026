@@ -1,45 +1,66 @@
+*{
+    outline:1px solid red; /* Zum Debuggen, kann entfernt werden */
+}
+
+/* === ALLGEMEINE LAYOUT & BODY === */
 body{
     background-color: #f6cec1;
     color: black;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    min-height: 100vh;
+    overflow-y: auto;
 }
 
-h1{
-    font-size: 60px;
+/* === ÜBERSCHRIFTEN (h1 "Vor- Nachname" & h1 "Anmeldung") === */
+h1,
+h2{
+    font-size: 50px;
     font-family: 'Playfair Display', 'Georgia', serif;
     font-weight: 400;
     font-style: italic;
     text-align: center;
     letter-spacing: 2px;
-    margin: 0;
+    margin: 1%;
 }
 
+/* === HEADER BEREICH (Div mit "Anmeldung" h1) === */
 .profile-header {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 40px;
-    margin-top: 70px;
-    margin-bottom: 40px;
+    align-items: flex-start;
+    gap: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
+/* === PROFILBILD PLATZHALTER (Quadrat 220x220px) === */
 .profile-image-placeholder {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
+    width: 280px;
+    height: 280px;
+    border-radius: 0;
     background-color: white;
-    border: 3px solid black;
+    margin-top: 3%;
+    margin-bottom: 7%;
 }
 
+.profile-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* === FORMULAR ELEMENTE === */
+/* Alle Texte/Labels im Formular */
 p{
     font-size: 20px;
     margin-bottom: 2%;
 }
 
+/* "Registrieren" Button */
 button{
     justify-content: left;
     align-items: start;
@@ -55,11 +76,37 @@ button:hover {
     background-color: #fda78f;
 }
 
-.header{
-    width: 100%;
-    max-width: 600px;
+/* === ALTERNATIVE ACCOUNT SECTION === */
+/* Dunkelblaue Box mit weißer Schrift für "anderes konto verwenden" */
+.alternative-account {
+    background-color: #f08669;
+    width: 90%;
+    padding: 30px;
+    margin-top: 10%;
+    text-align: center;
 }
 
+.alternative-account h1 {
+    color: white;
+    margin: 0;
+ 
+}
+
+.alternative-account img {
+    width: 400px;
+    height: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+/* Formular Container (Name, Vorname, E-Mail, Passwort) */
+.header{
+    width: 100%;
+    max-width: 655px;
+}
+
+/* === FORMULAR INPUT FELDER === */
+/* Lastname Input */
 #lastname {
     width: 100%;
     box-sizing: border-box;
@@ -74,6 +121,7 @@ button:hover {
     background-color: #fda78f;
 }
 
+/* Firstname Input */
 #firstname{
     width: 100%;
     box-sizing: border-box;
@@ -88,6 +136,7 @@ button:hover {
     background-color: #fda78f;
 }
 
+/* Email Input */
 #email{
     width: 100%;
     box-sizing: border-box;
@@ -102,6 +151,7 @@ button:hover {
     background-color: #fda78f;
 }
 
+/* Password Input */
 #password{
     width: 100%;
     box-sizing: border-box;
@@ -116,6 +166,7 @@ button:hover {
     background-color: #fda78f;
 }
 
+/* Message/Text-Area (Kontaktformular) */
 #message{
     width: 100%;
     box-sizing: border-box;
