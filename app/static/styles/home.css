@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+body {
+    margin: 0;
+    background-color: #F6CEC1;
+}
+
+.home {
+    font-family: "Instrument Sans", sans-serif;
+}
+
+.homeContent {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.homeImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.63;
+}
+
+.homeTextOverlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+    max-width: 1200px;
+    min-height: 100vh;
+    padding: 75px 20px 20px;
+}
+
+.homeSlogan {
+    font-family: "Italiana", sans-serif;
+    font-size: 75px;
+    line-height: 110%;
+    text-align: center;
+
+    background-color: rgba(217, 217, 217, 0.33);
+    outline: 3px solid #8A939C;
+    border-radius: 30px;
+    padding: 3px 10px;
+
+    white-space: nowrap;
+}
+
+
+.homeShopNow {
+    width: 160px;
+    height: 60px;
+
+
+    font-family: "Inter", sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+
+    background: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.homeShopNow:hover {
+    background-color: lightgrey;
+}
+
+.homeFooter {
+    display: flex;
+    padding: 60px;
+}
+
+.homeFooterRight,
+.homeFooterLeft {
+    width: 50%;
+}
+
+.homeFooterRight {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footerBrand {
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.footerTagline {
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.socialMedia {
+    display: flex;
+    gap: 20px;
+}
+
+.socialMedia button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.socialMedia img {
+    width: 50px;
+    height: 50px;
+}
+
+.homeFooterLeft {
+    display: flex;
+    justify-content: space-between;
+    font-family: "Inter", sans-serif;
+}
+
+.footerColumn h4 {
+    margin-bottom: 20px;
+}
+
+.footerList {
+    list-style: none;
+    padding: 0;
+    opacity: 0.6;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 20px;
+}
