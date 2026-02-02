@@ -1,6 +1,8 @@
+/*
 * {
     outline: 1px solid red;
 }
+*/
 
 html, body {
     height: 100%;
@@ -143,7 +145,7 @@ body {
 .picture-down {
     width: 8px;
     height: 10px;
-    rotate(180deg);
+    rotate:(180deg);
 }
 
 .count-button-button,
