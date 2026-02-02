@@ -1,0 +1,74 @@
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #E38E85;
+}
+
+.block1, .block3{
+    background-color: #F6CEC1;
+}
+.block2{
+    background-color: #E38E85;
+}
+
+.block1{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.aboutUsBild{
+    margin: 20px;
+    margin-left: 300px;
+}
+.aboutUsText{
+    text-align: left;
+    margin-left: 50px;
+    margin-right: 350px;
+
+}
+.wer{
+text-align: left;
+    margin-top: 20%;
+    margin-left: 50px;
+    margin-right: 350px;
+
+}
+.BilderInteressen{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 50px;
+    margin: 20px;
+}
+
+.unserStandortMitMap{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 3%;
+
+}
+.linksVonMap{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
+h6{
+    font-size: 50px;
+    border: 2px solid gray;
+    border-radius: 5px;
+}
+
+.untererTeil{
+    margin: 5%;
+      border: 2px solid gray;
+    border-radius: 5px;
+}
+
+.info {
+    opacity: 0.55;
+}
+/*
+titelbild{
+    
+}
