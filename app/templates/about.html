@@ -1,19 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>  
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/aboutus.css') }}"></link>
+</head>
 {% extends 'base.html' %}
 
 {% block title %}About Us{% endblock %}
 
 {% block content %}
+<div class="aboutUsAlles">
+<div class="block1">
+<div class="aboutUsBild">
 <h1>Flor'Avis</h1>
-<table border="1">
-    <caption>programming languages</caption>
-    <thead>
-       
-    </thead>
-    <tbody>
-        
-        
-        
-        
-    </tbody>
-</table>
-{% endblock %}
+<div class="titelbild">
+<img src="../static/images/Image (2).jpg" alt="bild"width="300" height="auto"></img>
+</div>
+</div>
+<div class="whoText">
+    <div class="wer">
+<h2>Wer sind wir eigentlich?</h2>
+</div>
+<div class="aboutUsText">
+<p class="info">Flor’Avis ist eine Schweizer Marke, gegründet von fünf 16-Jährigen. Wir stellen handgemachte Seifen in kleinen Mengen her – ehrlich, lokal und mit viel Freude an der Sache.
+
+Jede Seife wird von uns selbst entwickelt und in Handarbeit produziert. Wir setzen auf Qualität statt Massenproduktion und stehen persönlich hinter jedem Produkt.
+
+flor’Avis ist ein Jugendprojekt, aber wir nehmen unsere Arbeit ernst.</h4>
+</div>
+</div>
+</div>
+
+<div class="block2">
+<h2>Intressen</h2>
+<h4>Flor’Avis steht für schlichte, hochwertige Seife mit Fokus auf natürliche Pflege, zeitloses Design und bewussten Konsum. Für Menschen, die Qualität wollen statt unnötiger Zusätze.</h4>
+<div class="BilderInteressen">
+    <img src="../static/images/Screenshot 2026-01-12 152828.png" alt="bild"width="300" height="300"></img>
+    <img src="../static/images/Screenshot 2026-01-12 152745.png" alt="bild"width="300" height="300"></img>
+    <img src="../static/images/Screenshot 2026-01-12 152718.png" alt="bild"width="300" height="300"></img>
+
+</div>
+</div>
+
+<div class="block3">
+    <div class="unserStandortMitMap">
+    <div class="linksVonMap">
+<h6>Unser Standort</h6>
+<div class="untererTeil">
+<h5>Hard</h5>
+<h5>Zürich 8005</h5>
+<a href="{{ url_for('about') }}">Call to action</a>
+</div>
+</div>
+
+<iframe
+  width="400"
+  height="400"
+  frameborder="0"
+  scrolling="no"
+  src="https://www.openstreetmap.org/export/embed.html?bbox=8.519570221530676%2C47.38674847878873 %2C8.525%2C47.389&layer=mapnik&marker=47.3875%2C8.522">
+</iframe>
+</div>
+</div>
+</div>
+
+    {% endblock %}
