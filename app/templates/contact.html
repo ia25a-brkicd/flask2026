@@ -42,57 +42,83 @@
 </div>
 
 <script>
+/* Greift auf den Button mit der ID "absenden-btn" zu
+   und reagiert auf einen Klick */
 document.getElementById('absenden-btn').addEventListener('click', function(e) {
+    
+    // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
     e.preventDefault();
     
-    // Sammle die Formulardaten
-    var lastname = document.getElementById('lastname').value;
-    var firstname = document.getElementById('firstname').value;
-    var email = document.getElementById('email').value;
-    var message = document.getElementById('message').value;
+   
+    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+    var firstname = document.getElementById('firstname').value;// Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+    var email = document.getElementById('email').value;// Liest den Wert aus dem Eingabefeld "email"    
+    var message = document.getElementById('message').value;// Liest den Wert aus dem Textfeld "message" (Nachricht)
     
-    // Validiere ob alle Felder ausgefüllt sind
+    // Prüft, ob eines der Felder leer ist
     if (!lastname || !firstname || !email || !message) {
-        // Zeige die Fehler-Benachrichtigung
+        
+        // Greift auf die Fehler-Benachrichtigung zu
         var errorNotification = document.getElementById('error-notification');
+        
+        // Zeigt die Fehlermeldung an
         errorNotification.classList.add('show');
         
-        // Verstecke die Fehler-Benachrichtigung nach 7 Sekunden
+        // Versteckt die Fehlermeldung nach 7 Sekunden
         setTimeout(function() {
+            
+            // Entfernt die Anzeige-Klasse
             errorNotification.classList.remove('show');
+            
+            // Fügt die Verstecken-Klasse hinzu
             errorNotification.classList.add('hide');
-        }, 7000);
+        
+        }, 7000); // 7000 ms = 7 Sekunden
+        
+        // Bricht die Funktion ab, es werden keine Daten gesendet
         return;
     }
     
-    // Sende die Daten an den Server
+    // Erstellt ein neues FormData-Objekt für die Übertragung
     var formData = new FormData();
-    formData.append('lastname', lastname);
-    formData.append('firstname', firstname);
-    formData.append('email', email);
-    formData.append('message', message);
     
+    
+    formData.append('lastname', lastname);// Fügt den Nachnamen hinzu
+    formData.append('firstname', firstname);  // Fügt den Vornamen hinzu
+    formData.append('email', email); // Fügt die E-Mail-Adresse hinzu    
+    formData.append('message', message);// Fügt die Nachricht hinzu
+    
+    // Sendet die Daten per POST an die Server-Route "contact"
     fetch('{{ url_for("contact") }}', {
-        method: 'POST',
-        body: formData
+        method: 'POST', // HTTP-Methode
+        body: formData  // Formulardaten
     }).then(function(response) {
-        // Leere die Eingabefelder
-        document.getElementById('lastname').value = '';
-        document.getElementById('firstname').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('message').value = '';
         
-        // Zeige die Benachrichtigung
+        
+        document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
+        document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
+        document.getElementById('email').value = '';// Leert das E-Mail-Feld     
+        document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
+        
+        // Greift auf die Erfolgs-Benachrichtigung zu
         var notification = document.getElementById('notification');
+        
+        // Zeigt die Benachrichtigung an
         notification.classList.add('show');
         
-        // Verstecke die Benachrichtigung nach 7 Sekunden
+        // Versteckt die Benachrichtigung nach 7 Sekunden
         setTimeout(function() {
+            
+            // Entfernt die Anzeige-Klasse
             notification.classList.remove('show');
+            
+            // Fügt die Verstecken-Klasse hinzu
             notification.classList.add('hide');
-        }, 7000);
+        
+        }, 7000); // 7 Sekunden
     });
 });
 </script>
+
 
 {% endblock %}

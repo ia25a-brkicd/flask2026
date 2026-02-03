@@ -57,60 +57,87 @@
 </div>
 
 <script>
+/* Greift auf den Button mit der ID "registrieren-btn" zu
+   und fügt einen Klick-Event-Listener hinzu */
 document.getElementById('registrieren-btn').addEventListener('click', function(e) {
+    
+    // Verhindert das Standardverhalten des Buttons (z. B. Formular-Absenden / Seitenreload)
     e.preventDefault();
     
-    // Sammle die Formulardaten
-    var lastname = document.getElementById('lastname').value;
-    var firstname = document.getElementById('firstname').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+   
+    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname) 
+    var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+    var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
+    var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
     
-    // Validiere ob alle Felder ausgefüllt sind
+    // Prüft, ob eines der Felder leer ist
     if (!lastname || !firstname || !email || !password) {
-        // Zeige die Fehler-Benachrichtigung
+        
+        // Greift auf die Fehler-Benachrichtigung zu
         var errorNotification = document.getElementById('error-notification');
+        
+        // Fügt die CSS-Klasse "show" hinzu, um die Fehlermeldung anzuzeigen
         errorNotification.classList.add('show');
         
-        // Verstecke die Fehler-Benachrichtigung nach 7 Sekunden
+        // Startet einen Timer von 7 Sekunden
         setTimeout(function() {
+            
+            // Entfernt die Klasse "show"
             errorNotification.classList.remove('show');
+            
+            // Fügt die Klasse "hide" hinzu, um die Fehlermeldung auszublenden
             errorNotification.classList.add('hide');
-        }, 7000);
+        
+        }, 7000); // 7000 Millisekunden = 7 Sekunden
+        
+        // Beendet die Funktion, damit keine Daten gesendet werden
         return;
     }
     
-    // Sende die Daten an den Server
+    // Erstellt ein neues FormData-Objekt zum Versenden der Daten
     var formData = new FormData();
-    formData.append('lastname', lastname);
-    formData.append('firstname', firstname);
-    formData.append('email', email);
-    formData.append('password', password);
     
+    
+    formData.append('lastname', lastname);// Fügt den Nachnamen zu den Formulardaten hinzu
+    formData.append('firstname', firstname);// Fügt den Vornamen zu den Formulardaten hinzu
+    formData.append('email', email);// Fügt die E-Mail zu den Formulardaten hinzu
+    formData.append('password', password); // Fügt das Passwort zu den Formulardaten hinzu
+    
+    // Sendet die Formulardaten per POST an die Server-Route "profil"
     fetch('{{ url_for("profil") }}', {
-        method: 'POST',
-        body: formData
+        method: 'POST', // HTTP-Methode
+        body: formData  // Gesendete Daten
     }).then(function(response) {
-        // Ändere den Willkommens-Titel
-        document.getElementById('welcome-title').textContent = 'Willkommen ' + firstname + ' ' + lastname;
         
-        // Leere die Eingabefelder
-        document.getElementById('lastname').value = '';
-        document.getElementById('firstname').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('password').value = '';
+        // Ändert den Text des Willkommens-Titels
+        document.getElementById('welcome-title').textContent =
+            'Willkommen ' + firstname + ' ' + lastname;
         
-        // Zeige die Benachrichtigung
+       
+        document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
+        document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
+        document.getElementById('email').value = '';// Leert das E-Mail-Feld
+        document.getElementById('password').value = '';// Leert das Passwort-Feld
+        
+        // Greift auf die Erfolgs-Benachrichtigung zu
         var notification = document.getElementById('notification');
+        
+        // Zeigt die Benachrichtigung an
         notification.classList.add('show');
         
-        // Verstecke die Benachrichtigung nach 7 Sekunden
+        // Versteckt die Benachrichtigung nach 7 Sekunden
         setTimeout(function() {
+            
+            // Entfernt die "show"-Klasse
             notification.classList.remove('show');
+            
+            // Fügt die "hide"-Klasse hinzu
             notification.classList.add('hide');
-        }, 7000);
+        
+        }, 7000); // 7 Sekunden
     });
 });
 </script>
+
 
 {% endblock %}
