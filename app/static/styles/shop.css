@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+.shop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+}
+
+.product-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    min-height: 500px;
+}
+
+.product-image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.product-info h1 {
+    font-family: "Italiana", sans-serif;
+    font-size: 48px;
+    line-height: 120%;
+    color: #2f221c;
+    margin: 0;
+}
+
+.product-info p {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #7a6259;
+    margin: 0;
+}
+
+.buy-btn {
+    width: 180px;
+    height: 60px;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    background: white;
+    color: #2f221c;
+    border: 2px solid #c99a8a;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-btn:hover {
+    background-color: #c99a8a;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(201, 154, 138, 0.3);
+}
+
+@media (max-width: 768px) {
+    .product-showcase {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .product-image {
+        justify-content: center;
+    }
+
+    .product-info h1 {
+        font-size: 32px;
+    }
+
+    .product-info p {
+        font-size: 16px;
+    }
+
+    .buy-btn {
+        width: 160px;
+        height: 50px;
+        font-size: 16px;
+    }
+}
