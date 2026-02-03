@@ -1,13 +1,15 @@
+.warenkorb-content {
+    display: flex;
+    flex-direction: column;
+}
+
 html, body {
-    height: 100%;
     margin: 0;
 }
 
 body {
     background-color:#f6cec1;
     font-family: "Inter", sans-serif;
-    display: flex;
-    flex-direction: column;
 }
 
 .shoppingcart {
@@ -78,6 +80,7 @@ body {
 .title {
     margin-left: 100px;
     font-size: 50px;
+    margin-top: 25px;
 }
 
 .addres-card-container {
@@ -143,7 +146,7 @@ body {
 .picture-down {
     width: 8px;
     height: 10px;
-    rotate(180deg);
+    rotate: 180deg;
 }
 
 .count-button-button,
@@ -152,7 +155,7 @@ body {
     height: 16px;
     display: flex;
     justify-content: center;
-    align-items: center;   /* 🔥 DAS fehlte */
+    align-items: center;
     padding: 0;
     border: 0;
     background-color: transparent;
