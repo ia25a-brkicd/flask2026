@@ -22,5 +22,115 @@
       <button class="buy-btn">Buy Now</button>
     </div>
   </div>
+
+  <section class="products-section">
+    <h2>Unsere Seifen</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Lavender Soap"
+        />
+        <h3>Lavender Soap</h3>
+        <p class="price">12.99 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Rose Soap"
+        />
+        <h3>Rose Soap</h3>
+        <p class="price">13.99 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Charcoal Soap"
+        />
+        <h3>Charcoal Soap</h3>
+        <p class="price">14.99 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Mint Soap"
+        />
+        <h3>Mint Soap</h3>
+        <p class="price">11.99 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Honey Soap"
+        />
+        <h3>Honey Soap</h3>
+        <p class="price">12.49 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+          alt="Coconut Soap"
+        />
+        <h3>Coconut Soap</h3>
+        <p class="price">13.49 €</p>
+        <div class="pack-selector">
+          <button class="pack-btn active" data-quantity="1">1</button>
+          <button class="pack-btn" data-quantity="2">2</button>
+          <button class="pack-btn" data-quantity="3">3</button>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+    </div>
+  </section>
 </div>
+
+<script>
+  // Handle pack selection buttons
+  document.querySelectorAll(".pack-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      // Remove active class from siblings
+      this.parentElement.querySelectorAll(".pack-btn").forEach((sibling) => {
+        sibling.classList.remove("active");
+      });
+      // Add active class to clicked button
+      this.classList.add("active");
+    });
+  });
+</script>
+
 {% endblock %}
