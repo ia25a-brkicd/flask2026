@@ -1,4 +1,6 @@
-
+* {
+    outline: red solid 1px;
+}
 
 
 html, body {
@@ -95,6 +97,8 @@ body {
 
 .addres-details {
     background-color: #e18d84;
+    border-radius: 16px;
+    padding: 25px;
 }
 
 .addres-details-title {
@@ -120,6 +124,8 @@ body {
 .card-details {
     background-color: #e18d84;
     margin-left: 40px;
+    border-radius: 16px;
+    padding: 25px;
 }
 
 
