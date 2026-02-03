@@ -1,0 +1,188 @@
+/*
+* {
+    outline: 1px solid red;
+}
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color:#f6cec1;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.shoppingcart {
+    background-color: #f4ccbf;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.shoppingcart-Itemname {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item{
+  display: grid;
+  grid-template-columns: 120px 1fr 40px 40px 100px 40px;
+  align-items: center;
+  gap: 20px;
+  padding: 14px;
+
+  margin: 20px 100px 0 100px;
+
+  background: #e8b7ac;
+  border-radius: 16px;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow:
+  0px 4px 10px rgba(0,0,0,0.14),
+  0px 18px 40px rgba(0,0,0,0.22);
+}
+
+.section-line{
+  width: 50vw;              /* 👈 1/4 der Viewport-Breite */
+  height: 1px;
+  background: rgba(0,0,0,0.25);
+  margin: 20px 0;
+    margin-left: 100px;
+    color: rgba(0,0,0,0.25);
+}
+
+.title-shoppingcart {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+    margin-left: 100px;
+}
+
+.title-shoppingcart-description {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+    margin: 0;
+    margin-top: 4px;
+    margin-left: 100px;
+}
+
+.title {
+    margin-left: 100px;
+    font-size: 50px;
+}
+
+.addres-card-container {
+    display: flex;
+
+    margin-top: 40px;
+    margin-left: 100px;
+    margin-bottom: 40px;
+    margin-right: 100px;
+    gap: 40px;
+}
+
+.addres-details {
+    background-color: #e18d84;
+}
+
+.addres-details-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    margin-left: 100px;
+    padding-top: 20px;
+}
+
+.card-details-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    margin-left: 100px;
+    padding-top: 20px;
+}
+
+
+
+.card-details {
+    background-color: #e18d84;
+    margin-left: 40px;
+}
+
+
+
+
+
+.count-button {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+.picture-up {
+    width: 8px;
+    height: 10px;
+}
+
+.picture-down {
+    width: 8px;
+    height: 10px;
+    rotate:(180deg);
+}
+
+.count-button-button,
+.count-button-down {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;   /* 🔥 DAS fehlte */
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+
+}
+
+.picture-up {
+    width: 20px;
+    height: 15px;
+}
+
+.picture-down {
+    width: 20px;
+    height: 15px;
+    transform: rotate(180deg); /* ✅ korrekt */
+}
+
+.delete-img {
+    width: 20px;
+    height: 23px;
+}
+
+.delete-button-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    margin-right: 10px;
+}
+
