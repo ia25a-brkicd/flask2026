@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="contact">
 <h1>Contact</h1>
 
 <form action="{{ url_for('contact') }}" method="post">
@@ -25,10 +26,101 @@
     <input id="email" name="email" rows="1" cols="100"></input>
 
     <p>Nachricht</p>    
-    <textarea id="message" name="message" rows="20" cols="100"></textarea>
+    <textarea id="message" name="message" rows="10" cols="100"></textarea>
 </div>
 
-<button type="submit">Absenden</button>
+<button type="button" id="absenden-btn">Absenden</button>
 </form>
+
+<!-- Push Benachrichtigung für Erfolg -->
+<div id="notification" class="notification">
+    Vielen Dank für Ihre Nachricht! Wir werden uns so schnell wie möglich bei Ihnen melden.
+</div>
+
+<!-- Push Benachrichtigung für Fehler -->
+<div id="error-notification" class="notification error-notification">
+    Nicht alle Felder wurden ausgefüllt!
+</div>
+</div>
+
+<script>
+/* Greift auf den Button mit der ID "absenden-btn" zu
+   und reagiert auf einen Klick */
+document.getElementById('absenden-btn').addEventListener('click', function(e) {
+    
+    // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
+    e.preventDefault();
+    
+   
+    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+    var firstname = document.getElementById('firstname').value;// Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+    var email = document.getElementById('email').value;// Liest den Wert aus dem Eingabefeld "email"    
+    var message = document.getElementById('message').value;// Liest den Wert aus dem Textfeld "message" (Nachricht)
+    
+    // Prüft, ob eines der Felder leer ist
+    if (!lastname || !firstname || !email || !message) {
+        
+        // Greift auf die Fehler-Benachrichtigung zu
+        var errorNotification = document.getElementById('error-notification');
+        
+        // Zeigt die Fehlermeldung an
+        errorNotification.classList.add('show');
+        
+        // Versteckt die Fehlermeldung nach 7 Sekunden
+        setTimeout(function() {
+            
+            // Entfernt die Anzeige-Klasse
+            errorNotification.classList.remove('show');
+            
+            // Fügt die Verstecken-Klasse hinzu
+            errorNotification.classList.add('hide');
+        
+        }, 7000); // 7000 ms = 7 Sekunden
+        
+        // Bricht die Funktion ab, es werden keine Daten gesendet
+        return;
+    }
+    
+    // Erstellt ein neues FormData-Objekt für die Übertragung
+    var formData = new FormData();
+    
+    
+    formData.append('lastname', lastname);// Fügt den Nachnamen hinzu
+    formData.append('firstname', firstname);  // Fügt den Vornamen hinzu
+    formData.append('email', email); // Fügt die E-Mail-Adresse hinzu    
+    formData.append('message', message);// Fügt die Nachricht hinzu
+    
+    // Sendet die Daten per POST an die Server-Route "contact"
+    fetch('{{ url_for("contact") }}', {
+        method: 'POST', // HTTP-Methode
+        body: formData  // Formulardaten
+    }).then(function(response) {
+        
+        
+        document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
+        document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
+        document.getElementById('email').value = '';// Leert das E-Mail-Feld     
+        document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
+        
+        // Greift auf die Erfolgs-Benachrichtigung zu
+        var notification = document.getElementById('notification');
+        
+        // Zeigt die Benachrichtigung an
+        notification.classList.add('show');
+        
+        // Versteckt die Benachrichtigung nach 7 Sekunden
+        setTimeout(function() {
+            
+            // Entfernt die Anzeige-Klasse
+            notification.classList.remove('show');
+            
+            // Fügt die Verstecken-Klasse hinzu
+            notification.classList.add('hide');
+        
+        }, 7000); // 7 Sekunden
+    });
+});
+</script>
+
 
 {% endblock %}

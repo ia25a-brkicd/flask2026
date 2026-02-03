@@ -61,6 +61,10 @@
     border: 2px solid #c99a8a;
     border-radius: 15px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     transition: all 0.3s ease;
 }
 
