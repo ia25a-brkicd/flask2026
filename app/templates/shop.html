@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block title %}Shop{% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/shop.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="shop-container">
+  <div class="product-showcase">
+    <div class="product-image">
+      <img
+        src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+        alt="Premium Soaps"
+      />
+    </div>
+
+    <div class="product-info">
+      <h1>Premium Handcrafted Soaps</h1>
+      <p>
+        Handcrafted with natural ingredients and dried flowers. Pure quality for
+        your skin.
+      </p>
+      <button class="buy-btn">Buy Now</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,75 +1,80 @@
-{% extends 'base.html' %}
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles/home.css') }}"
+  />
+</head>
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
+%}
 
-{% block title %}Home{% endblock %}
-
-{% block content %}
 <div class="home">
+  <section class="homeContent">
+    <img
+      class="homeImage"
+      src="{{ url_for('static', filename='styles/image/WebsiteChunkyCharcoalSoapBlock.png') }}"
+      alt="Chunky Charcoal Soap"
+    />
 
-    <section class="homeContent">
-        <img
-            class="homeImage"
-            src="{{ url_for('static', filename='styles/image/WebsiteChunkyCharcoalSoapBlock.png') }}"
-            alt="Chunky Charcoal Soap"
-        >
+    <div class="homeTextOverlay">
+      <p class="homeSlogan">
+        Crafted with passion.<br />
+        Defined by purity
+      </p>
+      <button class="homeShopNow">Shop Now</button>
+    </div>
+  </section>
 
-        <div class="homeTextOverlay">
-            <p class="homeSlogan">
-                Crafted with passion.<br>
-                Defined by purity
-            </p>
-            <button class="homeShopNow">Shop Now</button>
-        </div>
-    </section>
+  <footer class="homeFooter">
+    <div class="homeFooterRight">
+      <p class="footerBrand">Flor’avis</p>
+      <p class="footerTagline">A revolution in the soap industry</p>
 
-    <footer class="homeFooter">
+      <div class="socialMedia">
+        <a href="https://www.tiktok.com/@official.flor.avis" target="_blank">
+          <img
+            src="{{ url_for('static', filename='styles/image/tiktokLogo.webp') }}"
+            alt="TikTok"
+          />
+        </a>
+        <a href="https://www.instagram.com/official.flor.avis/" target="_blank">
+          <img
+            src="{{ url_for('static', filename='styles/image/instaLogo.png') }}"
+            alt="Instagram"
+          />
+        </a>
+      </div>
+    </div>
 
-        <div class="homeFooterRight">
-            <p class="footerBrand">Flor’avis</p>
-            <p class="footerTagline">A revolution in the soap industry</p>
+    <div class="homeFooterLeft">
+      <div class="footerColumn">
+        <h4>Brand</h4>
+        <ul class="footerList">
+          <li>Why Natural Products?</li>
+          <li>The Flor’avis Difference</li>
+          <li>No Harmful Ingredients</li>
+        </ul>
+      </div>
 
-            <div class="socialMedia">
-                <button>
-                    <img src="{{ url_for('static', filename='styles/image/tiktokLogo.webp') }}" alt="TikTok">
-                </button>
-                <button>
-                    <img src="{{ url_for('static', filename='styles/image/instaLogo.png') }}" alt="Instagram">
-                </button>
-            </div>
-        </div>
+      <div class="footerColumn">
+        <h4>Shop</h4>
+        <ul class="footerList">
+          <li>Block soap</li>
+          <li>Best seller</li>
+          <li>Bundles</li>
+          <li>Announcements</li>
+        </ul>
+      </div>
 
-        <div class="homeFooterLeft">
-
-            <div class="footerColumn">
-                <h4>Brand</h4>
-                <ul class="footerList">
-                    <li>Why Natural Products?</li>
-                    <li>The Flor’avis Difference</li>
-                    <li>No Harmful Ingredients</li>
-                </ul>
-            </div>
-
-            <div class="footerColumn">
-                <h4>Shop</h4>
-                <ul class="footerList">
-                    <li>Block soap</li>
-                    <li>Best seller</li>
-                    <li>Bundles</li>
-                    <li>Announcements</li>
-                </ul>
-            </div>
-
-            <div class="footerColumn">
-                <h4>Support</h4>
-                <ul class="footerList">
-                    <li>FAQ</li>
-                    <li>Contact us</li>
-                    <li>Store Policies</li>
-                    <li>Shipping Policy</li>
-                </ul>
-            </div>
-
-        </div>
-    </footer>
-
+      <div class="footerColumn">
+        <h4>Support</h4>
+        <ul class="footerList">
+          <li>FAQ</li>
+          <li>Contact us</li>
+          <li>Store Policies</li>
+          <li>Shipping Policy</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 </div>
 {% endblock %}

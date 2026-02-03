@@ -51,9 +51,9 @@ def result(name) -> str:
     app.logger.info(f"Showing result for {name}")
     return render_template("result.html", name=name)
 
-@app.route("/about")
-def about() -> str:
-    return render_template("about.html", languages=languages)
+@app.route("/about_us")
+def about_us() -> str:
+    return render_template("about_us.html", languages=languages)
 
 @app.route("/submit", methods=["POST"])
 def submit():
@@ -100,6 +100,14 @@ def profil():
 @app.route("/warenkorb")
 def warenkorb() -> str:
     return render_template("warenkorb.html")    
+
+@app.route("/shop")
+def shop() -> str:
+    return render_template("shop.html")  
+
+@app.route("/searchbar")
+def searchbar() -> str:
+    return render_template("searchbar.html") 
 
 if __name__ == '__main__':
     app.run(port=5000)

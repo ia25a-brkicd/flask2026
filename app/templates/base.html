@@ -1,26 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/base.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    {% block head %}{% endblock %}
+  </head>
+  <body data-page="{{ request.endpoint }}">
+    <header class="main-header">
+      <div class="header-container">
+        <button
+          class="mobile-menu-toggle"
+          aria-label="Menu"
+          onclick="toggleMobileMenu()"
+        >
+          <i class="fa fa-bars"></i>
+        </button>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
-{% block head %}{% endblock %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/warenkorb.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
-<title>{% block title %}{% endblock %}</title>
-</head>
+        <nav class="nav-left">
+          <div class="nav-item-with-dropdown">
+            <a
+              href="{{ url_for('shop') }}"
+              class="nav-link nav-link-with-icon {% if request.endpoint == 'shop' %}active{% endif %}"
+            >
+              <i class="fa fa-store"></i>
+              Shop
+            </a>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-soap"></i>
+                Klassische Seifen
+              </a>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-gem"></i>
+                Luxus Seifen
+              </a>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-heart"></i>
+                Geschenksets
+              </a>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-droplet"></i>
+                Naturseife
+              </a>
+            </div>
+          </div>
+          <a
+            href="{{ url_for('about_us') }}"
+            class="nav-link nav-link-with-icon {% if request.endpoint == 'about_us' %}active{% endif %}"
+          >
+            <i class="fa fa-info-circle"></i>
+            about us
+          </a>
+          <a
+            href="{{ url_for('contact') }}"
+            class="nav-link nav-link-with-icon {% if request.endpoint == 'contact' %}active{% endif %}"
+          >
+            <i class="fa fa-envelope"></i>
+            contact
+          </a>
+        </nav>
 
+        <a href="{{ url_for('home') }}" class="logo" aria-label="Floravis">
+          <img src="../static/floravis.png" alt="Floravis" class="logo-img" />
+          <span class="visually-hidden">Floravis</span>
+        </a>
 
-<body>
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('about') }}">About Us</a>
-        <a href="{{ url_for('warenkorb') }}">Warenkorb</a>
-        <a href="{{ url_for('contact') }}">Contact & Support</a>
-        <a href="{{ url_for('profil') }}">Profil</a>
-    </nav>
-    {% block content %}{% endblock %}
-</body>
+        <div class="nav-right">
+          <button
+            class="search-toggle"
+            aria-label="Search"
+            onclick="toggleSearch()"
+          >
+            <i class="fa fa-search"></i>
+          </button>
+          <a
+            href="{{ url_for('warenkorb') }}"
+            class="nav-link nav-link-with-icon cart-link {% if request.endpoint == 'warenkorb' %}active{% endif %}"
+          >
+            <i class="fa fa-shopping-cart"></i>
+            Warenkorb
+          </a>
+          <div class="nav-item-with-dropdown">
+            <a
+              href="{{ url_for('profil') }}"
+              class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
+            >
+              <i class="fa fa-user"></i>
+              Profil
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a href="{{ url_for('profil') }}" class="dropdown-item">
+                <i class="fa fa-user-circle"></i>
+                Mein Profil
+              </a>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-box"></i>
+                Bestellungen
+              </a>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-cog"></i>
+                Einstellungen
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item">
+                <i class="fa fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="search-bar-container">
+        <form
+          class="search-form"
+          action="{{ url_for('home') }}"
+          method="get"
+          role="search"
+          onsubmit="showSearchLoading(event)"
+        >
+          <div class="search-spinner" style="display: none">
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
+          <input
+            type="search"
+            name="q"
+            placeholder="Auf floravis.com suchen"
+            aria-label="Search"
+          />
+          <button type="submit" aria-label="Search">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+    </header>
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    <main class="main-content">{% block content %}{% endblock %}</main>
+    <script>
+      function toggleSearch() {
+        const header = document.querySelector(".main-header");
+        const searchBar = document.querySelector(".search-bar-container");
+        const input = searchBar.querySelector('input[type="search"]');
+
+        header.classList.toggle("search-active");
+
+        if (header.classList.contains("search-active")) {
+          setTimeout(() => input.focus(), 300);
+        }
+      }
+
+      // Close search when clicking outside
+      document.addEventListener("click", function (event) {
+        const header = document.querySelector(".main-header");
+        const searchToggle = document.querySelector(".search-toggle");
+        const searchBar = document.querySelector(".search-bar-container");
+
+        if (
+          header.classList.contains("search-active") &&
+          !searchToggle.contains(event.target) &&
+          !searchBar.contains(event.target)
+        ) {
+          header.classList.remove("search-active");
+        }
+      });
+
+      // Compact header on scroll
+      let lastScroll = 0;
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector(".main-header");
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+
+        lastScroll = currentScroll;
+      });
+
+      // ESC key closes search
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          const header = document.querySelector(".main-header");
+          if (header.classList.contains("search-active")) {
+            header.classList.remove("search-active");
+          }
+          if (header.classList.contains("mobile-menu-active")) {
+            toggleMobileMenu();
+          }
+        }
+      });
+
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const header = document.querySelector(".main-header");
+        const overlay = document.querySelector(".mobile-menu-overlay");
+        header.classList.toggle("mobile-menu-active");
+        overlay.classList.toggle("active");
+        document.body.classList.toggle("menu-open");
+      }
+
+      // Search loading indicator
+      function showSearchLoading(event) {
+        const spinner = document.querySelector(".search-spinner");
+        const searchBtn = document.querySelector(".search-form button");
+        const input = document.querySelector(".search-form input");
+
+        if (input.value.trim()) {
+          spinner.style.display = "flex";
+          searchBtn.style.opacity = "0.5";
+        }
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener("click", function (event) {
+        const dropdowns = document.querySelectorAll(".nav-item-with-dropdown");
+        dropdowns.forEach((dropdown) => {
+          if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
