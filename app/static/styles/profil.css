@@ -1,6 +1,7 @@
-*{
+/*{
     outline:1px solid red; /* Zum Debuggen, kann entfernt werden */
-}
+/*}
+
 
 /* === ALLGEMEINE LAYOUT & BODY === */
 body{
@@ -180,4 +181,40 @@ button:hover {
 
 #message:hover {
     background-color: #fda78f;
+}
+
+/* === PUSH BENACHRICHTIGUNG === */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    background-color: white;
+    border: 2px solid #f08669;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.hide {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.error-notification {
+    border-color: #d9534f;
+    background-color: #f8d7da;
+    color: #721c24;
 }

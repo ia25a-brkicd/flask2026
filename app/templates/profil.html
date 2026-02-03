@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Willkommen Vor-Nachname</h1>
+<h1 id="welcome-title">Willkommen Vor-Nachname</h1>
 <div class="profile-image-placeholder">
     <img src="../static/images/profil.jpg" alt="Profile picture">
 </div>
@@ -35,7 +35,7 @@
     <input id="password" name="password" rows="1" cols="100"></input>
 </div>
 
-<button type="submit">Registrieren</button>
+<button type="button" id="registrieren-btn">Registrieren</button>
 
 <div class="alternative-account">
     <div class="alternative-text">
@@ -45,5 +45,72 @@
 </div>
 
 </form>
+
+<!-- Push Benachrichtigung für Erfolg -->
+<div id="notification" class="notification">
+    Vielen Dank für Ihre Registrierung!
+</div>
+
+<!-- Push Benachrichtigung für Fehler -->
+<div id="error-notification" class="notification error-notification">
+    Nicht alle Felder wurden ausgefüllt!
+</div>
+
+<script>
+document.getElementById('registrieren-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Sammle die Formulardaten
+    var lastname = document.getElementById('lastname').value;
+    var firstname = document.getElementById('firstname').value;
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    
+    // Validiere ob alle Felder ausgefüllt sind
+    if (!lastname || !firstname || !email || !password) {
+        // Zeige die Fehler-Benachrichtigung
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.classList.add('show');
+        
+        // Verstecke die Fehler-Benachrichtigung nach 7 Sekunden
+        setTimeout(function() {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+        }, 7000);
+        return;
+    }
+    
+    // Sende die Daten an den Server
+    var formData = new FormData();
+    formData.append('lastname', lastname);
+    formData.append('firstname', firstname);
+    formData.append('email', email);
+    formData.append('password', password);
+    
+    fetch('{{ url_for("profil") }}', {
+        method: 'POST',
+        body: formData
+    }).then(function(response) {
+        // Ändere den Willkommens-Titel
+        document.getElementById('welcome-title').textContent = 'Willkommen ' + firstname + ' ' + lastname;
+        
+        // Leere die Eingabefelder
+        document.getElementById('lastname').value = '';
+        document.getElementById('firstname').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        
+        // Zeige die Benachrichtigung
+        var notification = document.getElementById('notification');
+        notification.classList.add('show');
+        
+        // Verstecke die Benachrichtigung nach 7 Sekunden
+        setTimeout(function() {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+        }, 7000);
+    });
+});
+</script>
 
 {% endblock %}

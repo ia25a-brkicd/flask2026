@@ -28,7 +28,71 @@
     <textarea id="message" name="message" rows="20" cols="100"></textarea>
 </div>
 
-<button type="submit">Absenden</button>
+<button type="button" id="absenden-btn">Absenden</button>
 </form>
+
+<!-- Push Benachrichtigung für Erfolg -->
+<div id="notification" class="notification">
+    Vielen Dank für Ihre Nachricht! Wir werden uns so schnell wie möglich bei Ihnen melden.
+</div>
+
+<!-- Push Benachrichtigung für Fehler -->
+<div id="error-notification" class="notification error-notification">
+    Nicht alle Felder wurden ausgefüllt!
+</div>
+
+<script>
+document.getElementById('absenden-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Sammle die Formulardaten
+    var lastname = document.getElementById('lastname').value;
+    var firstname = document.getElementById('firstname').value;
+    var email = document.getElementById('email').value;
+    var message = document.getElementById('message').value;
+    
+    // Validiere ob alle Felder ausgefüllt sind
+    if (!lastname || !firstname || !email || !message) {
+        // Zeige die Fehler-Benachrichtigung
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.classList.add('show');
+        
+        // Verstecke die Fehler-Benachrichtigung nach 7 Sekunden
+        setTimeout(function() {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+        }, 7000);
+        return;
+    }
+    
+    // Sende die Daten an den Server
+    var formData = new FormData();
+    formData.append('lastname', lastname);
+    formData.append('firstname', firstname);
+    formData.append('email', email);
+    formData.append('message', message);
+    
+    fetch('{{ url_for("contact") }}', {
+        method: 'POST',
+        body: formData
+    }).then(function(response) {
+        // Leere die Eingabefelder
+        document.getElementById('lastname').value = '';
+        document.getElementById('firstname').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('message').value = '';
+        
+        // Zeige die Benachrichtigung
+        var notification = document.getElementById('notification');
+        notification.classList.add('show');
+        
+        // Verstecke die Benachrichtigung nach 7 Sekunden
+        setTimeout(function() {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+        }, 7000);
+    });
+});
+</script>
 
 {% endblock %}
