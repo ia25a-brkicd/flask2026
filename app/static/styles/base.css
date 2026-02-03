@@ -47,6 +47,7 @@ body.menu-open { overflow: hidden; }
     justify-content: space-between;
     padding: 2.25rem 2.5rem 1.75rem;
     gap: 1.5rem;
+    transition: padding 180ms ease;
 }
 
 .nav-left, .nav-right {
@@ -68,7 +69,7 @@ body.menu-open { overflow: hidden; }
     color: inherit;
 }
 
-.logo-img { max-height: 95px; width: auto; object-fit: contain; }
+.logo-img { max-height: 95px; width: auto; object-fit: contain; transition: max-height 180ms ease; }
 
 .visually-hidden {
     position: absolute;

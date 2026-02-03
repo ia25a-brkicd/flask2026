@@ -6,6 +6,8 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/base.css') }}"
     />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/warenkorb.css') }}">
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -176,19 +178,32 @@
         }
       });
 
-      // Compact header on scroll
-      let lastScroll = 0;
-      window.addEventListener("scroll", function () {
+      // Compact header on scroll (with hysteresis to avoid jitter)
+      const HEADER_SHRINK_AT = 80;
+      const HEADER_EXPAND_AT = 40;
+      let isScrolled = false;
+      let scrollTicking = false;
+
+      function updateHeaderOnScroll() {
         const header = document.querySelector(".main-header");
         const currentScroll = window.pageYOffset;
 
-        if (currentScroll > 50) {
+        if (!isScrolled && currentScroll > HEADER_SHRINK_AT) {
           header.classList.add("scrolled");
-        } else {
+          isScrolled = true;
+        } else if (isScrolled && currentScroll < HEADER_EXPAND_AT) {
           header.classList.remove("scrolled");
+          isScrolled = false;
         }
 
-        lastScroll = currentScroll;
+        scrollTicking = false;
+      }
+
+      window.addEventListener("scroll", function () {
+        if (!scrollTicking) {
+          window.requestAnimationFrame(updateHeaderOnScroll);
+          scrollTicking = true;
+        }
       });
 
       // ESC key closes search
