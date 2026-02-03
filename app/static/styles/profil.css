@@ -1,19 +1,23 @@
-/*
-*{
-    outline:1px solid red; /* Zum Debuggen, kann entfernt werden 
+
+/*{
+    outline:1px solid red; 
 }
 */
 
 /* === ALLGEMEINE LAYOUT & BODY === */
 body{
     background-color: #f6cec1;
-    color: black;
+    min-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.profil{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
-    overflow-y: auto;
 }
 
 /* === ÜBERSCHRIFTEN (h1 "Vor- Nachname" & h1 "Anmeldung") === */

@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="contact">
 <h1>Contact</h1>
 
 <form action="{{ url_for('contact') }}" method="post">
@@ -25,7 +26,7 @@
     <input id="email" name="email" rows="1" cols="100"></input>
 
     <p>Nachricht</p>    
-    <textarea id="message" name="message" rows="20" cols="100"></textarea>
+    <textarea id="message" name="message" rows="10" cols="100"></textarea>
 </div>
 
 <button type="button" id="absenden-btn">Absenden</button>
@@ -39,6 +40,7 @@
 <!-- Push Benachrichtigung für Fehler -->
 <div id="error-notification" class="notification error-notification">
     Nicht alle Felder wurden ausgefüllt!
+</div>
 </div>
 
 <script>
