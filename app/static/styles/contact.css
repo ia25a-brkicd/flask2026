@@ -41,7 +41,8 @@ p{
     margin-bottom: 2%;
 }
 
-button{
+.contact button,
+.contact #absenden-btn {
     justify-content: left;
     align-items: start;
     font-size: 18px;
@@ -51,7 +52,8 @@ button{
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.contact button:hover,
+.contact #absenden-btn:hover {
     background-color: #fda78f;
 }
 
