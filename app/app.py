@@ -97,9 +97,48 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
     return render_template("profil.html")
-@app.route("/warenkorb")
-def warenkorb() -> str:
-    return render_template("warenkorb.html")    
+@app.route("/warenkorb", methods=["GET", "POST"])
+def warenkorb():
+    if request.method == "POST":
+        app.logger.info("Checkout submitted")
+
+        # Address Details
+        salutation = request.form.get("salutation")
+        name = request.form.get("name")
+        surname = request.form.get("surname")
+        address = request.form.get("address")
+        plz = request.form.get("plz")
+        city = request.form.get("city")
+        tel = request.form.get("tel")
+        email = request.form.get("email")
+
+        # Card Details
+        payment = request.form.get("payment")
+        card_name = request.form.get("card_name")
+        card_number = request.form.get("card_number")
+        expiration = request.form.get("expiration")
+        cvv = request.form.get("cvv")
+
+        print("=== Checkout Form Data ===")
+        print(f"Anrede: {salutation}")
+        print(f"Name: {name}")
+        print(f"Vorname: {surname}")
+        print(f"Adresse: {address}")
+        print(f"PLZ: {plz}")
+        print(f"Ort: {city}")
+        print(f"Telefon: {tel}")
+        print(f"E-Mail: {email}")
+        print(f"Zahlungsart: {payment}")
+        print(f"Kartenname: {card_name}")
+        print(f"Kartennummer: {card_number}")
+        print(f"Ablaufdatum: {expiration}")
+        print(f"CVV: {cvv}")
+        print("==========================")
+
+        # Nach erfolgreicher Verarbeitung zurück zur Seite (Formular wird geleert)
+        return redirect(url_for("warenkorb"))
+
+    return render_template("warenkorb.html")
 
 @app.route("/shop")
 def shop() -> str:
