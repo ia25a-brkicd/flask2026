@@ -15,12 +15,16 @@
             <div class="shoppingcart-Itemname">Flor'avis Green Apple soap</div>
             <div class="count">1</div>
             <div class="count-button">
-                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
-                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-button"><img class="picture-up"
+                                                         src="../static/styles/images/count-dreieck.png" alt="">
+                </button>
+                <button class="count-button-down"><img class="picture-down"
+                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
             </div>
             <div class="price">CHF 234</div>
             <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
+                                                          alt="Löschen"></button>
             </div>
         </div>
         <div class="item">
@@ -28,12 +32,16 @@
             <div class="shoppingcart-Itemname">Flor'avis Vanilla soap</div>
             <div class="count">1</div>
             <div class="count-button">
-                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
-                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-button"><img class="picture-up"
+                                                         src="../static/styles/images/count-dreieck.png" alt="">
+                </button>
+                <button class="count-button-down"><img class="picture-down"
+                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
             </div>
             <div class="price">CHF 234</div>
             <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
+                                                          alt="Löschen"></button>
             </div>
         </div>
         <div class="item">
@@ -41,22 +49,130 @@
             <div class="shoppingcart-Itemname">Flor'avis Lemon soap</div>
             <div class="count">1</div>
             <div class="count-button">
-                <button class="count-button-button"><img class="picture-up" src="../static/styles/images/count-dreieck.png" alt=""></button>
-                <button class="count-button-down"><img class="picture-down" src="../static/styles/images/count-dreieck.png" alt=""></button>
+                <button class="count-button-button"><img class="picture-up"
+                                                         src="../static/styles/images/count-dreieck.png" alt="">
+                </button>
+                <button class="count-button-down"><img class="picture-down"
+                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
             </div>
             <div class="price">CHF 234</div>
             <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen"></button>
+                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
+                                                          alt="Löschen"></button>
             </div>
         </div>
     </div>
     <hr class="section-line">
     <div class="addres-card-container">
+
         <div class="addres-details">
             <div class="addres-details-title">Adress Details</div>
+            <div class="salutation">Anrede</div>
+
+            <div class="salutation-buttons">
+                <label class="salutation-box">
+                    <input type="radio" name="salutation" value="herr" required>
+                    <span class="salutation-button"></span>
+                    <span class="salutation-text">Herr</span>
+                </label>
+
+                <label class="salutation-box">
+                    <input type="radio" name="salutation" value="frau">
+                    <span class="salutation-button"></span>
+                    <span class="salutation-text">Frau</span>
+                </label>
+
+                <label class="salutation-box">
+                    <input type="radio" name="salutation" value="keine">
+                    <span class="salutation-button"></span>
+                    <span class="salutation-text">Keine Angabe</span>
+                </label>
+            </div>
+
+            <div class="name">Name</div>
+            <label>
+                <input class="name-input" type="text" placeholder="Name">
+            </label>
+            <div class="surname">Vornamen</div>
+            <label>
+                <input class="name-input" type="text" placeholder="Vorname">
+            </label>
+            <div class="addres">Strasse + Nr.</div>
+            <label>
+                <input class="name-input" type="text" placeholder="Strasse + Nr.">
+            </label>
+            <div class="ortplz">
+                <div class="place-flex">
+                    <div class="place">PLZ</div>
+                    <label>
+                        <input
+                                class="place-input"
+                                type="text"
+                                inputmode="numeric"
+                                pattern="[0-9]{4}"
+                                maxlength="4"
+                                placeholder="8000"
+                                required
+                        >
+                    </label>
+                </div>
+                <div class="city-flex">
+                    <div class="city">Ort</div>
+                    <label>
+                        <input class="city-input" type="text" placeholder="Ort">
+                    </label>
+                </div>
+            </div>
+            <div class="tel">Telefonnummer</div>
+            <label>
+                <input class="tel-input" type="tel" placeholder="Tel. Nr.">
+            </label>
+            <div class="email">E-Mail</div>
+            <label>
+                <input
+                        type="email"
+                        placeholder="name@example.com"
+                        autocomplete="email"
+                        required
+                >
+            </label>
         </div>
+
         <div class="card-details">
-            <div class="card-details-title">Card Details</div>
-        </div>
+  <div class="card-details-title">Card Details</div>
+
+  <div class="payment-methods">Payment Methods</div>
+
+  <div class="payment-methods-buttons">
+    <label class="payment-method">
+      <input type="radio" name="payment" value="mastercard" required>
+      <span class="payment-methods-button">
+        <img class="payment-methods-img" src="../static/styles/images/mastercard_floravis.png" alt="Mastercard">
+      </span>
+    </label>
+
+    <label class="payment-method">
+      <input type="radio" name="payment" value="visa">
+      <span class="payment-methods-button">
+        <img class="payment-methods-img" src="../static/styles/images/visa_floravis.png" alt="Visa">
+      </span>
+    </label>
+
+    <label class="payment-method">
+      <input type="radio" name="payment" value="twint">
+      <span class="payment-methods-button">
+        <img class="payment-methods-img" src="../static/styles/images/twint_floravis.png" alt="Twint">
+      </span>
+    </label>
+
+    <label class="payment-method">
+      <input type="radio" name="payment" value="paypal">
+      <span class="payment-methods-button">
+        <img class="payment-methods-img" src="../static/styles/images/paypal_floravis.png" alt="Paypal">
+      </span>
+    </label>
+  </div>
+</div>
+
     </div>
-    {% endblock %}
+{% endblock %}
