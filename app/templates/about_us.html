@@ -1,5 +1,71 @@
-{% extends 'base.html' %} {% block title %}About Us{% endblock %} {% block
-content %}
-<h1>HI</h1>
-<p>About Us</p>
+{% extends 'base.html' %}
+
+{% block title %}About Us{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/aboutus.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="aboutUsAlles">
+
+  <div class="block block1">
+    <div class="aboutUsBild">
+      <h1>Flor'Avis</h1>
+      <div class="titelbild">
+        <img src="{{ url_for('static', filename='images/Image (2).jpg') }}" alt="Flor'Avis Seife" width="450" height="auto">
+      </div>
+    </div>
+
+    <div class="whoText">
+      <div class="wer">
+        <h2>Wer sind wir eigentlich?</h2>
+      </div>
+      <div class="aboutUsText">
+        <p class="info">
+          Flor’Avis ist eine Schweizer Marke, gegründet von fünf 16-Jährigen. Wir stellen handgemachte Seifen in kleinen Mengen her – ehrlich, lokal und mit viel Freude an der Sache.
+          <br><br>
+          Jede Seife wird von uns selbst entwickelt und in Handarbeit produziert. Wir setzen auf Qualität statt Massenproduktion und stehen persönlich hinter jedem Produkt.
+          <br><br>
+          Flor’Avis ist ein Jugendprojekt, aber wir nehmen unsere Arbeit ernst.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block block2">
+    <h2>Interessen</h2>
+    <p class="infoText">
+      Flor’Avis steht für schlichte, hochwertige Seife mit Fokus auf natürliche Pflege, zeitloses Design und bewussten Konsum. Für Menschen, die Qualität wollen statt unnötiger Zusätze.
+    </p>
+    <div class="BilderInteressen">
+      <img src="{{ url_for('static', filename='images/Screenshot 2026-01-12 152828.png') }}" alt="Seifenbild 1">
+      <img src="{{ url_for('static', filename='images/Screenshot 2026-01-12 152745.png') }}" alt="Seifenbild 2">
+      <img src="{{ url_for('static', filename='images/Screenshot 2026-01-12 152718.png') }}" alt="Seifenbild 3">
+    </div>
+  </div>
+
+  <div class="block block3">
+    <div class="unserStandortMitMap">
+      <div class="linksVonMap">
+        <h3>Unser Standort</h3>
+        <div class="untererTeil">
+          <h4>Hard</h4>
+          <h4>8005 Zürich</h4>
+          <a class="cta" href="{{ url_for('about_us') }}">Mehr über uns</a>
+        </div>
+      </div>
+
+      <iframe
+        class="map"
+        width="400"
+        height="400"
+        frameborder="0"
+        scrolling="no"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=8.519570221530676%2C47.38674847878873%2C8.525%2C47.389&layer=mapnik&marker=47.3875%2C8.522">
+      </iframe>
+    </div>
+  </div>
+
+</div>
 {% endblock %}
