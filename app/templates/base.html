@@ -43,19 +43,19 @@
             <div class="dropdown-menu">
               <a href="#" class="dropdown-item">
                 <i class="fa fa-soap"></i>
-                Klassische Seifen
+                Classic Soaps
               </a>
               <a href="#" class="dropdown-item">
                 <i class="fa fa-gem"></i>
-                Luxus Seifen
+                Luxury Soaps
               </a>
               <a href="#" class="dropdown-item">
                 <i class="fa fa-heart"></i>
-                Geschenksets
+                Gift Sets
               </a>
               <a href="#" class="dropdown-item">
                 <i class="fa fa-droplet"></i>
-                Naturseife
+                Natural Soapsö
               </a>
             </div>
           </div>
@@ -64,14 +64,14 @@
             class="nav-link nav-link-with-icon {% if request.endpoint == 'about_us' %}active{% endif %}"
           >
             <i class="fa fa-info-circle"></i>
-            about us
+            About us
           </a>
           <a
             href="{{ url_for('contact') }}"
             class="nav-link nav-link-with-icon {% if request.endpoint == 'contact' %}active{% endif %}"
           >
             <i class="fa fa-envelope"></i>
-            contact
+            Contact
           </a>
         </nav>
 
@@ -93,7 +93,7 @@
             class="nav-link nav-link-with-icon cart-link {% if request.endpoint == 'warenkorb' %}active{% endif %}"
           >
             <i class="fa fa-shopping-cart"></i>
-            Warenkorb
+            Shopping Cart
           </a>
           <div class="nav-item-with-dropdown">
             <a
@@ -101,20 +101,20 @@
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
             >
               <i class="fa fa-user"></i>
-              Profil
+              Profile
             </a>
             <div class="dropdown-menu dropdown-menu-right">
               <a href="{{ url_for('profil') }}" class="dropdown-item">
                 <i class="fa fa-user-circle"></i>
-                Mein Profil
+                My Profile
               </a>
               <a href="#" class="dropdown-item">
                 <i class="fa fa-box"></i>
-                Bestellungen
+                Orders
               </a>
               <a href="#" class="dropdown-item">
                 <i class="fa fa-cog"></i>
-                Einstellungen
+                Settings
               </a>
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item">
