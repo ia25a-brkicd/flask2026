@@ -7,16 +7,13 @@ body {
 
 .home {
     font-family: "Instrument Sans", sans-serif;
-    position: relative;
-    z-index: 1;
-    margin-top: -120px;
+    
 }
 
 .homeContent {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    z-index: 1;
 }
 
 .homeImage {
@@ -41,7 +38,6 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 75px 20px 20px;
-    z-index: 1;
 }
 
 .homeSlogan {
@@ -63,27 +59,21 @@ body {
 .homeShopNow {
     width: clamp(100px, 13vw, 200px);
     height: 60px;
+
+
     font-family: "Inter", sans-serif;
     font-size: 120%;
     font-weight: 600;
+
     background: white;
-    color: #2f221c;
-    border: 2px solid #c99a8a;
+    border: none;
     border-radius: 15px;
     cursor: pointer;
     margin-top: 5%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
 }
 
 .homeShopNow:hover {
-    background-color: #c99a8a;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(201, 154, 138, 0.3);
+    background-color: lightgrey;
 }
 
 .homeFooter {
