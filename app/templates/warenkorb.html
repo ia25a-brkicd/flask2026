@@ -1,182 +1,180 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Warenkorb{% endblock %} {% block
+content %}
+<h1 class="title">Shopping Cart</h1>
+<hr class="section-line" />
+<div class="shoppingcart-header">
+  <div class="title-shoppingcart">Shopping cart</div>
+  <div class="title-shoppingcart-description">
+    Du hast <span id="item-count">0</span> Artikel im Warenkorb
+  </div>
+</div>
+<div class="shoppingcart" id="shoppingcart">
+  <!-- Items werden dynamisch aus localStorage geladen -->
+</div>
 
-{% block title %}Warenkorb{% endblock %}
+<hr class="section-line" />
 
-{% block content %}
-    <h1 class="title">Shopping Cart</h1>
-    <hr class="section-line">
-    <div class="shoppingcart-header">
-        <div class="title-shoppingcart">Shopping cart</div>
-        <div class="title-shoppingcart-description">You have <span id="item-count">3</span> items in your cart</div>
-    </div>
-    <div class="shoppingcart" id="shoppingcart">
-        <div class="item" data-price="11.99">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
-            <div class="shoppingcart-Itemname">Flor'avis Green Apple soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
-                    <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
-                </button>
-                <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
-                    <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
-                </button>
-            </div>
-            <div class="price">CHF <span class="item-price">11.99</span></div>
-            <div class="delete-buttons">
-                <button type="button" class="delete-button-button" onclick="deleteItem(this)">
-                    <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
-                </button>
-            </div>
-        </div>
-        <div class="item" data-price="11.99">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 2">
-            <div class="shoppingcart-Itemname">Flor'avis Vanilla soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
-                    <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
-                </button>
-                <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
-                    <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
-                </button>
-            </div>
-            <div class="price">CHF <span class="item-price">11.99</span></div>
-            <div class="delete-buttons">
-                <button type="button" class="delete-button-button" onclick="deleteItem(this)">
-                    <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
-                </button>
-            </div>
-        </div>
-        <div class="item" data-price="11.99">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 3">
-            <div class="shoppingcart-Itemname">Flor'avis Lemon soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
-                    <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
-                </button>
-                <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
-                    <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
-                </button>
-            </div>
-            <div class="price">CHF <span class="item-price">11.99</span></div>
-            <div class="delete-buttons">
-                <button type="button" class="delete-button-button" onclick="deleteItem(this)">
-                    <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
-                </button>
-            </div>
-        </div>
-    </div>
+<div class="cart-summary" id="cart-summary">
+  <div class="cart-total">
+    <span class="cart-total-label">Total:</span>
+    <span class="cart-total-price">CHF <span id="total-price">0.00</span></span>
+  </div>
+  <a href="{{ url_for('checkout') }}" class="continue-button">
+    Weiter zur Zahlung
+    <span class="arrow">→</span>
+  </a>
+</div>
 
-    <hr class="section-line">
+<!-- Leerer Warenkorb Nachricht (versteckt) -->
+<div class="empty-cart" id="empty-cart" style="display: none">
+  <div class="empty-cart-message">
+    <span class="empty-cart-icon"><i class="fa fa-shopping-cart"></i></span>
+    <h2>Dein Warenkorb ist leer</h2>
+    <p>Füge einige Produkte hinzu, um fortzufahren.</p>
+    <a href="{{ url_for('shop') }}" class="continue-button">
+      Zum Shop
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
 
-    <div class="cart-summary" id="cart-summary">
-        <div class="cart-total">
-            <span class="cart-total-label">Total:</span>
-            <span class="cart-total-price">CHF <span id="total-price">35.97</span></span>
-        </div>
-        <a href="{{ url_for('checkout') }}" class="continue-button">
-            Weiter zur Zahlung
-            <span class="arrow">→</span>
-        </a>
-    </div>
+<script>
+  // Lade den Warenkorb aus localStorage und rendere die Items
+  function loadCart() {
+    var cart = getCart();
+    var shoppingcartEl = document.getElementById("shoppingcart");
+    shoppingcartEl.innerHTML = "";
 
-    <!-- Leerer Warenkorb Nachricht (versteckt) -->
-    <div class="empty-cart" id="empty-cart" style="display: none;">
-        <div class="empty-cart-message">
-            <span class="empty-cart-icon">🛒</span>
-            <h2>Dein Warenkorb ist leer</h2>
-            <p>Füge einige Produkte hinzu, um fortzufahren.</p>
-            <a href="{{ url_for('shop') }}" class="continue-button">
-                Zum Shop
-                <span class="arrow">→</span>
-            </a>
-        </div>
-    </div>
+    cart.forEach(function (item) {
+      var itemEl = createCartItemElement(item);
+      shoppingcartEl.appendChild(itemEl);
+    });
 
-    <script>
-        var PRICE_PER_ITEM = 11.99;
+    updateTotal();
+  }
 
-        // Berechne das Total und aktualisiere die Anzeige
-        function updateTotal() {
-            var items = document.querySelectorAll('#shoppingcart .item');
-            var total = 0;
-            var itemCount = 0;
+  // Erstelle ein HTML Element für ein Cart-Item
+  function createCartItemElement(item) {
+    var div = document.createElement("div");
+    div.className = "item";
+    div.setAttribute("data-price", item.price);
+    div.setAttribute("data-name", item.name);
 
-            for (var i = 0; i < items.length; i++) {
-                var countEl = items[i].querySelector('.count');
-                var quantity = parseInt(countEl.textContent);
-                var itemTotal = quantity * PRICE_PER_ITEM;
+    div.innerHTML = `
+                <img class="image" src="../static/styles/images/seife.png" alt="${item.name}">
+                <div class="shoppingcart-Itemname">${item.name}</div>
+                <div class="count">${item.quantity}</div>
+                <div class="count-button">
+                    <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
+                        <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
+                    </button>
+                    <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
+                        <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
+                    </button>
+                </div>
+                <div class="price">CHF <span class="item-price">${(item.price * item.quantity).toFixed(2)}</span></div>
+                <div class="delete-buttons">
+                    <button type="button" class="delete-button-button" onclick="deleteItem(this)">
+                        <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
+                    </button>
+                </div>
+            `;
 
-                // Aktualisiere den Preis pro Zeile
-                var priceEl = items[i].querySelector('.item-price');
-                priceEl.textContent = itemTotal.toFixed(2);
+    return div;
+  }
 
-                total += itemTotal;
-                itemCount += quantity;
-            }
+  // Berechne das Total und aktualisiere die Anzeige
+  function updateTotal() {
+    var items = document.querySelectorAll("#shoppingcart .item");
+    var total = 0;
+    var itemCount = 0;
 
-            // Aktualisiere Total
-            document.getElementById('total-price').textContent = total.toFixed(2);
+    for (var i = 0; i < items.length; i++) {
+      var countEl = items[i].querySelector(".count");
+      var quantity = parseInt(countEl.textContent);
+      var price = parseFloat(items[i].getAttribute("data-price"));
+      var itemTotal = quantity * price;
 
-            // Aktualisiere Item-Count im Header
-            document.getElementById('item-count').textContent = itemCount;
+      // Aktualisiere den Preis pro Zeile
+      var priceEl = items[i].querySelector(".item-price");
+      priceEl.textContent = itemTotal.toFixed(2);
 
-            // Zeige/Verstecke leeren Warenkorb
-            if (items.length === 0) {
-                document.getElementById('shoppingcart').style.display = 'none';
-                document.getElementById('cart-summary').style.display = 'none';
-                document.getElementById('empty-cart').style.display = 'flex';
-                document.querySelector('.shoppingcart-header').style.display = 'none';
-            } else {
-                document.getElementById('shoppingcart').style.display = 'flex';
-                document.getElementById('cart-summary').style.display = 'flex';
-                document.getElementById('empty-cart').style.display = 'none';
-                document.querySelector('.shoppingcart-header').style.display = 'block';
-            }
-        }
+      total += itemTotal;
+      itemCount += quantity;
+    }
 
-        // Erhöhe die Anzahl
-        function increaseQuantity(button) {
-            var item = button.closest('.item');
-            var countEl = item.querySelector('.count');
-            var currentCount = parseInt(countEl.textContent);
-            countEl.textContent = currentCount + 1;
-            updateTotal();
-        }
+    // Aktualisiere Total
+    document.getElementById("total-price").textContent = total.toFixed(2);
 
-        // Verringere die Anzahl
-        function decreaseQuantity(button) {
-            var item = button.closest('.item');
-            var countEl = item.querySelector('.count');
-            var currentCount = parseInt(countEl.textContent);
+    // Aktualisiere Item-Count im Header
+    document.getElementById("item-count").textContent = itemCount;
 
-            if (currentCount > 1) {
-                countEl.textContent = currentCount - 1;
-                updateTotal();
-            } else {
-                // Wenn die Anzahl 1 ist, lösche das Item
-                deleteItem(button);
-            }
-        }
+    // Zeige/Verstecke leeren Warenkorb
+    if (items.length === 0) {
+      document.getElementById("shoppingcart").style.display = "none";
+      document.getElementById("cart-summary").style.display = "none";
+      document.getElementById("empty-cart").style.display = "flex";
+      document.querySelector(".shoppingcart-header").style.display = "none";
+    } else {
+      document.getElementById("shoppingcart").style.display = "flex";
+      document.getElementById("cart-summary").style.display = "flex";
+      document.getElementById("empty-cart").style.display = "none";
+      document.querySelector(".shoppingcart-header").style.display = "block";
+    }
+  }
 
-        // Lösche ein Item
-        function deleteItem(button) {
-            var item = button.closest('.item');
+  // Erhöhe die Anzahl
+  function increaseQuantity(button) {
+    var item = button.closest(".item");
+    var countEl = item.querySelector(".count");
+    var productName = item.getAttribute("data-name");
+    var currentCount = parseInt(countEl.textContent);
+    countEl.textContent = currentCount + 1;
 
-            // Animation zum Ausblenden
-            item.style.transition = 'all 0.3s ease';
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-50px)';
+    // Update localStorage
+    updateCartItemQuantity(productName, currentCount + 1);
+    updateTotal();
+  }
 
-            setTimeout(function() {
-                item.remove();
-                updateTotal();
-            }, 300);
-        }
+  // Verringere die Anzahl
+  function decreaseQuantity(button) {
+    var item = button.closest(".item");
+    var countEl = item.querySelector(".count");
+    var productName = item.getAttribute("data-name");
+    var currentCount = parseInt(countEl.textContent);
 
-        // Initialisiere beim Laden
-        updateTotal();
-    </script>
+    if (currentCount > 1) {
+      countEl.textContent = currentCount - 1;
+      // Update localStorage
+      updateCartItemQuantity(productName, currentCount - 1);
+      updateTotal();
+    } else {
+      // Wenn die Anzahl 1 ist, lösche das Item
+      deleteItem(button);
+    }
+  }
+
+  // Lösche ein Item
+  function deleteItem(button) {
+    var item = button.closest(".item");
+    var productName = item.getAttribute("data-name");
+
+    // Animation zum Ausblenden
+    item.style.transition = "all 0.3s ease";
+    item.style.opacity = "0";
+    item.style.transform = "translateX(-50px)";
+
+    setTimeout(function () {
+      item.remove();
+      // Aus localStorage entfernen
+      removeFromCart(productName);
+      updateTotal();
+    }, 300);
+  }
+
+  // Initialisiere beim Laden
+  document.addEventListener("DOMContentLoaded", function () {
+    loadCart();
+  });
+</script>
 {% endblock %}
