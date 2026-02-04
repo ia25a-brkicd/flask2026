@@ -1,0 +1,437 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+    <h1 class="title">Checkout</h1>
+    <hr class="section-line">
+
+    <form id="checkout-form" onsubmit="return false;">
+        <div class="addres-card-container">
+
+            <div class="addres-details">
+                <div class="addres-details-title">Adress Details</div>
+                <div class="salutation">Anrede</div>
+
+                <div class="salutation-buttons">
+                    <label class="salutation-box">
+                        <input type="radio" name="salutation" value="herr" {% if checkout_data.get('salutation') == 'herr' %}checked{% endif %}>
+                        <span class="salutation-button"></span>
+                        <span class="salutation-text">Herr</span>
+                    </label>
+
+                    <label class="salutation-box">
+                        <input type="radio" name="salutation" value="frau" {% if checkout_data.get('salutation') == 'frau' %}checked{% endif %}>
+                        <span class="salutation-button"></span>
+                        <span class="salutation-text">Frau</span>
+                    </label>
+
+                    <label class="salutation-box">
+                        <input type="radio" name="salutation" value="keine" {% if checkout_data.get('salutation') == 'keine' %}checked{% endif %}>
+                        <span class="salutation-button"></span>
+                        <span class="salutation-text">Keine Angabe</span>
+                    </label>
+                </div>
+
+                <div class="name">Name</div>
+                <label>
+                    <input class="name-input" type="text" name="name" placeholder="Name" value="{{ checkout_data.get('name', '') }}">
+                </label>
+                <div class="surname">Vornamen</div>
+                <label>
+                    <input class="surname-input" type="text" name="surname" placeholder="Vorname" value="{{ checkout_data.get('surname', '') }}">
+                </label>
+                <div class="addres">Strasse + Nr.</div>
+                <label>
+                    <input class="addres-input" type="text" name="address" placeholder="Strasse + Nr." value="{{ checkout_data.get('address', '') }}">
+                </label>
+                <div class="ortplz">
+                    <div class="place-flex">
+                        <div class="place">PLZ</div>
+                        <label>
+                            <input
+                                    class="place-input"
+                                    type="text"
+                                    name="plz"
+                                    inputmode="numeric"
+                                    maxlength="4"
+                                    placeholder="8000"
+                                    value="{{ checkout_data.get('plz', '') }}"
+                            >
+                        </label>
+                    </div>
+                    <div class="city-flex">
+                        <div class="city">Ort</div>
+                        <label>
+                            <input class="city-input" type="text" name="city" placeholder="Ort" value="{{ checkout_data.get('city', '') }}">
+                        </label>
+                    </div>
+                </div>
+                <div class="tel">Telefonnummer</div>
+                <label>
+                    <input class="tel-input" type="tel" name="tel" placeholder="Tel. Nr." value="{{ checkout_data.get('tel', '') }}">
+                </label>
+                <div class="email">E-Mail</div>
+                <label>
+                    <input
+                            class="email-input"
+                            type="email"
+                            name="email"
+                            placeholder="name@example.com"
+                            autocomplete="email"
+                            value="{{ checkout_data.get('email', '') }}"
+                    >
+                </label>
+            </div>
+
+            <div class="card-details">
+                <div class="card-details-title">Card Details</div>
+
+                <div class="payment-methods">Payment Methods</div>
+
+                <div class="payment-methods-buttons">
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="mastercard" {% if checkout_data.get('payment') == 'mastercard' %}checked{% endif %}>
+                        <span class="payment-methods-button">
+                            <img class="payment-methods-img" src="../static/styles/images/mastercard_floravis.png" alt="Mastercard">
+                        </span>
+                    </label>
+
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="visa" {% if checkout_data.get('payment') == 'visa' %}checked{% endif %}>
+                        <span class="payment-methods-button">
+                            <img class="payment-methods-img" src="../static/styles/images/visa_floravis.png" alt="Visa">
+                        </span>
+                    </label>
+
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="twint" {% if checkout_data.get('payment') == 'twint' %}checked{% endif %}>
+                        <span class="payment-methods-button">
+                            <img class="payment-methods-img" src="../static/styles/images/twint_floravis.png" alt="Twint">
+                        </span>
+                    </label>
+
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="paypal" {% if checkout_data.get('payment') == 'paypal' %}checked{% endif %}>
+                        <span class="payment-methods-button">
+                            <img class="payment-methods-img" src="../static/styles/images/paypal_floravis.png" alt="Paypal">
+                        </span>
+                    </label>
+                </div>
+
+
+                <div class="card-name">Name on Card</div>
+                <label>
+                    <input class="name-input" type="text" name="card_name" placeholder="Name" value="{{ checkout_data.get('card_name', '') }}">
+                </label>
+
+                <div class="card-number">Card Number</div>
+                <label>
+                    <input
+                            class="card-number-input"
+                            type="text"
+                            name="card_number"
+                            inputmode="numeric"
+                            maxlength="19"
+                            placeholder="1234 5678 9012 3456"
+                            value="{{ checkout_data.get('card_number', '') }}"
+                    >
+                </label>
+
+                <div class="date-cvv">
+                    <div class="date-flex">
+                        <div class="date">Expiration Date</div>
+                        <label>
+                            <input
+                                    class="date-input"
+                                    type="text"
+                                    name="expiration"
+                                    inputmode="numeric"
+                                    maxlength="5"
+                                    placeholder="MM/YY"
+                                    value="{{ checkout_data.get('expiration', '') }}"
+                            >
+                        </label>
+                    </div>
+                    <div class="cvv-flex">
+                        <div class="cvv">CVV</div>
+                        <label>
+                            <input
+                                    class="card-input"
+                                    type="text"
+                                    name="cvv"
+                                    inputmode="numeric"
+                                    autocomplete="cc-csc"
+                                    placeholder="CVV"
+                                    maxlength="4"
+                                    value="{{ checkout_data.get('cvv', '') }}"
+                            >
+                        </label>
+                    </div>
+                </div>
+
+                <div class="txt">Subtotal</div>
+                <div class="txt">Shipping</div>
+                <div class="txt">Total (Tax incl.)</div>
+                <button type="button" class="checkout-button" onclick="handleCheckout()">
+                    Checkout
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script>
+        // Speichere Formulardaten in der Session
+        function saveFormData() {
+            var form = document.getElementById('checkout-form');
+            var formData = {
+                salutation: form.querySelector('input[name="salutation"]:checked')?.value || '',
+                name: form.querySelector('input[name="name"]').value,
+                surname: form.querySelector('input[name="surname"]').value,
+                address: form.querySelector('input[name="address"]').value,
+                plz: form.querySelector('input[name="plz"]').value,
+                city: form.querySelector('input[name="city"]').value,
+                tel: form.querySelector('input[name="tel"]').value,
+                email: form.querySelector('input[name="email"]').value,
+                payment: form.querySelector('input[name="payment"]:checked')?.value || '',
+                card_name: form.querySelector('input[name="card_name"]').value,
+                card_number: form.querySelector('input[name="card_number"]').value,
+                expiration: form.querySelector('input[name="expiration"]').value,
+                cvv: form.querySelector('input[name="cvv"]').value
+            };
+
+            fetch('/save_checkout_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+        }
+
+        // Event Listener für alle Input-Felder hinzufügen
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputs = document.querySelectorAll('#checkout-form input');
+            inputs.forEach(function(input) {
+                input.addEventListener('change', saveFormData);
+                input.addEventListener('input', saveFormData);
+            });
+        });
+
+        // Toast Notification anzeigen
+        function showToast(message, type) {
+            var container = document.getElementById('toast-container');
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.innerHTML = '<span class="toast-icon">' + (type === 'error' ? '✕' : '✓') + '</span><span class="toast-message">' + message + '</span>';
+
+            container.appendChild(toast);
+
+            setTimeout(function() {
+                toast.classList.add('show');
+            }, 10);
+
+            setTimeout(function() {
+                toast.classList.remove('show');
+                setTimeout(function() {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // Validierungsfunktionen
+        function validateName(name) {
+            // Keine Zahlen erlaubt
+            var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
+            return regex.test(name) && name.trim().length > 0;
+        }
+
+        function validatePLZ(plz) {
+            // Genau 4 Zahlen
+            var regex = /^\d{4}$/;
+            return regex.test(plz);
+        }
+
+        function validateEmail(email) {
+            // Muss @ enthalten
+            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        function validatePhone(phone) {
+            // Nur Zahlen, Leerzeichen, + und - erlaubt
+            var regex = /^[\d\s\+\-]+$/;
+            return regex.test(phone) && phone.trim().length >= 10;
+        }
+
+        function validateExpiration(expiration) {
+            // Format MM/YY
+            var regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            return regex.test(expiration);
+        }
+
+        function validateCardNumber(cardNumber) {
+            // 13-19 Zahlen (mit oder ohne Leerzeichen)
+            var cleaned = cardNumber.replace(/\s/g, '');
+            var regex = /^\d{13,19}$/;
+            return regex.test(cleaned);
+        }
+
+        function validateCVV(cvv) {
+            // 3-4 Zahlen
+            var regex = /^\d{3,4}$/;
+            return regex.test(cvv);
+        }
+
+        function handleCheckout() {
+            var form = document.getElementById('checkout-form');
+
+            if (!form) {
+                showToast('Formular nicht gefunden!', 'error');
+                return false;
+            }
+
+            // Prüfe Anrede (Radio)
+            var salutationChecked = document.querySelector('input[name="salutation"]:checked');
+            if (!salutationChecked) {
+                showToast('Bitte wähle eine Anrede aus', 'error');
+                return false;
+            }
+
+            // Prüfe Name (keine Zahlen)
+            var nameInput = document.querySelector('input[name="name"]');
+            if (!nameInput || !validateName(nameInput.value)) {
+                showToast('Name darf keine Zahlen enthalten', 'error');
+                if (nameInput) nameInput.focus();
+                return false;
+            }
+
+            // Prüfe Vorname (keine Zahlen)
+            var surnameInput = document.querySelector('input[name="surname"]');
+            if (!surnameInput || !validateName(surnameInput.value)) {
+                showToast('Vorname darf keine Zahlen enthalten', 'error');
+                if (surnameInput) surnameInput.focus();
+                return false;
+            }
+
+            // Prüfe Adresse
+            var addressInput = document.querySelector('input[name="address"]');
+            if (!addressInput || addressInput.value.trim() === '') {
+                showToast('Bitte fülle das Feld "Strasse + Nr." aus', 'error');
+                if (addressInput) addressInput.focus();
+                return false;
+            }
+
+            // Prüfe PLZ (genau 4 Zahlen)
+            var plzInput = document.querySelector('input[name="plz"]');
+            if (!plzInput || !validatePLZ(plzInput.value)) {
+                showToast('PLZ muss genau 4 Zahlen haben', 'error');
+                if (plzInput) plzInput.focus();
+                return false;
+            }
+
+            // Prüfe Ort
+            var cityInput = document.querySelector('input[name="city"]');
+            if (!cityInput || !validateName(cityInput.value)) {
+                showToast('Ort darf keine Zahlen enthalten', 'error');
+                if (cityInput) cityInput.focus();
+                return false;
+            }
+
+            // Prüfe Telefonnummer
+            var telInput = document.querySelector('input[name="tel"]');
+            if (!telInput || !validatePhone(telInput.value)) {
+                showToast('Bitte gib eine gültige Telefonnummer ein (mind. 10 Ziffern)', 'error');
+                if (telInput) telInput.focus();
+                return false;
+            }
+
+            // Prüfe E-Mail (muss @ enthalten)
+            var emailInput = document.querySelector('input[name="email"]');
+            if (!emailInput || !validateEmail(emailInput.value)) {
+                showToast('E-Mail muss ein @ enthalten und gültig sein', 'error');
+                if (emailInput) emailInput.focus();
+                return false;
+            }
+
+            // Prüfe Zahlungsmethode (Radio)
+            var paymentChecked = document.querySelector('input[name="payment"]:checked');
+            if (!paymentChecked) {
+                showToast('Bitte wähle eine Zahlungsmethode aus', 'error');
+                return false;
+            }
+
+            // Prüfe Name on Card (keine Zahlen)
+            var cardNameInput = document.querySelector('input[name="card_name"]');
+            if (!cardNameInput || !validateName(cardNameInput.value)) {
+                showToast('Name on Card darf keine Zahlen enthalten', 'error');
+                if (cardNameInput) cardNameInput.focus();
+                return false;
+            }
+
+            // Prüfe Kartennummer
+            var cardNumberInput = document.querySelector('input[name="card_number"]');
+            if (!cardNumberInput || !validateCardNumber(cardNumberInput.value)) {
+                showToast('Kartennummer muss 13-19 Ziffern haben', 'error');
+                if (cardNumberInput) cardNumberInput.focus();
+                return false;
+            }
+
+            // Prüfe Expiration Date (MM/YY)
+            var expirationInput = document.querySelector('input[name="expiration"]');
+            if (!expirationInput || !validateExpiration(expirationInput.value)) {
+                showToast('Ablaufdatum muss im Format MM/YY sein (z.B. 03/25)', 'error');
+                if (expirationInput) expirationInput.focus();
+                return false;
+            }
+
+            // Prüfe CVV
+            var cvvInput = document.querySelector('input[name="cvv"]');
+            if (!cvvInput || !validateCVV(cvvInput.value)) {
+                showToast('CVV muss 3-4 Ziffern haben', 'error');
+                if (cvvInput) cvvInput.focus();
+                return false;
+            }
+
+            // Alle Felder sind gültig - sende an Server
+            var formData = new FormData(form);
+
+            fetch('/checkout', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    // Alle Textfelder leeren
+                    var inputs = document.querySelectorAll('#checkout-form input[type="text"], #checkout-form input[type="email"], #checkout-form input[type="tel"]');
+                    for (var j = 0; j < inputs.length; j++) {
+                        inputs[j].value = '';
+                    }
+
+                    // Alle Radio-Buttons deselektieren
+                    var radios = document.querySelectorAll('#checkout-form input[type="radio"]');
+                    for (var k = 0; k < radios.length; k++) {
+                        radios[k].checked = false;
+                    }
+
+                    showToast('Bestellung erfolgreich abgeschickt!', 'success');
+
+                    // Nach 2 Sekunden zurück zum Warenkorb
+                    setTimeout(function() {
+                        window.location.href = '/warenkorb';
+                    }, 2000);
+                }
+            })
+            .catch(function(error) {
+                showToast('Ein Fehler ist aufgetreten: ' + error, 'error');
+            });
+
+            return false;
+        }
+    </script>
+{% endblock %}
+
