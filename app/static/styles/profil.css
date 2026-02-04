@@ -34,6 +34,11 @@ h2{
     margin: 1%;
 }
 
+/* Spezieller Margin-Top für "Willkommen Vor-Nachname" */
+#welcome-title {
+    margin-top: 3%;
+}
+
 /* === HEADER BEREICH (Div mit "Anmeldung" h1) === */
 .profile-header {
     display: flex;
@@ -65,7 +70,8 @@ h2{
 /* Alle Texte/Labels im Formular */
 p{
     font-size: 20px;
-    margin-bottom: 2%;
+    margin-bottom: 1%;
+    margin-top: 2%;
 }
 
 /* "Registrieren" Button */
