@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -7,6 +7,7 @@ from config import DevelopmentConfig, ProductionConfig
 # Definieren einer Variable, die die aktuelle Datei zum Zentrum
 # der Anwendung macht.
 app = Flask(__name__)
+app.secret_key = 'floravis-secret-key-2026'  # Für Session-Cookies
 
 """
 Festlegen einer Route für die Homepage. Der String in den Klammern
@@ -97,8 +98,13 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
     return render_template("profil.html")
-@app.route("/warenkorb", methods=["GET", "POST"])
+
+@app.route("/warenkorb")
 def warenkorb():
+    return render_template("warenkorb.html")
+
+@app.route("/checkout", methods=["GET", "POST"])
+def checkout():
     if request.method == "POST":
         app.logger.info("Checkout submitted")
 
@@ -135,10 +141,23 @@ def warenkorb():
         print(f"CVV: {cvv}")
         print("==========================")
 
-        # Nach erfolgreicher Verarbeitung zurück zur Seite (Formular wird geleert)
-        return redirect(url_for("warenkorb"))
+        # Session-Daten löschen nach erfolgreichem Checkout
+        session.pop('checkout_data', None)
 
-    return render_template("warenkorb.html")
+        return "OK", 200
+
+    # GET: Lade gespeicherte Daten aus Session
+    checkout_data = session.get('checkout_data', {})
+    return render_template("checkout.html", checkout_data=checkout_data)
+
+# Route zum Speichern der Checkout-Daten in der Session
+@app.route("/save_checkout_data", methods=["POST"])
+def save_checkout_data():
+    data = request.get_json()
+    if data:
+        session['checkout_data'] = data
+        return jsonify({"status": "success"}), 200
+    return jsonify({"status": "error"}), 400
 
 @app.route("/shop")
 def shop() -> str:
