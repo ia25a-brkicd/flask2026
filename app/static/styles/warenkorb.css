@@ -247,8 +247,8 @@ body {
 .picture-down {
     width: 8px;
     height: 10px;
-    rotate: 180deg;
-    rotate(180deg);
+
+    transform: rotate(180deg);
 }
 
 .count-button-button,
