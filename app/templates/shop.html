@@ -5,21 +5,76 @@
 />
 {% endblock %} {% block content %}
 <div class="shop-container">
-  <div class="product-showcase">
-    <div class="product-image">
-      <img
-        src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-        alt="Premium Soaps"
-      />
+  <div class="product-carousel">
+    <div class="carousel-container">
+      <!-- Slide 1 -->
+      <div class="carousel-slide active" data-slide="0">
+        <div class="product-image">
+          <img
+            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+            alt="Lavender Premium Soap"
+          />
+        </div>
+        <div class="product-info">
+          <h1>Lavender Dream Soap</h1>
+          <p>
+            Handcrafted with real lavender flowers and essential oils. Relax
+            your senses with every wash.
+          </p>
+          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-slide" data-slide="1">
+        <div class="product-image">
+          <img
+            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+            alt="Rose Premium Soap"
+          />
+        </div>
+        <div class="product-info">
+          <h1>Rose Garden Soap</h1>
+          <p>
+            Infused with rose petals and natural moisturizers. Experience luxury
+            skincare daily.
+          </p>
+          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-slide" data-slide="2">
+        <div class="product-image">
+          <img
+            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+            alt="Honey Premium Soap"
+          />
+        </div>
+        <div class="product-info">
+          <h1>Honey Glow Soap</h1>
+          <p>
+            Made with organic honey and oatmeal. Nourish and soften your skin
+            naturally.
+          </p>
+          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+        </div>
+      </div>
     </div>
 
-    <div class="product-info">
-      <h1>Premium Handcrafted Soaps</h1>
-      <p>
-        Handcrafted with natural ingredients and dried flowers. Pure quality for
-        your skin.
-      </p>
-      <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+    <!-- Navigation Arrows -->
+    <div class="carousel-navigation">
+      <button class="carousel-arrow prev" onclick="changeSlide(-1)">
+        <i class="fa fa-chevron-left"></i>
+      </button>
+      <div class="carousel-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+      </div>
+      <button class="carousel-arrow next" onclick="changeSlide(1)">
+        <i class="fa fa-chevron-right"></i>
+      </button>
     </div>
   </div>
 
@@ -120,6 +175,40 @@
 </div>
 
 <script>
+  // Carousel functionality
+  let currentSlide = 0;
+  const totalSlides = 3;
+
+  function changeSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide >= totalSlides) currentSlide = 0;
+    if (currentSlide < 0) currentSlide = totalSlides - 1;
+    updateCarousel();
+  }
+
+  function goToSlide(slideIndex) {
+    currentSlide = slideIndex;
+    updateCarousel();
+  }
+
+  function updateCarousel() {
+    // Update slides
+    document.querySelectorAll(".carousel-slide").forEach((slide, index) => {
+      slide.classList.remove("active");
+      if (index === currentSlide) {
+        slide.classList.add("active");
+      }
+    });
+
+    // Update dots
+    document.querySelectorAll(".carousel-dots .dot").forEach((dot, index) => {
+      dot.classList.remove("active");
+      if (index === currentSlide) {
+        dot.classList.add("active");
+      }
+    });
+  }
+
   // Handle pack selection buttons
   document.querySelectorAll(".pack-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
@@ -129,6 +218,19 @@
       });
       // Add active class to clicked button
       this.classList.add("active");
+    });
+  });
+
+  // Handle add to cart buttons
+  document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const productCard = this.closest(".product-card");
+      const productName = productCard.querySelector("h3").textContent;
+      const quantityBtn = productCard.querySelector(".pack-btn.active");
+      const quantity = parseInt(quantityBtn.getAttribute("data-quantity")) || 1;
+
+      // Call the global addToCart function from base.html
+      addToCart(productName, quantity);
     });
   });
 </script>
