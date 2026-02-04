@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, session, url_for
 from dotenv import load_dotenv # Lädt .env Datei
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -43,7 +43,17 @@ languages = [
 def home():
     print(math_service.add(1.0, 2.0))
     app.logger.info("Rendering home page")
+    session["test"] = "Hello Session!"
     return render_template("home.html")
+
+@app.route('/cart/add/<item>', methods=['POST'])
+def add_to_cart(item):
+    allowed_items = {'item1', 'item2'}
+    if item in allowed_items:
+        cart = session.get('cart', [])
+        cart.append(item)
+        session['cart'] = cart
+    return redirect(url_for('home'))
 
 @app.route('/result/', defaults={'name': 'Guest'})
 @app.route('/result/<name>')
