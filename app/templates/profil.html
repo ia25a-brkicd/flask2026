@@ -11,36 +11,35 @@
 
 {% block content %}
 <div class="profil">
-<h1 id="welcome-title">Willkommen Vor-Nachname</h1>
+<h1 id="welcome-title">Welcome First-Lastname</h1>
 <div class="profile-image-placeholder">
     <img src="../static/images/profil.jpg" alt="Profile picture">
 </div>
 
 <div class="profile-header">
-    <h1>Anmeldung</h1>
+    <h1>Registration</h1>
 </div>
 
 <form action="{{ url_for('profil') }}" method="post">
 <div class="header">
 
-    <p>Name</p>
+    <p>Lastname</p>
     <input id="lastname" name="lastname" rows="1" cols="100"></input>
 
-    <p>Vorname</p>
+    <p>Firstname</p>
     <input id="firstname" name="firstname" rows="1" cols="100"></input>
 
     <p>E-Mail</p>
     <input id="email" name="email" rows="1" cols="100"></input>
 
-    <p>Passwort</p>
+    <p>Password</p>
     <input id="password" name="password" rows="1" cols="100"></input>
 </div>
 
-<button type="button" id="registrieren-btn">Registrieren</button>
-
+<button type="button" id="registrieren-btn">Register</button>
 <div class="alternative-account">
     <div class="alternative-text">
-        <h1>Anderes Konto verwenden</h1>
+        <h1>Use another account</h1>
     </div>
     <img src="../static/images/ChatGPT Image 2. Feb. 2026, 13_47_24.png" alt="Profile picture">
 </div>
@@ -49,15 +48,18 @@
 
 <!-- Push Benachrichtigung für Erfolg -->
 <div id="notification" class="notification">
-    Vielen Dank für Ihre Registrierung!
+    Thank you for your registration!
 </div>
 
 <!-- Push Benachrichtigung für Fehler -->
 <div id="error-notification" class="notification error-notification">
-    Nicht alle Felder wurden ausgefüllt!
+    Not all fields were filled out!
 </div>
 </div>
 <script>
+// Variable um den Timeout-Timer zu speichern
+var errorTimeoutId = null;
+
 /* Greift auf den Button mit der ID "registrieren-btn" zu
    und fügt einen Klick-Event-Listener hinzu */
 document.getElementById('registrieren-btn').addEventListener('click', function(e) {
@@ -77,11 +79,19 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         // Greift auf die Fehler-Benachrichtigung zu
         var errorNotification = document.getElementById('error-notification');
         
+        // Entfernt die Verstecken-Klasse, falls vorhanden
+        errorNotification.classList.remove('hide');
+        
         // Fügt die CSS-Klasse "show" hinzu, um die Fehlermeldung anzuzeigen
         errorNotification.classList.add('show');
         
+        // Löscht den alten Timeout, falls vorhanden
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
         // Startet einen Timer von 7 Sekunden
-        setTimeout(function() {
+        errorTimeoutId = setTimeout(function() {
             
             // Entfernt die Klasse "show"
             errorNotification.classList.remove('show');
@@ -89,10 +99,15 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
             // Fügt die Klasse "hide" hinzu, um die Fehlermeldung auszublenden
             errorNotification.classList.add('hide');
         
-        }, 7000); // 7000 Millisekunden = 7 Sekunden
+        }, 4000); // 4000 Millisekunden = 4 Sekunden
         
         // Beendet die Funktion, damit keine Daten gesendet werden
         return;
+    }
+    
+    // Löscht den Timeout, falls vorhanden
+    if (errorTimeoutId !== null) {
+        clearTimeout(errorTimeoutId);
     }
     
     // Erstellt ein neues FormData-Objekt zum Versenden der Daten
@@ -110,6 +125,11 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         body: formData  // Gesendete Daten
     }).then(function(response) {
         
+        // Versteckt die Fehler-Benachrichtigung
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+        
         // Ändert den Text des Willkommens-Titels
         document.getElementById('welcome-title').textContent =
             'Willkommen ' + firstname + ' ' + lastname;
@@ -123,6 +143,9 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         // Greift auf die Erfolgs-Benachrichtigung zu
         var notification = document.getElementById('notification');
         
+        // Entfernt die Verstecken-Klasse
+        notification.classList.remove('hide');
+        
         // Zeigt die Benachrichtigung an
         notification.classList.add('show');
         
@@ -135,7 +158,7 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
             // Fügt die "hide"-Klasse hinzu
             notification.classList.add('hide');
         
-        }, 7000); // 7 Sekunden
+        }, 4000); // 4 Sekunden
     });
 });
 </script>
