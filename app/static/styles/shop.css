@@ -6,12 +6,83 @@
     padding: 60px 40px;
 }
 
-.product-showcase {
-    display: flex;
+/* Carousel Styles */
+.product-carousel {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.carousel-container {
+    position: relative;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    display: none;
     align-items: center;
     justify-content: space-between;
     gap: 80px;
     min-height: 500px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.carousel-slide.active {
+    display: flex;
+    opacity: 1;
+}
+
+.carousel-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.carousel-arrow {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #c99a8a;
+    color: #2f221c;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.carousel-arrow:hover {
+    background: #c99a8a;
+    color: white;
+    transform: scale(1.1);
+}
+
+.carousel-dots {
+    display: flex;
+    gap: 12px;
+}
+
+.carousel-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #eabfb3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dots .dot:hover {
+    background: #c99a8a;
+}
+
+.carousel-dots .dot.active {
+    background: #b88070;
+    transform: scale(1.2);
 }
 
 .product-image {
@@ -187,9 +258,17 @@
 }
 
 @media (max-width: 768px) {
-    .product-showcase {
+    .carousel-slide {
         flex-direction: column;
         gap: 40px;
+    }
+
+    .carousel-container {
+        min-height: auto;
+    }
+
+    .carousel-slide.active {
+        flex-direction: column;
     }
 
     .product-image {
@@ -208,6 +287,16 @@
         width: 160px;
         height: 50px;
         font-size: 16px;
+    }
+
+    .carousel-navigation {
+        gap: 20px;
+    }
+
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
     }
 
     .products-grid {
