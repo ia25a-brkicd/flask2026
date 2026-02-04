@@ -21,7 +21,12 @@
             Handcrafted with real lavender flowers and essential oils. Relax
             your senses with every wash.
           </p>
-          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Lavender Dream Soap', 12.99)"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
 
@@ -39,7 +44,12 @@
             Infused with rose petals and natural moisturizers. Experience luxury
             skincare daily.
           </p>
-          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Rose Garden Soap', 13.99)"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
 
@@ -57,7 +67,12 @@
             Made with organic honey and oatmeal. Nourish and soften your skin
             naturally.
           </p>
-          <a class="buy-btn" href="{{ url_for('warenkorb') }}">Buy Now</a>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Honey Glow Soap', 12.49)"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
     </div>
@@ -226,13 +241,20 @@
     btn.addEventListener("click", function () {
       const productCard = this.closest(".product-card");
       const productName = productCard.querySelector("h3").textContent;
+      const priceText = productCard.querySelector(".price").textContent;
+      const price = parseFloat(priceText.replace(" CHF", "").replace(",", "."));
       const quantityBtn = productCard.querySelector(".pack-btn.active");
       const quantity = parseInt(quantityBtn.getAttribute("data-quantity")) || 1;
 
-      // Call the global addToCart function from base.html
-      addToCart(productName, quantity);
+      // Call the global addToCart function from base.html with price
+      addToCart(productName, quantity, price);
     });
   });
+
+  // Handle carousel buy now buttons
+  function carouselBuyNow(productName, price) {
+    addToCart(productName, 1, price);
+  }
 </script>
 
 {% endblock %}
