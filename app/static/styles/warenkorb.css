@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
 .warenkorb-content {
     display: flex;
     flex-direction: column;
 }
-
 
 
 html, body {
@@ -87,6 +88,8 @@ body {
     font-size: 50px;
     margin-top: 25px;
     margin-top: 70px;
+    font-family: "Italiana", sans-serif;
+    font-weight: 700;
 }
 
 .addres-card-container {
