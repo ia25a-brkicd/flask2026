@@ -1,6 +1,4 @@
-* {
-    outline: red solid 1px;
-}
+
 
 
 html, body {
@@ -83,11 +81,11 @@ body {
 .title {
     margin-left: 100px;
     font-size: 50px;
+    margin-top: 70px;
 }
 
 .addres-card-container {
     display: flex;
-
     margin-top: 40px;
     margin-left: 100px;
     margin-bottom: 40px;
@@ -96,41 +94,117 @@ body {
 }
 
 .addres-details {
-    background-color: #e18d84;
-    border-radius: 16px;
-    padding: 25px;
+    background-color: #d4847a;
+    border-radius: 20px;
+    padding: 30px 40px;
+    flex: 1;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
 }
 
 .addres-details-title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     color: #ffffff;
-    margin: 0;
-    margin-left: 100px;
-    padding-top: 20px;
+    margin: 0 0 25px 0;
+    padding: 0;
 }
 
 .card-details-title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     color: #ffffff;
-    margin: 0;
-    margin-left: 100px;
-    padding-top: 20px;
+    margin: 0 0 25px 0;
+    padding: 0;
 }
-
-
 
 .card-details {
-    background-color: #e18d84;
-    margin-left: 40px;
-    border-radius: 16px;
-    padding: 25px;
+    background-color: #d4847a;
+    border-radius: 20px;
+    padding: 30px 40px;
+    flex: 1;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+    margin-left: 0;
 }
 
+/* Labels und Texte */
+.salutation,
+.name,
+.surname,
+.addres,
+.place,
+.city,
+.tel,
+.email,
+.payment-methods,
+.card-name,
+.card-number,
+.date,
+.cvv {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
 
+/* Input Felder Styling */
+.name-input,
+.surname-input,
+.addres-input,
+.place-input,
+.city-input,
+.tel-input,
+.email-input,
+.card-number-input,
+.date-input,
+.card-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #e8a68e;
+    color: #8b4a3a;
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
 
+.name-input::placeholder,
+.surname-input::placeholder,
+.addres-input::placeholder,
+.place-input::placeholder,
+.city-input::placeholder,
+.tel-input::placeholder,
+.email-input::placeholder,
+.card-number-input::placeholder,
+.date-input::placeholder,
+.card-input::placeholder {
+    color: #a05d4a;
+    opacity: 0.7;
+}
 
+.name-input:focus,
+.surname-input:focus,
+.addres-input:focus,
+.place-input:focus,
+.city-input:focus,
+.tel-input:focus,
+.email-input:focus,
+.card-number-input:focus,
+.date-input:focus,
+.card-input:focus {
+    outline: none;
+    background-color: #f0b89e;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+}
+
+/* Label wrapper */
+.addres-details label,
+.card-details label {
+    display: block;
+    width: 100%;
+}
 
 .count-button {
     display: flex;
@@ -192,7 +266,7 @@ body {
 .salutation-box{
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
 }
 
@@ -200,60 +274,76 @@ body {
   display: none;
 }
 
+
+
 .salutation-button{
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
+  display: inline-block;     /* ✅ wichtig: macht width/height zuverlässig */
+  flex: 0 0 22px;            /* ✅ verhindert, dass Flex ihn streckt */
   border-radius: 50%;
-
-  background: #f3b28a;        /* 🔥 Standard: gefüllt */
-  border: 3px solid transparent; /* ❌ Border unsichtbar */
-
   box-sizing: border-box;
-  transition: all 0.2s ease;
+
+  background: #f3b28a;
+  border: 4px solid transparent;
 }
 
-/* ✅ wenn ausgewählt */
+.salutation-box{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+    justify-content: center;
+}
+
 .salutation-box input:checked + .salutation-button{
-  background: #ffffff;        /* innen weiss */
-  border-color: #f3b28a;      /* 🔥 Border sichtbar */
+  background: #ffffff;      /* innen weiss */
+  border-color: #f3b28a;    /* border peach */
+  transform: scale(1.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.salutation-text {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .salutation-buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    margin-right: 5px;
-    margin-left: 5px;
+    gap: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     align-items: center;
-    justify-content: center;
 }
-
-
-
-
-
-
 
 .ortplz {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 .place-flex {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .city-flex {
     display: flex;
     flex-direction: column;
+    flex: 1.5;
 }
 
 .payment-methods-buttons{
   display: flex;
   gap: 16px;
-  margin-top: 20px;
-  flex-wrap: wrap;            /* falls zu wenig Platz */
+  margin-top: 10px;
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .payment-method{
@@ -268,28 +358,26 @@ body {
 .payment-methods-button{
   width: 90px;
   height: 55px;
-  border-radius: 10px;
-
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background: rgba(255,255,255,0.12);
+  background: #ffffff;
   border: 2px solid transparent;
-
   transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
 /* ✅ ausgewählt */
 .payment-method input:checked + .payment-methods-button{
-  border-color: rgba(255,255,255,0.60);
-  background: rgba(255,255,255,0.18);
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
+  border-color: #8b4a3a;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
 }
 
 .payment-methods-img{
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 70%;
+  max-height: 70%;
   object-fit: contain;
   display: block;
 }
@@ -302,21 +390,104 @@ body {
 .cvv-flex {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .date-flex {
     display: flex;
     flex-direction: column;
+    flex: 1.5;
 }
 
+/* Subtotal, Shipping, Total Texte */
+.txt {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-top: 12px;
+}
+
+/* Checkout Button */
 .checkout-button {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 25px;
+    padding: 16px 24px;
+    background-color: #e8a68e;
+    color: #8b4a3a;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+.checkout-button:hover {
+    background-color: #f0b89e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
 
+.checkout-price {
+    font-size: 16px;
+    font-weight: 600;
+}
 
+.checkout-text {
+    font-size: 16px;
+    font-weight: 600;
+}
+/* ===== Anrede Buttons FIX ===== */
 
+.addres-details .salutation-buttons{
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+}
 
+.addres-details .salutation-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* ✅ Text + Kreis zentriert */
+  gap: 12px;
 
+  width: auto;
+  padding: 12px 20px;         /* ✅ macht den Button grösser */
+  border-radius: 14px;
+
+  flex: 0 0 auto;             /* ✅ NICHT strecken */
+}
+
+/* Kreis */
+.salutation-button{
+  width: 26px;                /* ✅ grösser */
+  height: 26px;
+  flex: 0 0 26px;
+
+  border-radius: 50%;
+  background: #f3b28a;
+  border: 4px solid transparent;
+  box-sizing: border-box;
+}
+
+/* ausgewählt */
+.salutation-box input:checked + .salutation-button{
+  background: #ffffff;
+  border-color: #f3b28a;
+}
+
+/* Text */
+.salutation-text{
+  display: flex;
+  align-items: center;        /* ✅ vertikal zentriert */
+  justify-content: center;
+  line-height: 1;
+  font-size: 15px;            /* optional etwas grösser */
+}
 
