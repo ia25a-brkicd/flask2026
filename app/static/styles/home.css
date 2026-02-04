@@ -57,23 +57,29 @@ body {
 
 
 .homeShopNow {
-    width: clamp(100px, 13vw, 200px);
+    width: 180px;
     height: 60px;
-
-
-    font-family: "Inter", sans-serif;
-    font-size: 120%;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
     font-weight: 600;
-
     background: white;
-    border: none;
+    color: #2f221c;
+    border: 2px solid #c99a8a;
     border-radius: 15px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
     margin-top: 5%;
 }
 
 .homeShopNow:hover {
-    background-color: lightgrey;
+    background-color: #c99a8a;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(201, 154, 138, 0.3);
 }
 
 .homeFooter {
