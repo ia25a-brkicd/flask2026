@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from dotenv import load_dotenv # Lädt .env Datei
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
+from flask_mail import Mail, Message
 
 # Definieren einer Variable, die die aktuelle Datei zum Zentrum
 # der Anwendung macht.
@@ -29,6 +30,19 @@ if os.environ.get('FLASK_ENV') == 'development':
     app.config.from_object(DevelopmentConfig)
 else:
     app.config.from_object(ProductionConfig)
+
+# 3. Mail konfigurieren
+app.config.update(
+    MAIL_SERVER=os.getenv("MAIL_SERVER", "smtp.gmail.com"),
+    MAIL_PORT=int(os.getenv("MAIL_PORT", "465")),
+    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+    MAIL_USE_TLS=os.getenv("MAIL_USE_TLS", "false").lower() == "true",
+    MAIL_USE_SSL=os.getenv("MAIL_USE_SSL", "true").lower() == "true",
+    MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", os.getenv("MAIL_USERNAME")),
+)
+
+mail = Mail(app)
 #-------------------------------
 
 # mock data
@@ -77,6 +91,28 @@ def contact():
         print(f"E-Mail: {email}")
         print(f"Nachricht: {message}")
         print("========================")
+
+        recipient = os.getenv("MAIL_RECIPIENT")
+        if recipient and app.config.get("MAIL_USERNAME") and app.config.get("MAIL_PASSWORD"):
+            try:
+                msg = Message(
+                    subject="Kontaktformular",
+                    recipients=[recipient],
+                    reply_to=email,
+                    body=(
+                        "Neue Nachricht vom Kontaktformular\n\n"
+                        f"Nachname: {lastname}\n"
+                        f"Vorname: {firstname}\n"
+                        f"E-Mail: {email}\n\n"
+                        f"Nachricht:\n{message}\n"
+                    ),
+                )
+                mail.send(msg)
+                app.logger.info("Contact email sent")
+            except Exception:
+                app.logger.exception("Failed to send contact email")
+        else:
+            app.logger.warning("Mail is not configured; skipping send")
     return render_template("contact.html")
 
 
