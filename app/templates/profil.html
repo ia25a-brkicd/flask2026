@@ -163,5 +163,13 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
 });
 </script>
 
+{{session.get('user_id')}} <!-- Zum Testen, ob die Session-Variable gesetzt ist -->
+{{session.get('user_email')}} <!-- Zum Testen, ob die Session-Variable gesetzt ist -->
+{% if session.get('user_id') %}
+    <p>Logged in as user ID: {{ session.get('user_id') }}</p>
+{% else %}
+    <p>Not logged in</p>
+{% endif %}
+
 
 {% endblock %}
