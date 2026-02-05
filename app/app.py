@@ -133,7 +133,22 @@ def profil():
         print(f"E-Mail: {email}")
         print(f"Passwort: {password}")
         print("========================")
-    return render_template("profil.html")
+
+        # HIER: "einloggen"
+        session['user_id'] = email          # oder irgendeine ID
+        session['user_name'] = firstname    # optional
+
+        return redirect(url_for("home"))    # zurück zur Startseite
+
+    # GET-Anfrage: nur Formular anzeigen
+    return "render_template("profil.html)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
+
 
 @app.route("/warenkorb")
 def warenkorb():
@@ -205,3 +220,8 @@ def searchbar() -> str:
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+
+
+
+
