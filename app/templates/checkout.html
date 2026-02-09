@@ -14,40 +14,40 @@
         <div class="addres-card-container">
 
             <div class="addres-details">
-                <div class="addres-details-title">Adress Details</div>
-                <div class="salutation">Anrede</div>
+                <div class="addres-details-title">Address details</div>
+                <div class="salutation">Salutation</div>
 
                 <div class="salutation-buttons">
                     <label class="salutation-box">
                         <input type="radio" name="salutation" value="herr" {% if checkout_data.get('salutation') == 'herr' %}checked{% endif %}>
                         <span class="salutation-button"></span>
-                        <span class="salutation-text">Herr</span>
+                        <span class="salutation-text">Mr.</span>
                     </label>
 
                     <label class="salutation-box">
                         <input type="radio" name="salutation" value="frau" {% if checkout_data.get('salutation') == 'frau' %}checked{% endif %}>
                         <span class="salutation-button"></span>
-                        <span class="salutation-text">Frau</span>
+                        <span class="salutation-text">Ms.</span>
                     </label>
 
                     <label class="salutation-box">
                         <input type="radio" name="salutation" value="keine" {% if checkout_data.get('salutation') == 'keine' %}checked{% endif %}>
                         <span class="salutation-button"></span>
-                        <span class="salutation-text">Keine Angabe</span>
+                        <span class="salutation-text">No Preference</span>
                     </label>
                 </div>
 
-                <div class="name">Name</div>
+                <div class="name">Lastname</div>
                 <label>
-                    <input class="name-input" type="text" name="name" placeholder="Name" value="{{ checkout_data.get('name', '') }}">
+                    <input class="name-input" type="text" name="name" placeholder="Lastname" value="{{ checkout_data.get('name', '') }}">
                 </label>
-                <div class="surname">Vornamen</div>
+                <div class="surname">Firstname</div>
                 <label>
-                    <input class="surname-input" type="text" name="surname" placeholder="Vorname" value="{{ checkout_data.get('surname', '') }}">
+                    <input class="surname-input" type="text" name="surname" placeholder="Firstname" value="{{ checkout_data.get('surname', '') }}">
                 </label>
-                <div class="addres">Strasse + Nr.</div>
+                <div class="addres">Street + No.</div>
                 <label>
-                    <input class="addres-input" type="text" name="address" placeholder="Strasse + Nr." value="{{ checkout_data.get('address', '') }}">
+                    <input class="addres-input" type="text" name="address" placeholder="Street + No." value="{{ checkout_data.get('address', '') }}">
                 </label>
                 <div class="ortplz">
                     <div class="place-flex">
@@ -65,15 +65,15 @@
                         </label>
                     </div>
                     <div class="city-flex">
-                        <div class="city">Ort</div>
+                        <div class="city">City</div>
                         <label>
-                            <input class="city-input" type="text" name="city" placeholder="Ort" value="{{ checkout_data.get('city', '') }}">
+                            <input class="city-input" type="text" name="city" placeholder="City" value="{{ checkout_data.get('city', '') }}">
                         </label>
                     </div>
                 </div>
-                <div class="tel">Telefonnummer</div>
+                <div class="tel">Phone Number</div>
                 <label>
-                    <input class="tel-input" type="tel" name="tel" placeholder="Tel. Nr." value="{{ checkout_data.get('tel', '') }}">
+                    <input class="tel-input" type="tel" name="tel" placeholder="Phone Number" value="{{ checkout_data.get('tel', '') }}">
                 </label>
                 <div class="email">E-Mail</div>
                 <label>
@@ -194,13 +194,13 @@
     <div class="thank-you-screen" id="thank-you-screen">
         <div class="thank-you-content">
             <div class="thank-you-icon">✓</div>
-            <h1>Vielen Dank!</h1>
-            <p>Deine Bestellung wurde erfolgreich aufgegeben</p>
+            <h1>Thank you very much!</h1>
+            <p>Your order has been successfully placed</p>
             <div class="thank-you-message">
-                <p>Wir haben deine Bestellung erhalten und werden sie in Kürze bearbeiten.</p>
-                <p>Eine Bestätigungsmail wird dir in den nächsten Minuten zugesendet.</p>
+                <p>We have received your order and will process it shortly.</p>
+                <p>A confirmation email will be sent to you within the next few minutes.</p>
             </div>
-            <a href="{{ url_for('shop') }}" class="back-to-shop">Zurück zum Shop</a>
+            <a href="{{ url_for('shop') }}" class="back-to-shop">Back to Shop</a>
         </div>
     </div>
 

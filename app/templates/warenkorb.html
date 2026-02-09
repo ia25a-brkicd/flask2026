@@ -5,7 +5,7 @@ content %}
 <div class="shoppingcart-header">
   <div class="title-shoppingcart">Shopping cart</div>
   <div class="title-shoppingcart-description">
-    Du hast <span id="item-count">0</span> Artikel im Warenkorb
+    You have <span id="item-count">0</span> items in your shopping cart
   </div>
 </div>
 <div class="shoppingcart" id="shoppingcart">
@@ -20,7 +20,7 @@ content %}
     <span class="cart-total-price">CHF <span id="total-price">0.00</span></span>
   </div>
   <a href="{{ url_for('checkout') }}" class="continue-button">
-    Weiter zur Zahlung
+    Continue to payment
     <span class="arrow">→</span>
   </a>
 </div>
@@ -29,10 +29,10 @@ content %}
 <div class="empty-cart" id="empty-cart" style="display: none">
   <div class="empty-cart-message">
     <span class="empty-cart-icon"><i class="fa fa-shopping-cart"></i></span>
-    <h2>Dein Warenkorb ist leer</h2>
-    <p>Füge einige Produkte hinzu, um fortzufahren.</p>
+    <h2>Your shopping cart is empty</h2>
+    <p>Add some products to proceed.</p>
     <a href="{{ url_for('shop') }}" class="continue-button">
-      Zum Shop
+      Go to Shop
       <span class="arrow">→</span>
     </a>
   </div>

@@ -13,7 +13,7 @@
 <div class="contact">
 <h1>Contact</h1>
 
-<form action="mailto:severin.buerki9@gmail.com" method="post" enctype="text/plain">
+<form action="mailto:floravissocialmedia@gmail.com" method="post" enctype="text/plain">
 <div class="header">
 
     <p>Lastname</p>
@@ -114,29 +114,51 @@ document.getElementById('absenden-btn').addEventListener('click', function(e) {
         method: 'POST', // HTTP-Methode
         body: formData  // Formulardaten
     }).then(function(response) {
-        
-        
-        document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
-        document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
-        document.getElementById('email').value = '';// Leert das E-Mail-Feld     
-        document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
-        
-        // Greift auf die Erfolgs-Benachrichtigung zu
-        var notification = document.getElementById('notification');
-        
-        // Zeigt die Benachrichtigung an
-        notification.classList.add('show');
-        
-        // Versteckt die Benachrichtigung nach 7 Sekunden
+        if (response.ok) {
+            // Leert die Felder nur bei Erfolg
+            document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
+            document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
+            document.getElementById('email').value = '';// Leert das E-Mail-Feld
+            document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
+
+            // Greift auf die Erfolgs-Benachrichtigung zu
+            var notification = document.getElementById('notification');
+
+            // Zeigt die Benachrichtigung an
+            notification.classList.add('show');
+
+            // Versteckt die Benachrichtigung nach 4 Sekunden
+            setTimeout(function() {
+                // Entfernt die Anzeige-Klasse
+                notification.classList.remove('show');
+                // Fügt die Verstecken-Klasse hinzu
+                notification.classList.add('hide');
+            }, 4000); // 4 Sekunden
+        } else {
+            console.error('Server-Fehler:', response.status);
+            // Zeige Fehlermeldung an
+            var errorNotification = document.getElementById('error-notification');
+            errorNotification.textContent = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
+            errorNotification.classList.remove('hide');
+            errorNotification.classList.add('show');
+            setTimeout(function() {
+                errorNotification.classList.remove('show');
+                errorNotification.classList.add('hide');
+                errorNotification.textContent = 'Not all fields were filled out!';
+            }, 4000);
+        }
+    }).catch(function(error) {
+        console.error('Netzwerk-Fehler:', error);
+        // Zeige Fehlermeldung an
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
         setTimeout(function() {
-            
-            // Entfernt die Anzeige-Klasse
-            notification.classList.remove('show');
-            
-            // Fügt die Verstecken-Klasse hinzu
-            notification.classList.add('hide');
-        
-        }, 4000); // 4 Sekunden
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Not all fields were filled out!';
+        }, 4000);
     });
 });
 </script>
