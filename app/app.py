@@ -141,7 +141,7 @@ def profil():
         return redirect(url_for("home"))    # zurück zur Startseite
 
     # GET-Anfrage: nur Formular anzeigen
-    return "render_template("profil.html)
+    return render_template("profil.html")
 
 
 @app.route("/logout")
