@@ -1,268 +1,180 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Warenkorb{% endblock %} {% block
+content %}
+<h1 class="title">Shopping Cart</h1>
+<hr class="section-line" />
+<div class="shoppingcart-header">
+  <div class="title-shoppingcart">Shopping cart</div>
+  <div class="title-shoppingcart-description">
+    Du hast <span id="item-count">0</span> Artikel im Warenkorb
+  </div>
+</div>
+<div class="shoppingcart" id="shoppingcart">
+  <!-- Items werden dynamisch aus localStorage geladen -->
+</div>
 
-{% block title %}Warenkorb{% endblock %}
+<hr class="section-line" />
 
-{% block content %}
-    <h1 class="title">Shopping Cart</h1>
-    <hr class="section-line">
-    <div class="shoppingcart-header">
-        <div class="title-shoppingcart">Shopping cart</div>
-        <div class="title-shoppingcart-description">You have 3 items in your cart</div>
-    </div>
-    <div class="shoppingcart">
-        <div class="item">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
-            <div class="shoppingcart-Itemname">Flor'avis Green Apple soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button class="count-button-button"><img class="picture-up"
-                                                         src="../static/styles/images/count-dreieck.png" alt="">
-                </button>
-                <button class="count-button-down"><img class="picture-down"
-                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
-            </div>
-            <div class="price">CHF 234</div>
-            <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
-                                                          alt="Löschen"></button>
-            </div>
-        </div>
-        <div class="item">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
-            <div class="shoppingcart-Itemname">Flor'avis Vanilla soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button class="count-button-button"><img class="picture-up"
-                                                         src="../static/styles/images/count-dreieck.png" alt="">
-                </button>
-                <button class="count-button-down"><img class="picture-down"
-                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
-            </div>
-            <div class="price">CHF 234</div>
-            <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
-                                                          alt="Löschen"></button>
-            </div>
-        </div>
-        <div class="item">
-            <img class="image" src="../static/styles/images/seife.png" alt="Seife 1">
-            <div class="shoppingcart-Itemname">Flor'avis Lemon soap</div>
-            <div class="count">1</div>
-            <div class="count-button">
-                <button class="count-button-button"><img class="picture-up"
-                                                         src="../static/styles/images/count-dreieck.png" alt="">
-                </button>
-                <button class="count-button-down"><img class="picture-down"
-                                                       src="../static/styles/images/count-dreieck.png" alt=""></button>
-            </div>
-            <div class="price">CHF 234</div>
-            <div class="delete-buttons">
-                <button class="delete-button-button"><img class="delete-img" src="../static/styles/images/Bild2.png"
-                                                          alt="Löschen"></button>
-            </div>
-        </div>
-    </div>
-    <hr class="section-line">
-    <form method="POST" action="/warenkorb">
-        <div class="addres-card-container">
+<div class="cart-summary" id="cart-summary">
+  <div class="cart-total">
+    <span class="cart-total-label">Total:</span>
+    <span class="cart-total-price">CHF <span id="total-price">0.00</span></span>
+  </div>
+  <a href="{{ url_for('checkout') }}" class="continue-button">
+    Weiter zur Zahlung
+    <span class="arrow">→</span>
+  </a>
+</div>
 
-            <div class="addres-details">
-                <div class="addres-details-title">Adress Details</div>
-                <div class="salutation">Anrede</div>
+<!-- Leerer Warenkorb Nachricht (versteckt) -->
+<div class="empty-cart" id="empty-cart" style="display: none">
+  <div class="empty-cart-message">
+    <span class="empty-cart-icon"><i class="fa fa-shopping-cart"></i></span>
+    <h2>Dein Warenkorb ist leer</h2>
+    <p>Füge einige Produkte hinzu, um fortzufahren.</p>
+    <a href="{{ url_for('shop') }}" class="continue-button">
+      Zum Shop
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
 
-                <div class="salutation-buttons">
-                    <label class="salutation-box">
-                        <input type="radio" name="salutation" value="herr">
-                        <span class="salutation-button"></span>
-                        <span class="salutation-text">Herr</span>
-                    </label>
+<script>
+  // Lade den Warenkorb aus localStorage und rendere die Items
+  function loadCart() {
+    var cart = getCart();
+    var shoppingcartEl = document.getElementById("shoppingcart");
+    shoppingcartEl.innerHTML = "";
 
-                    <label class="salutation-box">
-                        <input type="radio" name="salutation" value="frau">
-                        <span class="salutation-button"></span>
-                        <span class="salutation-text">Frau</span>
-                    </label>
+    cart.forEach(function (item) {
+      var itemEl = createCartItemElement(item);
+      shoppingcartEl.appendChild(itemEl);
+    });
 
-                    <label class="salutation-box">
-                        <input type="radio" name="salutation" value="keine">
-                        <span class="salutation-button"></span>
-                        <span class="salutation-text">Keine Angabe</span>
-                    </label>
+    updateTotal();
+  }
+
+  // Erstelle ein HTML Element für ein Cart-Item
+  function createCartItemElement(item) {
+    var div = document.createElement("div");
+    div.className = "item";
+    div.setAttribute("data-price", item.price);
+    div.setAttribute("data-name", item.name);
+
+    div.innerHTML = `
+                <img class="image" src="../static/styles/images/seife.png" alt="${item.name}">
+                <div class="shoppingcart-Itemname">${item.name}</div>
+                <div class="count">${item.quantity}</div>
+                <div class="count-button">
+                    <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
+                        <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
+                    </button>
+                    <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
+                        <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
+                    </button>
                 </div>
-
-                <div class="name">Name</div>
-                <label>
-                    <input class="name-input" type="text" name="name" placeholder="Name">
-                </label>
-                <div class="surname">Vornamen</div>
-                <label>
-                    <input class="surname-input" type="text" name="surname" placeholder="Vorname">
-                </label>
-                <div class="addres">Strasse + Nr.</div>
-                <label>
-                    <input class="addres-input" type="text" name="address" placeholder="Strasse + Nr.">
-                </label>
-                <div class="ortplz">
-                    <div class="place-flex">
-                        <div class="place">PLZ</div>
-                        <label>
-                            <input
-                                    class="place-input"
-                                    type="text"
-                                    name="plz"
-                                    inputmode="numeric"
-                                    maxlength="4"
-                                    placeholder="8000"
-                            >
-                        </label>
-                    </div>
-                    <div class="city-flex">
-                        <div class="city">Ort</div>
-                        <label>
-                            <input class="city-input" type="text" name="city" placeholder="Ort">
-                        </label>
-                    </div>
+                <div class="price">CHF <span class="item-price">${(item.price * item.quantity).toFixed(2)}</span></div>
+                <div class="delete-buttons">
+                    <button type="button" class="delete-button-button" onclick="deleteItem(this)">
+                        <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
+                    </button>
                 </div>
-                <div class="tel">Telefonnummer</div>
-                <label>
-                    <input class="tel-input" type="tel" name="tel" placeholder="Tel. Nr.">
-                </label>
-                <div class="email">E-Mail</div>
-                <label>
-                    <input
-                            class="email-input"
-                            type="email"
-                            name="email"
-                            placeholder="name@example.com"
-                            autocomplete="email"
-                    >
-                </label>
-            </div>
+            `;
 
-            <div class="card-details">
-                <div class="card-details-title">Card Details</div>
+    return div;
+  }
 
-                <div class="payment-methods">Payment Methods</div>
+  // Berechne das Total und aktualisiere die Anzeige
+  function updateTotal() {
+    var items = document.querySelectorAll("#shoppingcart .item");
+    var total = 0;
+    var itemCount = 0;
 
-                <div class="payment-methods-buttons">
-                    <label class="payment-method">
-                        <input type="radio" name="payment" value="mastercard">
-                        <span class="payment-methods-button">
-                            <img class="payment-methods-img" src="../static/styles/images/mastercard_floravis.png" alt="Mastercard">
-                        </span>
-                    </label>
+    for (var i = 0; i < items.length; i++) {
+      var countEl = items[i].querySelector(".count");
+      var quantity = parseInt(countEl.textContent);
+      var price = parseFloat(items[i].getAttribute("data-price"));
+      var itemTotal = quantity * price;
 
-                    <label class="payment-method">
-                        <input type="radio" name="payment" value="visa">
-                        <span class="payment-methods-button">
-                            <img class="payment-methods-img" src="../static/styles/images/visa_floravis.png" alt="Visa">
-                        </span>
-                    </label>
+      // Aktualisiere den Preis pro Zeile
+      var priceEl = items[i].querySelector(".item-price");
+      priceEl.textContent = itemTotal.toFixed(2);
 
-                    <label class="payment-method">
-                        <input type="radio" name="payment" value="twint">
-                        <span class="payment-methods-button">
-                            <img class="payment-methods-img" src="../static/styles/images/twint_floravis.png" alt="Twint">
-                        </span>
-                    </label>
+      total += itemTotal;
+      itemCount += quantity;
+    }
 
-                    <label class="payment-method">
-                        <input type="radio" name="payment" value="paypal">
-                        <span class="payment-methods-button">
-                            <img class="payment-methods-img" src="../static/styles/images/paypal_floravis.png" alt="Paypal">
-                        </span>
-                    </label>
-                </div>
+    // Aktualisiere Total
+    document.getElementById("total-price").textContent = total.toFixed(2);
 
+    // Aktualisiere Item-Count im Header
+    document.getElementById("item-count").textContent = itemCount;
 
-                <div class="card-name">Name on Card</div>
-                <label>
-                    <input class="name-input" type="text" name="card_name" placeholder="Name">
-                </label>
+    // Zeige/Verstecke leeren Warenkorb
+    if (items.length === 0) {
+      document.getElementById("shoppingcart").style.display = "none";
+      document.getElementById("cart-summary").style.display = "none";
+      document.getElementById("empty-cart").style.display = "flex";
+      document.querySelector(".shoppingcart-header").style.display = "none";
+    } else {
+      document.getElementById("shoppingcart").style.display = "flex";
+      document.getElementById("cart-summary").style.display = "flex";
+      document.getElementById("empty-cart").style.display = "none";
+      document.querySelector(".shoppingcart-header").style.display = "block";
+    }
+  }
 
-                <div class="card-number">Card Number</div>
-                <label>
-                    <input
-                            class="card-number-input"
-                            type="text"
-                            name="card_number"
-                            inputmode="numeric"
-                            maxlength="19"
-                            placeholder="1234 5678 9012 3456"
-                    >
-                </label>
+  // Erhöhe die Anzahl
+  function increaseQuantity(button) {
+    var item = button.closest(".item");
+    var countEl = item.querySelector(".count");
+    var productName = item.getAttribute("data-name");
+    var currentCount = parseInt(countEl.textContent);
+    countEl.textContent = currentCount + 1;
 
-                <div class="date-cvv">
-                    <div class="date-flex">
-                        <div class="date">Expiration Date</div>
-                        <label>
-                            <input
-                                    class="date-input"
-                                    type="text"
-                                    name="expiration"
-                                    inputmode="numeric"
-                                    maxlength="5"
-                                    placeholder="MM/YY"
-                            >
-                        </label>
-                    </div>
-                    <div class="cvv-flex">
-                        <div class="cvv">CVV</div>
-                        <label>
-                            <input
-                                    class="card-input"
-                                    type="text"
-                                    name="cvv"
-                                    inputmode="numeric"
-                                    autocomplete="cc-csc"
-                                    placeholder="CVV"
-                                    maxlength="4"
-                            >
-                        </label>
-                    </div>
-                </div>
+    // Update localStorage
+    updateCartItemQuantity(productName, currentCount + 1);
+    updateTotal();
+  }
 
-                <div class="txt">Subtotal</div>
-                <div class="txt">Shipping</div>
-                <div class="txt">Total (Tax incl.)</div>
-                <button type="submit" class="checkout-button">
-                    Checkout
-                </button>
+  // Verringere die Anzahl
+  function decreaseQuantity(button) {
+    var item = button.closest(".item");
+    var countEl = item.querySelector(".count");
+    var productName = item.getAttribute("data-name");
+    var currentCount = parseInt(countEl.textContent);
 
+    if (currentCount > 1) {
+      countEl.textContent = currentCount - 1;
+      // Update localStorage
+      updateCartItemQuantity(productName, currentCount - 1);
+      updateTotal();
+    } else {
+      // Wenn die Anzahl 1 ist, lösche das Item
+      deleteItem(button);
+    }
+  }
 
-            </div>
+  // Lösche ein Item
+  function deleteItem(button) {
+    var item = button.closest(".item");
+    var productName = item.getAttribute("data-name");
 
-        </div>
-    </form>
+    // Animation zum Ausblenden
+    item.style.transition = "all 0.3s ease";
+    item.style.opacity = "0";
+    item.style.transform = "translateX(-50px)";
 
-    <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
+    setTimeout(function () {
+      item.remove();
+      // Aus localStorage entfernen
+      removeFromCart(productName);
+      updateTotal();
+    }, 300);
+  }
 
-            const formData = new FormData(this);
-
-            fetch('/warenkorb', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Alle Textfelder leeren
-                    this.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(input => {
-                        input.value = '';
-                    });
-
-                    // Alle Radio-Buttons deselektieren
-                    this.querySelectorAll('input[type="radio"]').forEach(radio => {
-                        radio.checked = false;
-                    });
-
-                    alert('Checkout erfolgreich!');
-                }
-            })
-            .catch(error => {
-                console.error('Fehler:', error);
-            });
-        });
-    </script>
+  // Initialisiere beim Laden
+  document.addEventListener("DOMContentLoaded", function () {
+    loadCart();
+  });
+</script>
 {% endblock %}

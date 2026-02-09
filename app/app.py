@@ -1,12 +1,14 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
+from flask_mail import Mail, Message
 
 # Definieren einer Variable, die die aktuelle Datei zum Zentrum
 # der Anwendung macht.
 app = Flask(__name__)
+app.secret_key = 'floravis-secret-key-2026'  # Für Session-Cookies
 
 """
 Festlegen einer Route für die Homepage. Der String in den Klammern
@@ -28,6 +30,19 @@ if os.environ.get('FLASK_ENV') == 'development':
     app.config.from_object(DevelopmentConfig)
 else:
     app.config.from_object(ProductionConfig)
+
+# 3. Mail konfigurieren
+app.config.update(
+    MAIL_SERVER=os.getenv("MAIL_SERVER", "smtp.gmail.com"),
+    MAIL_PORT=int(os.getenv("MAIL_PORT", "465")),
+    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+    MAIL_USE_TLS=os.getenv("MAIL_USE_TLS", "false").lower() == "true",
+    MAIL_USE_SSL=os.getenv("MAIL_USE_SSL", "true").lower() == "true",
+    MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", os.getenv("MAIL_USERNAME")),
+)
+
+mail = Mail(app)
 #-------------------------------
 
 # mock data
@@ -76,6 +91,28 @@ def contact():
         print(f"E-Mail: {email}")
         print(f"Nachricht: {message}")
         print("========================")
+
+        recipient = os.getenv("MAIL_RECIPIENT")
+        if recipient and app.config.get("MAIL_USERNAME") and app.config.get("MAIL_PASSWORD"):
+            try:
+                msg = Message(
+                    subject="Kontaktformular",
+                    recipients=[recipient],
+                    reply_to=email,
+                    body=(
+                        "Neue Nachricht vom Kontaktformular\n\n"
+                        f"Nachname: {lastname}\n"
+                        f"Vorname: {firstname}\n"
+                        f"E-Mail: {email}\n\n"
+                        f"Nachricht:\n{message}\n"
+                    ),
+                )
+                mail.send(msg)
+                app.logger.info("Contact email sent")
+            except Exception:
+                app.logger.exception("Failed to send contact email")
+        else:
+            app.logger.warning("Mail is not configured; skipping send")
     return render_template("contact.html")
 
 
@@ -96,9 +133,29 @@ def profil():
         print(f"E-Mail: {email}")
         print(f"Passwort: {password}")
         print("========================")
+
+        # HIER: "einloggen"
+        session['user_id'] = email          # oder irgendeine ID
+        session['user_name'] = firstname    # optional
+
+        return redirect(url_for("home"))    # zurück zur Startseite
+
+    # GET-Anfrage: nur Formular anzeigen
     return render_template("profil.html")
-@app.route("/warenkorb", methods=["GET", "POST"])
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
+
+
+@app.route("/warenkorb")
 def warenkorb():
+    return render_template("warenkorb.html")
+
+@app.route("/checkout", methods=["GET", "POST"])
+def checkout():
     if request.method == "POST":
         app.logger.info("Checkout submitted")
 
@@ -135,10 +192,23 @@ def warenkorb():
         print(f"CVV: {cvv}")
         print("==========================")
 
-        # Nach erfolgreicher Verarbeitung zurück zur Seite (Formular wird geleert)
-        return redirect(url_for("warenkorb"))
+        # Session-Daten löschen nach erfolgreichem Checkout
+        session.pop('checkout_data', None)
 
-    return render_template("warenkorb.html")
+        return "OK", 200
+
+    # GET: Lade gespeicherte Daten aus Session
+    checkout_data = session.get('checkout_data', {})
+    return render_template("checkout.html", checkout_data=checkout_data)
+
+# Route zum Speichern der Checkout-Daten in der Session
+@app.route("/save_checkout_data", methods=["POST"])
+def save_checkout_data():
+    data = request.get_json()
+    if data:
+        session['checkout_data'] = data
+        return jsonify({"status": "success"}), 200
+    return jsonify({"status": "error"}), 400
 
 @app.route("/shop")
 def shop() -> str:
@@ -150,3 +220,8 @@ def searchbar() -> str:
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+
+
+
+

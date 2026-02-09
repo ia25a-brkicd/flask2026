@@ -276,7 +276,7 @@ body {
 .picture-down {
     width: 20px;
     height: 15px;
-    transform: rotate(180deg); /* ✅ korrekt */
+
 }
 
 .delete-img {
@@ -557,4 +557,185 @@ body {
   font-size: 15px;            /* optional etwas grösser */
 }
 
+/* ===== Toast Notifications ===== */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: "Inter", sans-serif;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    max-width: 350px;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-error {
+    background-color: #e74c3c;
+}
+
+.toast-success {
+    background-color: #27ae60;
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.2);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.toast-message {
+    flex: 1;
+    line-height: 1.4;
+}
+
+/* ===== Cart Summary (Weiter zur Zahlung) ===== */
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 100px;
+    padding: 30px 40px;
+    background-color: #d4847a;
+    border-radius: 20px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+}
+
+.cart-total {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cart-total-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.cart-total-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.continue-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    background-color: #e8a68e;
+    color: #8b4a3a;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.continue-button:hover {
+    background-color: #f0b89e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.continue-button .arrow {
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+.continue-button:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* ===== Empty Cart ===== */
+.empty-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 100px;
+    padding: 60px 40px;
+    background-color: #d4847a;
+    border-radius: 20px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+}
+
+.empty-cart-message {
+    text-align: center;
+    color: #ffffff;
+}
+
+.empty-cart-icon {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.empty-cart-message h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+}
+
+.empty-cart-message p {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0 0 30px 0;
+    opacity: 0.9;
+}
+
+/* Item hover und delete animation */
+.item {
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 16px rgba(0,0,0,0.18), 0px 20px 45px rgba(0,0,0,0.25);
+}
+
+.delete-button-button:hover {
+    transform: scale(1.1);
+}
+
+.count-button-button:hover,
+.count-button-down:hover {
+    transform: scale(1.15);
+}
+
+/* Count styling */
+.count {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+    text-align: center;
+    min-width: 30px;
+}
