@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="settings">
+    <h1 id="title">Settings</h1>
+
+    <!-- General Section -->
+    <div class="settings-section">
+        <div class="section-header">
+            <span class="section-icon">⚙️</span>
+            <h2>General</h2>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Language</label>
+                <p class="setting-description">Choose your preferred language</p>
+            </div>
+            <select class="setting-control">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+                <option value="it">Italiano</option>
+            </select>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Region / Country</label>
+                <p class="setting-description">Set your location</p>
+            </div>
+            <select class="setting-control">
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+                <option value="ch">Switzerland</option>
+                <option value="it">Italy</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="settings-section">
+        <div class="section-header">
+            <span class="section-icon">🔔</span>
+            <h2>Notifications</h2>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Push Notifications</label>
+                <p class="setting-description">Receive notifications about orders</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Sound & Vibration</label>
+                <p class="setting-description">Enable notification sounds</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Privacy & Security Section -->
+    <div class="settings-section">
+        <div class="section-header">
+            <span class="section-icon">🔒</span>
+            <h2>Privacy & Security</h2>
+        </div>
+        
+    
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Two-Factor Authentication</label>
+                <p class="setting-description">Additional protection for your account</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item clickable" onclick="alert('Manage App Permissions')">
+            <div class="setting-info">
+                <label>App Permissions</label>
+                <p class="setting-description">Manage access and permissions</p>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+    </div>
+
+    <!-- Account / Profile Section -->
+    <div class="settings-section">
+        <div class="section-header">
+            <span class="section-icon">👤</span>
+            <h2>Account / Profile</h2>
+        </div>
+        
+        <div class="setting-item clickable" onclick="alert('Change Profile Picture')">
+            <div class="setting-info">
+                <label>Change Profile Picture</label>
+                <p class="setting-description">Upload a new profile picture</p>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+
+        <div class="setting-item clickable" onclick="alert('Edit Name / Email')">
+            <div class="setting-info">
+                <label>Edit Name / Email</label>
+                <p class="setting-description">Edit your personal information</p>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+
+        <div class="setting-item clickable" onclick="alert('Reset Password')">
+            <div class="setting-info">
+                <label>Reset Password</label>
+                <p class="setting-description">Set a new password</p>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+
+        <div class="setting-item clickable danger" onclick="if(confirm('Do you really want to delete your account?')) alert('Account will be deleted')">
+            <div class="setting-info">
+                <label>Delete Account</label>
+                <p class="setting-description">Permanently remove your account</p>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

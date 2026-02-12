@@ -128,16 +128,16 @@
                 <i class="fa fa-user-circle"></i>
                 My Profile
               </a>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('orders') }}" class="dropdown-item">
                 <i class="fa fa-box"></i>
                 Orders
               </a>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('settings') }}" class="dropdown-item">
                 <i class="fa fa-cog"></i>
                 Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('logout') }}" class="dropdown-item">
                 <i class="fa fa-sign-out-alt"></i>
                 Logout
               </a>

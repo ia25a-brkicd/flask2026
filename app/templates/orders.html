@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/orders.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="orders">
+    <h1 id="title">My Orders</h1>
+
+    <!-- Orders Container -->
+    <div class="orders-container" id="orders-container">
+        <!-- Orders werden hier dynamisch eingefügt -->
+    </div>
+
+    <!-- Empty State (wird angezeigt wenn keine Bestellungen vorhanden) -->
+    <div class="empty-orders" id="empty-orders" style="display: none;">
+        <div class="empty-orders-message">
+            <span class="empty-orders-icon">📦</span>
+            <h2>No orders yet</h2>
+            <p>You haven't placed any orders yet. Start shopping now!</p>
+            <a href="{{ url_for('shop') }}" class="shop-button">
+                Go to Shop
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mock-Funktion um Bestellungen vom Backend zu laden
+    // TODO: Ersetze dies mit echten API-Calls zu deinem Backend
+    function getUserOrders() {
+        // Simuliere Bestellungen aus sessionStorage/localStorage
+        const mockOrders = localStorage.getItem('userOrders');
+        
+        if (mockOrders) {
+            return JSON.parse(mockOrders);
+        }
+        
+        // Beispiel-Daten (zum Testen - später aus DB laden)
+        // Kommentiere diese Zeilen aus, um den "Empty State" zu testen:
+        /*
+        return [
+            {
+                id: 1,
+                date: '2026-02-10',
+                items: [
+                    { name: 'Rose Bouquet', price: 29.99, quantity: 2 },
+                    { name: 'Tulip Mix', price: 19.99, quantity: 1 }
+                ],
+                total: 79.97,
+                status: 'Delivered'
+            },
+            {
+                id: 2,
+                date: '2026-02-08',
+                items: [
+                    { name: 'Orchid Plant', price: 39.99, quantity: 1 }
+                ],
+                total: 39.99,
+                status: 'Shipped'
+            }
+        ];
+        
+        
+        return []; // Keine Bestellungen
+        */
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+
+    function renderOrders() {
+        const orders = getUserOrders();
+        const container = document.getElementById('orders-container');
+        const emptyState = document.getElementById('empty-orders');
+
+        if (!orders || orders.length === 0) {
+            // Keine Bestellungen vorhanden
+            container.style.display = 'none';
+            emptyState.style.display = 'flex';
+            return;
+        }
+
+        // Bestellungen vorhanden
+        container.style.display = 'block';
+        emptyState.style.display = 'none';
+        container.innerHTML = '';
+
+        orders.forEach((order, index) => {
+            const orderCard = document.createElement('div');
+            orderCard.className = 'order-card';
+            
+            let itemsHTML = order.items.map(item => `
+                <div class="order-item">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-details">Qty: ${item.quantity} × $${item.price.toFixed(2)}</span>
+                    <span class="item-subtotal">$${(item.quantity * item.price).toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            orderCard.innerHTML = `
+                <div class="order-header">
+                    <div class="order-title-section">
+                        <h2>Order ${index + 1}</h2>
+                        <span class="order-date">${formatDate(order.date)}</span>
+                    </div>
+                    <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+                </div>
+                <div class="order-items">
+                    ${itemsHTML}
+                </div>
+                <div class="order-footer">
+                    <span class="order-total-label">Total Price:</span>
+                    <span class="order-total-price">$${order.total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            container.appendChild(orderCard);
+        });
+    }
+
+    // Beim Laden der Seite Bestellungen anzeigen
+    document.addEventListener('DOMContentLoaded', renderOrders);
+</script>
+
+{% endblock %}
