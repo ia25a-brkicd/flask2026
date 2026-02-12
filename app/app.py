@@ -1,9 +1,13 @@
+import db
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
+
+from repository.customer_repo import add_customer_addres, add_customer_payment
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
+from repository import product_repo as db_repo
 
 # Definieren einer Variable, die die aktuelle Datei zum Zentrum
 # der Anwendung macht.
@@ -30,6 +34,8 @@ if os.environ.get('FLASK_ENV') == 'development':
     app.config.from_object(DevelopmentConfig)
 else:
     app.config.from_object(ProductionConfig)
+
+db.init_app(app)  # DB-Verbindung in Flask integrieren
 
 # 3. Mail konfigurieren
 app.config.update(
@@ -113,7 +119,8 @@ def contact():
                 app.logger.exception("Failed to send contact email")
         else:
             app.logger.warning("Mail is not configured; skipping send")
-    return render_template("contact.html")
+    products = db_repo.get_all_products()
+    return render_template("contact.html", products=products)
 
 
 
@@ -179,6 +186,8 @@ def checkout():
         tel = request.form.get("tel")
         email = request.form.get("email")
 
+
+
         # Card Details
         payment = request.form.get("payment")
         card_name = request.form.get("card_name")
@@ -201,6 +210,11 @@ def checkout():
         print(f"Ablaufdatum: {expiration}")
         print(f"CVV: {cvv}")
         print("==========================")
+
+        add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
+        add_customer_payment(payment,card_name,card_number,expiration,cvv)
+
+
 
         # Session-Daten löschen nach erfolgreichem Checkout
         session.pop('checkout_data', None)
@@ -226,7 +240,16 @@ def shop() -> str:
 
 @app.route("/searchbar")
 def searchbar() -> str:
-    return render_template("searchbar.html") 
+    return render_template("searchbar.html")
+
+@app.route("/add-product", methods=["POST"])
+def add_product():
+    name = request.form["name"]
+    price = request.form["price"]
+    db_repo.add_product(name, price)
+    return redirect(url_for("home"))
+
+
 
 
 @app.route("/")
