@@ -3,11 +3,7 @@ DROP TABLE IF EXISTS customer_payment CASCADE;
 DROP TABLE IF EXISTS customer_payment_data CASCADE;
 DROP TABLE IF EXISTS customer_addres CASCADE;
 
-CREATE TABLE IF NOT EXISTS products (
-    product_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL,
-    price DECIMAL(10,2) NOT NULL
-);
+
 
 CREATE TABLE IF NOT EXISTS salutation (
     salutation_id SERIAL PRIMARY KEY,
@@ -44,3 +40,14 @@ CREATE TABLE IF NOT EXISTS orders (
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS products_shop (
+    product_shop_id SERIAL PRIMARY KEY,
+    product_id INT REFERENCES products(product_id),
+    stock INT
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);

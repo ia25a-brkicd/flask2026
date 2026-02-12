@@ -1,3 +1,5 @@
+from tarfile import data_filter
+
 from db import get_db
 
 def add_customer_addres(salutation,name,surname,address,postal_code,city,tel,email):
@@ -30,8 +32,6 @@ def add_customer_payment(payment_method,card_name,card_number,expiry_date,cvv):
         conn.rollback()
     finally:
         cur.close()
-
-
 
 def get_all_products():
     conn = get_db()

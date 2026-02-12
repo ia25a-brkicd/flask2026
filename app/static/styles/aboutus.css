@@ -1,23 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@400;500;600;700&display=swap');
 
 body {
     font-family: "Inter", sans-serif;
     background-color: #E38E85;
     margin: 0;
+    color: #2c2c2c;
 }
 
 .aboutUsAlles {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 0;
 }
 
 .block {
-    padding: 40px 80px;
+    padding: 80px 120px;
+    transition: all 0.3s ease;
 }
 
 .block1,
-
 .block3 {
     background-color: #F6CEC1;
 }
@@ -26,23 +27,32 @@ body {
     background-color: #E38E85;
 }
 
+/* Block 1 - Hero Section */
 .block1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 40px;
+    gap: 60px;
+}
+
+.aboutUsBild {
+    flex-shrink: 0;
 }
 
 .aboutUsBild h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+    font-size: 72px;
+    margin-bottom: 30px;
     font-family: "Italiana", sans-serif;
     font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
 }
 
 .titelbild img {
-       border-radius: 20px;
+    border-radius: 24px;
     object-fit: cover;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
 }
 
 img {
@@ -51,117 +61,265 @@ img {
 
 .whoText {
     flex: 1;
+    animation: fadeInRight 0.8s ease;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .wer h2 {
-    font-size: 28px;
-    margin-bottom: 15px;
+    font-size: 42px;
+    margin-bottom: 25px;
     font-family: "Italiana", sans-serif;
     font-weight: 700;
+    color: #2c2c2c;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.wer h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #E38E85, transparent);
+    border-radius: 2px;
 }
 
 .aboutUsText {
-    max-width: 550px;
+    max-width: 600px;
 }
 
 .info {
-    line-height: 1.6;
-    font-size: 16px;
-    opacity: 0.8;
-    opacity: 0.6;
+    line-height: 1.9;
+    font-size: 17px;
+    color: #4a4a4a;
+    font-weight: 400;
 }
 
+/* Block 2 - Values Section */
 .block2 h2 {
     text-align: center;
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 52px;
+    margin-bottom: 20px;
     font-family: "Italiana", sans-serif;
     font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: 2px;
 }
 
 .infoText {
     text-align: center;
-    max-width: 700px;
-    margin: 0 auto 30px auto;
-    line-height: 1.6;
-    font-size: 16px;
-    opacity: 0.55;
+    max-width: 800px;
+    margin: 0 auto 60px auto;
+    line-height: 1.9;
+    font-size: 18px;
+    color: #3a3a3a;
+    font-weight: 400;
 }
 
 .BilderInteressen {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 35px;
     flex-wrap: wrap;
 }
 
 .BilderInteressen img {
-    width: 280px;
-    height: 280px;
+    width: 320px;
+    height: 320px;
     object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.15);
 }
 
+/* Block 3 - Location Section */
 .unserStandortMitMap {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 40px;
+    gap: 60px;
+}
+
+.linksVonMap {
+    flex: 1;
 }
 
 .linksVonMap h3 {
-    font-size: 30px;
-    margin-bottom: 15px;
+    font-size: 44px;
+    margin-bottom: 30px;
     font-family: "Italiana", sans-serif;
     font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: 1px;
 }
 
 .untererTeil {
-    border: 2px solid gray;
-    border-radius: 10px;
-    padding: 20px 25px;
+    border: 2px solid #d4a199;
+    border-radius: 20px;
+    padding: 35px 40px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 15px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.untererTeil:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
 }
 
 .untererTeil h4 {
     margin: 0;
+    font-size: 17px;
+    color: #3a3a3a;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .cta {
-    margin-top: 15px;
+    margin-top: 20px;
     display: inline-block;
-    padding: 8px 16px;
+    padding: 14px 32px;
     border-radius: 999px;
-    background-color: #E38E85;
-    color: #000;
+    background: linear-gradient(135deg, #E38E85, #d67b72);
+    color: #fff;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(227, 142, 133, 0.35);
+    text-align: center;
+}
+
+.cta:hover {
+    background: linear-gradient(135deg, #d67b72, #c96a61);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(227, 142, 133, 0.45);
 }
 
 .map {
     border-radius: 20px;
     border: none;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
 }
 
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .block {
+        padding: 60px 60px;
+    }
 
-.block {
-    padding: 30px 20px;
+    .aboutUsBild h1 {
+        font-size: 56px;
+    }
+
+    .block2 h2 {
+        font-size: 44px;
+    }
 }
 
-.block1,
-.unserStandortMitMap {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-evenly;
+@media (max-width: 1024px) {
+    .block {
+        padding: 50px 40px;
+    }
+
+    .block1,
+    .unserStandortMitMap {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .wer h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .titelbild img {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .aboutUsText,
+    .infoText {
+        max-width: 100%;
+    }
+
+    .linksVonMap {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .untererTeil {
+        max-width: 400px;
+    }
 }
 
-.aboutUsText,
-.infoText {
-    max-width: 100%;
+@media (max-width: 768px) {
+    .block {
+        padding: 40px 25px;
+    }
+
+    .aboutUsBild h1 {
+        font-size: 42px;
+    }
+
+    .wer h2 {
+        font-size: 32px;
+    }
+
+    .block2 h2 {
+        font-size: 36px;
+    }
+
+    .linksVonMap h3 {
+        font-size: 32px;
+    }
+
+    .BilderInteressen img {
+        width: 280px;
+        height: 280px;
+    }
+
+    .map {
+        width: 100%;
+        max-width: 400px;
+        height: 350px;
+    }
 }
 
-.titelbild img {
-    width: 240px;
+@media (max-width: 480px) {
+    .block {
+        padding: 30px 20px;
+    }
+
+    .aboutUsBild h1 {
+        font-size: 36px;
+    }
+
+    .BilderInteressen img {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        aspect-ratio: 1;
+    }
 }
 
