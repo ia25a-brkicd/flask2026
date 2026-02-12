@@ -11,11 +11,15 @@
 
 {% block content %}
 <div class="profil">
-<h1 id="welcome-title">Welcome First-Lastname</h1>
+<h1 id="welcome-title">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</h1>
 <div class="profile-image-placeholder">
     <img src="../static/images/profil.jpg" alt="Profile picture">
 </div>
 
+
+{% if not session.get("user_id") %}
+
+<div id="wegWennLogin">
 <div class="profile-header">
     <h1>Registration</h1>
 </div>
@@ -45,6 +49,31 @@
 </div>
 
 </form>
+</div>
+{% else %}
+<div class="links">
+    <button class="link" onclick="window.location.href='{{ url_for('settings') }}'">
+        Go to Settings
+    </button>
+    <a href="{{ url_for('settings') }}" class="link"> 
+    </a>
+
+    <button class="link" onclick="window.location.href='{{ url_for('orders') }}'">
+        Go to Orders    
+    </button>
+    <a href="{{ url_for('orders') }}" class="link">
+    </a>
+
+    <button class="link" onclick="window.location.href='{{ url_for('logout') }}'">
+        Go to Logout                
+    </button>
+    <a href="{{ url_for('logout') }}" class="link">
+    </a>
+   
+</div>
+
+{% endif %}
+
 
 <!-- Push Benachrichtigung für Erfolg -->
 <div id="notification" class="notification">
@@ -64,8 +93,7 @@ var errorTimeoutId = null;
    und fügt einen Klick-Event-Listener hinzu */
 document.getElementById('registrieren-btn').addEventListener('click', function(e) {
     
-    // Verhindert das Standardverhalten des Buttons (z. B. Formular-Absenden / Seitenreload)
-    e.preventDefault();
+    
     
    
     var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname) 
@@ -130,9 +158,12 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         errorNotification.classList.remove('show');
         errorNotification.classList.add('hide');
         
-        // Ändert den Text des Willkommens-Titels
-        document.getElementById('welcome-title').textContent =
-            'Willkommen ' + firstname + ' ' + lastname;
+        
+        // Versteckt das Registrierungsformular
+        var wegWennLogin = document.getElementById('wegWennLogin');
+        if (wegWennLogin) {
+            wegWennLogin.style.display = 'none';
+        }
         
        
         document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
@@ -162,14 +193,5 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
     });
 });
 </script>
-
-{{session.get('user_id')}} <!-- Zum Testen, ob die Session-Variable gesetzt ist -->
-{{session.get('user_email')}} <!-- Zum Testen, ob die Session-Variable gesetzt ist -->
-{% if session.get('user_id') %}
-    <p>Logged in as user ID: {{ session.get('user_id') }}</p>
-{% else %}
-    <p>Not logged in</p>
-{% endif %}
-
 
 {% endblock %}

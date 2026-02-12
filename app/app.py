@@ -137,6 +137,7 @@ def profil():
         # HIER: "einloggen"
         session['user_id'] = email          # oder irgendeine ID
         session['user_name'] = firstname    # optional
+        session['user_lastname'] = lastname       # optional
 
         return redirect(url_for("home"))    # zurück zur Startseite
 
@@ -145,10 +146,18 @@ def profil():
     return render_template("profil.html")
 
 
+@app.route("/orders")
+def orders():
+    return render_template("orders.html")
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("home"))
+    return render_template("logout.html")
 
 
 @app.route("/warenkorb")
@@ -218,6 +227,11 @@ def shop() -> str:
 @app.route("/searchbar")
 def searchbar() -> str:
     return render_template("searchbar.html") 
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(port=5000)

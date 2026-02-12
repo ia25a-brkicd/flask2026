@@ -55,7 +55,7 @@ h2{
 .profile-image-placeholder {
     width: 280px;
     height: 280px;
-    border-radius: 0;+
+    border-radius: 0;
     background-color: white;
     margin-top: 3%;
     margin-bottom: 4%;
@@ -114,6 +114,30 @@ p{
     height: auto;
     margin-top: 10%;
     margin-bottom: 10%;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 4%;
+}
+
+.links button{
+    padding: 20px 30px;
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.links button:hover {
+    background-color: #fda78f;
 }
 
 /* Formular Container (Name, Vorname, E-Mail, Passwort) */
