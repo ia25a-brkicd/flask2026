@@ -19,19 +19,19 @@
 
                 <div class="salutation-buttons">
                     <label class="salutation-box">
-                        <input type="radio" name="salutation" value="herr" {% if checkout_data.get('salutation') == 'herr' %}checked{% endif %}>
+                        <input type="radio" name="salutation" value="Herr" {% if checkout_data.get('salutation') == 'Herr' %}checked{% endif %}>
                         <span class="salutation-button"></span>
                         <span class="salutation-text">Mr.</span>
                     </label>
 
                     <label class="salutation-box">
-                        <input type="radio" name="salutation" value="frau" {% if checkout_data.get('salutation') == 'frau' %}checked{% endif %}>
+                        <input type="radio" name="salutation" value="Frau" {% if checkout_data.get('salutation') == 'Frau' %}checked{% endif %}>
                         <span class="salutation-button"></span>
                         <span class="salutation-text">Ms.</span>
                     </label>
 
                     <label class="salutation-box">
-                        <input type="radio" name="salutation" value="keine" {% if checkout_data.get('salutation') == 'keine' %}checked{% endif %}>
+                        <input type="radio" name="salutation" value="Keine" {% if checkout_data.get('salutation') == 'Keine' %}checked{% endif %}>
                         <span class="salutation-button"></span>
                         <span class="salutation-text">No Preference</span>
                     </label>

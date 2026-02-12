@@ -3,165 +3,188 @@
 {% block title %}Contact & Support{% endblock %}
 
 {% block head %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
+          rel="stylesheet">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="contact">
-<h1>Contact</h1>
+    <div class="contact">
+        <h1>Contact</h1>
 
-<form action="mailto:floravissocialmedia@gmail.com" method="post" enctype="text/plain">
-<div class="header">
+        <form action="mailto:floravissocialmedia@gmail.com" method="post" enctype="text/plain">
+            <div class="header">
 
-    <p>Lastname</p>
-    <input id="lastname" name="lastname" rows="1" cols="100"></input>
+                <p>Lastname</p>
+                <input id="lastname" name="lastname" rows="1" cols="100"></input>
 
-    <p>Firstname</p>
-    <input id="firstname" name="firstname" rows="1" cols="100"></input>
+                <p>Firstname</p>
+                <input id="firstname" name="firstname" rows="1" cols="100"></input>
 
-    <p>E-Mail</p>
-    <input id="email" name="email" rows="1" cols="100"></input>
+                <p>E-Mail</p>
+                <input id="email" name="email" rows="1" cols="100"></input>
 
-    <p>Message</p>    
-    <textarea id="message" name="message" rows="10" cols="100"></textarea>
-</div>
+                <p>Message</p>
+                <textarea id="message" name="message" rows="10" cols="100"></textarea>
+            </div>
 
-<button type="button" id="absenden-btn">Submit</button>
-</form>
+            <button type="button" id="absenden-btn">Submit</button>
+        </form>
 
-<!-- Push Benachrichtigung für Erfolg -->
-<div id="notification" class="notification">
-    Thank you for your message! We will get back to you as soon as possible.
-</div>
 
-<!-- Push Benachrichtigung für Fehler -->
-<div id="error-notification" class="notification error-notification">
-    Not all fields were filled out!
-</div>
-</div>
 
-<script>
-// Variable um den Timeout-Timer zu speichern
-var errorTimeoutId = null;
 
-/* Greift auf den Button mit der ID "absenden-btn" zu
-   und reagiert auf einen Klick */
-document.getElementById('absenden-btn').addEventListener('click', function(e) {
-    
-    // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
-    e.preventDefault();
-    
-   
-    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
-    var firstname = document.getElementById('firstname').value;// Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
-    var email = document.getElementById('email').value;// Liest den Wert aus dem Eingabefeld "email"    
-    var message = document.getElementById('message').value;// Liest den Wert aus dem Textfeld "message" (Nachricht)
-    
-    // Prüft, ob eines der Felder leer ist
-    if (!lastname || !firstname || !email || !message) {
-        
-        // Greift auf die Fehler-Benachrichtigung zu
-        var errorNotification = document.getElementById('error-notification');
-        
-        // Entfernt die Verstecken-Klasse, falls vorhanden
-        errorNotification.classList.remove('hide');
-        
-        // Zeigt die Fehlermeldung an
-        errorNotification.classList.add('show');
-        
-        // Löscht den alten Timeout, falls vorhanden
-        if (errorTimeoutId !== null) {
-            clearTimeout(errorTimeoutId);
-        }
-        
-        // Versteckt die Fehlermeldung nach 7 Sekunden
-        errorTimeoutId = setTimeout(function() {
-            // Entfernt die Anzeige-Klasse
-            errorNotification.classList.remove('show');
-            
-            // Fügt die Verstecken-Klasse hinzu
-            errorNotification.classList.add('hide');
-        }, 4000); // 4000 ms = 4 Sekunden
-        
-        // Bricht die Funktion ab, es werden keine Daten gesendet
-        return;
-    }
-    
-    // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
-    var errorNotification = document.getElementById('error-notification');
-    errorNotification.classList.remove('show');
-    errorNotification.classList.add('hide');
-    
-    // Löscht den Timeout, falls vorhanden
-    if (errorTimeoutId !== null) {
-        clearTimeout(errorTimeoutId);
-    }
-    
-    // Erstellt ein neues FormData-Objekt für die Übertragung
-    var formData = new FormData();
-    
-    
-    formData.append('lastname', lastname);// Fügt den Nachnamen hinzu
-    formData.append('firstname', firstname);  // Fügt den Vornamen hinzu
-    formData.append('email', email); // Fügt die E-Mail-Adresse hinzu    
-    formData.append('message', message);// Fügt die Nachricht hinzu
-    
-    // Sendet die Daten per POST an die Server-Route "contact"
-    fetch('{{ url_for("contact") }}', {
-        method: 'POST', // HTTP-Methode
-        body: formData  // Formulardaten
-    }).then(function(response) {
-        if (response.ok) {
-            // Leert die Felder nur bei Erfolg
-            document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
-            document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
-            document.getElementById('email').value = '';// Leert das E-Mail-Feld
-            document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
 
-            // Greift auf die Erfolgs-Benachrichtigung zu
-            var notification = document.getElementById('notification');
+        <form action="{{ url_for("add_product") }}" method="POST">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="number" name="price" placeholder="Price" required>
+            <br><br>
+            <button type="submit" name="action" value="add_product">Produkt hinzufügen</button>
+        </form>
 
-            // Zeigt die Benachrichtigung an
-            notification.classList.add('show');
+        <ul>
+            {% for products in products %}
+                <li>{{ products['name'] }} - {{ products[2] }}Geld</li>
+            {% endfor %}
+        </ul>
 
-            // Versteckt die Benachrichtigung nach 4 Sekunden
-            setTimeout(function() {
-                // Entfernt die Anzeige-Klasse
-                notification.classList.remove('show');
-                // Fügt die Verstecken-Klasse hinzu
-                notification.classList.add('hide');
-            }, 4000); // 4 Sekunden
-        } else {
-            console.error('Server-Fehler:', response.status);
-            // Zeige Fehlermeldung an
+
+
+
+
+
+        <!-- Push Benachrichtigung für Erfolg -->
+        <div id="notification" class="notification">
+            Thank you for your message! We will get back to you as soon as possible.
+        </div>
+
+        <!-- Push Benachrichtigung für Fehler -->
+        <div id="error-notification" class="notification error-notification">
+            Not all fields were filled out!
+        </div>
+    </div>
+
+    <script>
+        // Variable um den Timeout-Timer zu speichern
+        var errorTimeoutId = null;
+
+        /* Greift auf den Button mit der ID "absenden-btn" zu
+           und reagiert auf einen Klick */
+        document.getElementById('absenden-btn').addEventListener('click', function (e) {
+
+            // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
+            e.preventDefault();
+
+
+            var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+            var firstname = document.getElementById('firstname').value;// Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+            var email = document.getElementById('email').value;// Liest den Wert aus dem Eingabefeld "email"
+            var message = document.getElementById('message').value;// Liest den Wert aus dem Textfeld "message" (Nachricht)
+
+            // Prüft, ob eines der Felder leer ist
+            if (!lastname || !firstname || !email || !message) {
+
+                // Greift auf die Fehler-Benachrichtigung zu
+                var errorNotification = document.getElementById('error-notification');
+
+                // Entfernt die Verstecken-Klasse, falls vorhanden
+                errorNotification.classList.remove('hide');
+
+                // Zeigt die Fehlermeldung an
+                errorNotification.classList.add('show');
+
+                // Löscht den alten Timeout, falls vorhanden
+                if (errorTimeoutId !== null) {
+                    clearTimeout(errorTimeoutId);
+                }
+
+                // Versteckt die Fehlermeldung nach 7 Sekunden
+                errorTimeoutId = setTimeout(function () {
+                    // Entfernt die Anzeige-Klasse
+                    errorNotification.classList.remove('show');
+
+                    // Fügt die Verstecken-Klasse hinzu
+                    errorNotification.classList.add('hide');
+                }, 4000); // 4000 ms = 4 Sekunden
+
+                // Bricht die Funktion ab, es werden keine Daten gesendet
+                return;
+            }
+
+            // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
             var errorNotification = document.getElementById('error-notification');
-            errorNotification.textContent = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
-            errorNotification.classList.remove('hide');
-            errorNotification.classList.add('show');
-            setTimeout(function() {
-                errorNotification.classList.remove('show');
-                errorNotification.classList.add('hide');
-                errorNotification.textContent = 'Not all fields were filled out!';
-            }, 4000);
-        }
-    }).catch(function(error) {
-        console.error('Netzwerk-Fehler:', error);
-        // Zeige Fehlermeldung an
-        var errorNotification = document.getElementById('error-notification');
-        errorNotification.textContent = 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.';
-        errorNotification.classList.remove('hide');
-        errorNotification.classList.add('show');
-        setTimeout(function() {
             errorNotification.classList.remove('show');
             errorNotification.classList.add('hide');
-            errorNotification.textContent = 'Not all fields were filled out!';
-        }, 4000);
-    });
-});
-</script>
+
+            // Löscht den Timeout, falls vorhanden
+            if (errorTimeoutId !== null) {
+                clearTimeout(errorTimeoutId);
+            }
+
+            // Erstellt ein neues FormData-Objekt für die Übertragung
+            var formData = new FormData();
+
+
+            formData.append('lastname', lastname);// Fügt den Nachnamen hinzu
+            formData.append('firstname', firstname);  // Fügt den Vornamen hinzu
+            formData.append('email', email); // Fügt die E-Mail-Adresse hinzu
+            formData.append('message', message);// Fügt die Nachricht hinzu
+
+            // Sendet die Daten per POST an die Server-Route "contact"
+            fetch('{{ url_for("contact") }}', {
+                method: 'POST', // HTTP-Methode
+                body: formData  // Formulardaten
+            }).then(function (response) {
+                if (response.ok) {
+                    // Leert die Felder nur bei Erfolg
+                    document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
+                    document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
+                    document.getElementById('email').value = '';// Leert das E-Mail-Feld
+                    document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
+
+                    // Greift auf die Erfolgs-Benachrichtigung zu
+                    var notification = document.getElementById('notification');
+
+                    // Zeigt die Benachrichtigung an
+                    notification.classList.add('show');
+
+                    // Versteckt die Benachrichtigung nach 4 Sekunden
+                    setTimeout(function () {
+                        // Entfernt die Anzeige-Klasse
+                        notification.classList.remove('show');
+                        // Fügt die Verstecken-Klasse hinzu
+                        notification.classList.add('hide');
+                    }, 4000); // 4 Sekunden
+                } else {
+                    console.error('Server-Fehler:', response.status);
+                    // Zeige Fehlermeldung an
+                    var errorNotification = document.getElementById('error-notification');
+                    errorNotification.textContent = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
+                    errorNotification.classList.remove('hide');
+                    errorNotification.classList.add('show');
+                    setTimeout(function () {
+                        errorNotification.classList.remove('show');
+                        errorNotification.classList.add('hide');
+                        errorNotification.textContent = 'Not all fields were filled out!';
+                    }, 4000);
+                }
+            }).catch(function (error) {
+                console.error('Netzwerk-Fehler:', error);
+                // Zeige Fehlermeldung an
+                var errorNotification = document.getElementById('error-notification');
+                errorNotification.textContent = 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.';
+                errorNotification.classList.remove('hide');
+                errorNotification.classList.add('show');
+                setTimeout(function () {
+                    errorNotification.classList.remove('show');
+                    errorNotification.classList.add('hide');
+                    errorNotification.textContent = 'Not all fields were filled out!';
+                }, 4000);
+            });
+        });
+    </script>
 
 
 {% endblock %}
