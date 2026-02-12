@@ -1,0 +1,218 @@
+/*{
+    outline:1px solid red; 
+}
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+/* === ALLGEMEINE LAYOUT & BODY === */
+body{
+    background-color: #f6cec1;
+    min-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1{
+    font-size: 50px;
+    font-family: "Italiana", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 1%;
+}
+
+#title {
+    margin-top: 3%;
+    margin-bottom: 40px;
+}
+
+/* === SETTINGS SECTIONS === */
+.settings-section {
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f6cec1;
+}
+
+.section-icon {
+    font-size: 28px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+/* === SETTING ITEMS === */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item.clickable {
+    cursor: pointer;
+    padding: 18px 15px;
+    margin: 0 -15px;
+    border-radius: 8px;
+}
+
+.setting-item.clickable:hover {
+    background-color: #fef5f3;
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-info label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    cursor: inherit;
+}
+
+.setting-description {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+/* === CONTROLS === */
+.setting-control {
+    min-width: 180px;
+    padding: 8px 15px;
+    font-size: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: "Inter", sans-serif;
+}
+
+.setting-control:hover {
+    border-color: #f08669;
+    background-color: #fef5f3;
+}
+
+.setting-control:focus {
+    outline: none;
+    border-color: #f08669;
+    box-shadow: 0 0 0 3px rgba(240, 134, 105, 0.1);
+}
+
+/* === TOGGLE SWITCH === */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 28px;
+    transition: 0.3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: #f08669;
+}
+
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.toggle-switch:hover .slider {
+    background-color: #b3b3b3;
+}
+
+.toggle-switch input:checked:hover + .slider {
+    background-color: #e07558;
+}
+
+/* === ARROW ICON === */
+.arrow {
+    font-size: 24px;
+    color: #999;
+    font-weight: 300;
+}
+
+.clickable:hover .arrow {
+    color: #f08669;
+}
+
+/* === DANGER OPTION === */
+.setting-item.danger label {
+    color: #d9534f;
+}
+
+.setting-item.danger:hover {
+    background-color: #fff5f5;
+}
+
+.setting-item.danger .arrow {
+    color: #d9534f;
+}
