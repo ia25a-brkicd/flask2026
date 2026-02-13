@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/logout.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="logout">
+    <h1 id="title">Logout</h1>
+
+     <!-- logout Section -->
+    <div class="logout-section">
+        <div class="section-header">
+            <span class="section-icon"><i class="fa fa-user"></i></span>
+            <h2>Profile</h2>
+        </div>
+        
+        <div class="logout-item">
+            <div class="logout-info">
+                <label>Lastname</label>
+                <p class="logout-description">{{ user.lastname }}</p>
+            </div>
+        </div>
+
+        <div class="logout-item">
+            <div class="logout-info">
+                <label>Firstname</label>
+                <p class="logout-description">{{ user.firstname }}</p>
+            </div>
+        </div>
+
+        <div class="logout-item">
+            <div class="logout-info">
+                <label>E-Mail</label>
+                <p class="logout-description">{{ user.email }}</p>
+            </div>
+        </div>
+
+        <div class="logout-item">
+            <div class="logout-info">
+                <label>Password</label>
+                <p class="logout-description">{{ user.password }}</p>
+            </div>
+        </div>
+
+       <a href="{{ url_for('do_logout') }}"><button>Logout</button></a>
+    </div>
+
+{% endblock %}

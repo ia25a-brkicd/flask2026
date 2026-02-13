@@ -1,0 +1,140 @@
+/*{
+    outline:1px solid red; 
+}
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+/* === ALLGEMEINE LAYOUT & BODY === */
+body{
+    background-color: #f6cec1;
+    min-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+.logout{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* === ÜBERSCHRIFTEN (h1 "Vor- Nachname" & h1 "Anmeldung") === */
+h1{
+    font-size: 50px;
+    font-family: "Italiana", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 1%;
+}
+
+/* Spezieller Margin-Top für "Logout" */
+#title {
+    margin-top: 3%;
+}
+
+/* === LOGOUT SECTIONS === */
+.logout-section {
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f6cec1;
+}
+
+.section-icon {
+    font-size: 28px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+/* === LOGOUT ITEMS === */
+.logout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.logout-item:last-child {
+    border-bottom: none;
+}
+
+.logout-item.clickable {
+    cursor: pointer;
+    padding: 18px 15px;
+    margin: 0 -15px;
+    border-radius: 8px;
+}
+
+.logout-item.clickable:hover {
+    background-color: #fef5f3;
+}
+
+.logout-info {
+    flex: 1;
+}
+
+.logout-info label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    cursor: inherit;
+}
+
+.logout-description {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
+    background-color: #f08669;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    margin-top: 4%;
+}
+
+
+button:hover{
+    background-color: #ff9999;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 134, 105, 0.3);
+}

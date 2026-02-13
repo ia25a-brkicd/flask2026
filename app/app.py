@@ -163,8 +163,21 @@ def settings():
 
 @app.route("/logout")
 def logout():
+    # Session-Daten bleiben erhalten beim Reload
+    # Sie werden nur gelöscht, wenn der Browser geschlossen wird
+    user_data = {
+        'lastname': session.get('user_lastname', '-'),
+        'firstname': session.get('user_name', '-'),
+        'email': session.get('user_id', '-'),
+        'password': '********' if session.get('user_id') else '-'
+    }
+    return render_template("logout.html", user=user_data)
+
+@app.route("/do_logout")
+def do_logout():
+    # Alle Session-Daten löschen (wie Browser schließen)
     session.clear()
-    return render_template("logout.html")
+    return redirect(url_for("home"))
 
 
 @app.route("/warenkorb")

@@ -86,6 +86,19 @@
 </div>
 </div>
 <script>
+// Validierungsfunktionen
+function validateName(name) {
+    // Keine Zahlen erlaubt
+    var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
+    return regex.test(name) && name.trim().length > 0;
+}
+
+function validateEmail(email) {
+    // Muss @ enthalten
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
 // Variable um den Timeout-Timer zu speichern
 var errorTimeoutId = null;
 
@@ -130,6 +143,63 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         }, 4000); // 4000 Millisekunden = 4 Sekunden
         
         // Beendet die Funktion, damit keine Daten gesendet werden
+        return;
+    }
+    
+    // Prüfe Nachname (keine Zahlen)
+    if (!validateName(lastname)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Last name may not contain numbers';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Not all fields were filled out!';
+        }, 4000);
+        return;
+    }
+
+    // Prüfe Vorname (keine Zahlen)
+    if (!validateName(firstname)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'First name may not contain numbers';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Not all fields were filled out!';
+        }, 4000);
+        return;
+    }
+
+    // Prüfe E-Mail (muss @ enthalten)
+    if (!validateEmail(email)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Email must contain an @ and be valid';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Not all fields were filled out!';
+        }, 4000);
         return;
     }
     
