@@ -46,6 +46,17 @@
                 <option value="other">Other</option>
             </select>
         </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Dark Mode</label>
+                <p class="setting-description">Enable dark mode for the application</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
 
     <!-- Notifications Section -->
@@ -62,17 +73,6 @@
             </div>
             <label class="toggle-switch">
                 <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Sound & Vibration</label>
-                <p class="setting-description">Enable notification sounds</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox">
                 <span class="slider"></span>
             </label>
         </div>
@@ -103,7 +103,17 @@
                 <label>App Permissions</label>
                 <p class="setting-description">Manage access and permissions</p>
             </div>
-            <span class="arrow">›</span>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <label>Cookies</label>
+                <p class="setting-description">Allow all cookies for better protection and functionality</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
         </div>
     </div>
 
@@ -119,7 +129,6 @@
                 <label>Change Profile Picture</label>
                 <p class="setting-description">Upload a new profile picture</p>
             </div>
-            <span class="arrow">›</span>
         </div>
 
         <div class="setting-item clickable" onclick="alert('Edit Name / Email')">
@@ -127,7 +136,6 @@
                 <label>Edit Name / Email</label>
                 <p class="setting-description">Edit your personal information</p>
             </div>
-            <span class="arrow">›</span>
         </div>
 
         <div class="setting-item clickable" onclick="alert('Reset Password')">
@@ -135,7 +143,6 @@
                 <label>Reset Password</label>
                 <p class="setting-description">Set a new password</p>
             </div>
-            <span class="arrow">›</span>
         </div>
 
         <div class="setting-item clickable danger" onclick="if(confirm('Do you really want to delete your account?')) alert('Account will be deleted')">
