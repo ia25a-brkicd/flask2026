@@ -33,6 +33,7 @@ def add_customer_payment(payment_method,card_name,card_number,expiry_date,cvv):
     finally:
         cur.close()
 
+
 def get_all_products():
     conn = get_db()
     cur = conn.cursor()
