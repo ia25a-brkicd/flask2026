@@ -153,6 +153,28 @@ def profil():
     return render_template("profil.html")
 
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        app.logger.info("Login submitted")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        print("=== Login Form Data ===")
+        print(f"E-Mail: {email}")
+        print(f"Passwort: {password}")
+        print("=======================")
+
+        # HIER: "einloggen"
+        session['user_id'] = email
+        session['user_name'] = (email or "").split("@")[0]
+        session['user_lastname'] = session.get('user_lastname', '')
+
+        return redirect(url_for("profil"))
+
+    return render_template("login.html")
+
+
 @app.route("/orders")
 def orders():
     return render_template("orders.html")

@@ -71,6 +71,11 @@
                     <span>Register</span>
                     <i class="fa fa-user-plus"></i>
                 </button>
+
+                <button type="button" class="submit-btn login-btn" onclick="window.location.href='{{ url_for('login') }}'">
+                    <span>Login</span>
+                    <i class="fa fa-sign-in"></i>
+                </button>
             </form>
         </div>
         {% else %}

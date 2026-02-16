@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -18,8 +18,7 @@
 
     <div class="contact-container">
         <div class="form-section">
-            <form action="{{ url_for('login') }}" method="post">
-
+            <form action="{{ url_for('login') }}" method="post" novalidate>
                 <div class="input-group">
                     <label for="email">
                         <i class="fa fa-envelope"></i>
@@ -34,22 +33,13 @@
                         <i class="fa fa-lock"></i>
                         Password
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                     <span class="input-border"></span>
                 </div>
 
-                <div class="input-group">
-                    <label for="password">
-                        <i class="fa fa-lock"></i>
-                        Repeat Password
-                    </label>
-                    <input type="password" id="password" name="password" placeholder="Repeat your password" required>
-                    <span class="input-border"></span>
-                </div>
-
-                <button type="button" id="registrieren-btn" class="submit-btn">
+                <button type="submit" id="registrieren-btn" class="submit-btn">
                     <span>Login</span>
-                    <i class="fa fa-user-plus"></i>
+                    <i class="fa fa-sign-in"></i>
                 </button>
             </form>
         </div>
@@ -58,6 +48,7 @@
     <div id="notification" class="notification success-notification">
         <i class="fa fa-check-circle"></i>
         <div class="notification-content">
+            <h4>Success!</h4>
             <p>You have successfully logged in!</p>
         </div>
     </div>
@@ -65,7 +56,53 @@
     <div id="error-notification" class="notification error-notification">
         <i class="fa fa-exclamation-circle"></i>
         <div class="notification-content">
+            <h4>Error</h4>
             <p id="error-text">Not all fields were filled out!</p>
         </div>
     </div>
 </div>
+
+<script>
+function showError(message) {
+    var errorNotification = document.getElementById('error-notification');
+    var errorText = document.getElementById('error-text');
+    errorText.textContent = message;
+    errorNotification.classList.remove('hide');
+    errorNotification.classList.add('show');
+
+    if (window.loginErrorTimeoutId) {
+        clearTimeout(window.loginErrorTimeoutId);
+    }
+
+    window.loginErrorTimeoutId = setTimeout(function () {
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+    }, 4000);
+}
+
+function validateEmail(email) {
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+var loginForm = document.querySelector('form[action="{{ url_for('login') }}"]');
+if (loginForm) {
+    loginForm.addEventListener('submit', function (e) {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        if (!email || !password) {
+            e.preventDefault();
+            showError('Not all fields were filled out!');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            e.preventDefault();
+            showError('Email must contain an @ and be valid');
+        }
+    });
+}
+</script>
+
+{% endblock %}
