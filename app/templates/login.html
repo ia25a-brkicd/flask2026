@@ -1,37 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
-<link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/profil.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="profil">
 <h1 id="welcome-title">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</h1>
-<div class="profile-image-placeholder">
-    <img src="../static/images/profil.jpg" alt="Profile picture">
-</div>
+
 
 
 {% if not session.get("user_id") %}
 
 <div id="wegWennLogin">
-<div class="profile-header">
-    <h1>Registration</h1>
+<div class="login-header">
+    <h1>Login</h1>
 </div>
 
-<form action="{{ url_for('profil') }}" method="post">
+<form action="{{ url_for('login') }}" method="post">
 <div class="header">
-
-    <p>Lastname</p>
-    <input id="lastname" name="lastname" rows="1" cols="100"></input>
-
-    <p>Firstname</p>
-    <input id="firstname" name="firstname" rows="1" cols="100"></input>
 
     <p>E-Mail</p>
     <input id="email" name="email" rows="1" cols="100"></input>
@@ -40,39 +31,17 @@
     <input id="password" name="password" rows="1" cols="100"></input>
 </div>
 
-<button type="button" id="registrieren-btn">Register</button>
+<button type="button" id="registrieren-btn">Login</button>
 
 
 </form>
 </div>
-{% else %}
-<div class="links">
-    <button class="link" onclick="window.location.href='{{ url_for('settings') }}'">
-        Go to Settings
-    </button>
-    <a href="{{ url_for('settings') }}" class="link"> 
-    </a>
 
-    <button class="link" onclick="window.location.href='{{ url_for('orders') }}'">
-        Go to Orders    
-    </button>
-    <a href="{{ url_for('orders') }}" class="link">
-    </a>
-
-    <button class="link" onclick="window.location.href='{{ url_for('logout') }}'">
-        Go to Logout                
-    </button>
-    <a href="{{ url_for('logout') }}" class="link">
-    </a>
-   
-</div>
-
-{% endif %}
 
 
 <!-- Push Benachrichtigung für Erfolg -->
 <div id="notification" class="notification">
-    Thank you for your registration!
+    Your login was successful!
 </div>
 
 <!-- Push Benachrichtigung für Fehler -->
@@ -81,12 +50,6 @@
 </div>
 </div>
 <script>
-// Validierungsfunktionen
-function validateName(name) {
-    // Keine Zahlen erlaubt
-    var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
-    return regex.test(name) && name.trim().length > 0;
-}
 
 function validateEmail(email) {
     // Muss @ enthalten
@@ -101,16 +64,11 @@ var errorTimeoutId = null;
    und fügt einen Klick-Event-Listener hinzu */
 document.getElementById('registrieren-btn').addEventListener('click', function(e) {
     
-    
-    
-   
-    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname) 
-    var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
     var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
     var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
     
     // Prüft, ob eines der Felder leer ist
-    if (!lastname || !firstname || !email || !password) {
+    if (!email || !password) {
         
         // Greift auf die Fehler-Benachrichtigung zu
         var errorNotification = document.getElementById('error-notification');
@@ -126,7 +84,7 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
             clearTimeout(errorTimeoutId);
         }
         
-        // Startet einen Timer von 7 Sekunden
+        // Startet einen Timer von 4 Sekunden
         errorTimeoutId = setTimeout(function() {
             
             // Entfernt die Klasse "show"
@@ -138,44 +96,6 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         }, 4000); // 4000 Millisekunden = 4 Sekunden
         
         // Beendet die Funktion, damit keine Daten gesendet werden
-        return;
-    }
-    
-    // Prüfe Nachname (keine Zahlen)
-    if (!validateName(lastname)) {
-        var errorNotification = document.getElementById('error-notification');
-        errorNotification.textContent = 'Last name may not contain numbers';
-        errorNotification.classList.remove('hide');
-        errorNotification.classList.add('show');
-        
-        if (errorTimeoutId !== null) {
-            clearTimeout(errorTimeoutId);
-        }
-        
-        errorTimeoutId = setTimeout(function () {
-            errorNotification.classList.remove('show');
-            errorNotification.classList.add('hide');
-            errorNotification.textContent = 'Not all fields were filled out!';
-        }, 4000);
-        return;
-    }
-
-    // Prüfe Vorname (keine Zahlen)
-    if (!validateName(firstname)) {
-        var errorNotification = document.getElementById('error-notification');
-        errorNotification.textContent = 'First name may not contain numbers';
-        errorNotification.classList.remove('hide');
-        errorNotification.classList.add('show');
-        
-        if (errorTimeoutId !== null) {
-            clearTimeout(errorTimeoutId);
-        }
-        
-        errorTimeoutId = setTimeout(function () {
-            errorNotification.classList.remove('show');
-            errorNotification.classList.add('hide');
-            errorNotification.textContent = 'Not all fields were filled out!';
-        }, 4000);
         return;
     }
 
@@ -206,14 +126,11 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
     // Erstellt ein neues FormData-Objekt zum Versenden der Daten
     var formData = new FormData();
     
-    
-    formData.append('lastname', lastname);// Fügt den Nachnamen zu den Formulardaten hinzu
-    formData.append('firstname', firstname);// Fügt den Vornamen zu den Formulardaten hinzu
     formData.append('email', email);// Fügt die E-Mail zu den Formulardaten hinzu
     formData.append('password', password); // Fügt das Passwort zu den Formulardaten hinzu
     
-    // Sendet die Formulardaten per POST an die Server-Route "profil"
-    fetch('{{ url_for("profil") }}', {
+    // Sendet die Formulardaten per POST an die Server-Route "login"
+    fetch('{{ url_for("login") }}', {
         method: 'POST', // HTTP-Methode
         body: formData  // Gesendete Daten
     }).then(function(response) {
@@ -231,8 +148,6 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         }
         
        
-        document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
-        document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
         document.getElementById('email').value = '';// Leert das E-Mail-Feld
         document.getElementById('password').value = '';// Leert das Passwort-Feld
         
@@ -245,7 +160,7 @@ document.getElementById('registrieren-btn').addEventListener('click', function(e
         // Zeigt die Benachrichtigung an
         notification.classList.add('show');
         
-        // Versteckt die Benachrichtigung nach 7 Sekunden und lädt die Seite neu
+        // Versteckt die Benachrichtigung nach 1ms und lädt die Seite neu
         setTimeout(function() {
             
             // Entfernt die "show"-Klasse
