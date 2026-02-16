@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 
-from repository.customer_repo import add_customer_addres, add_customer_payment
+from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
@@ -144,13 +144,37 @@ def profil():
         # HIER: "einloggen"
         session['user_id'] = email          # oder irgendeine ID
         session['user_name'] = firstname    # optional
-        session['user_lastname'] = lastname       # optional
+        session['user_lastname'] = lastname
+
+        add_login(email,firstname, lastname,password)# optional
 
         return redirect(url_for("home"))    # zurück zur Startseite
 
     # GET-Anfrage: nur Formular anzeigen
     # GET-Anfrage: nur Formular anzeigen
     return render_template("profil.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        app.logger.info("Login submitted")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        print("=== Login Form Data ===")
+        print(f"E-Mail: {email}")
+        print(f"Passwort: {password}")
+        print("=======================")
+
+        # HIER: "einloggen"
+        session['user_id'] = email
+        session['user_name'] = (email or "").split("@")[0]
+        session['user_lastname'] = session.get('user_lastname', '')
+
+        return redirect(url_for("profil"))
+
+    return render_template("login.html")
 
 
 @app.route("/orders")
@@ -249,7 +273,84 @@ def save_checkout_data():
 
 @app.route("/shop")
 def shop() -> str:
-    return render_template("shop.html")  
+    category = request.args.get("category", "").strip()
+    if category:
+        products = db_repo.get_products_by_category(category)
+    else:
+        products = db_repo.get_all_products_local()
+    return render_template("shop.html", products=products, category=category)
+
+
+@app.route("/product/<int:product_id>")
+def product_detail(product_id):
+    product = db_repo.get_product_by_id(product_id)
+    if product is None:
+        return redirect(url_for("shop"))
+    # Get related products (same category, excluding current)
+    related = [p for p in db_repo.get_products_by_category(product["category"]) if p["id"] != product_id][:3]
+    return render_template("product_detail.html", product=product, related=related)  
+
+@app.route("/search")
+def search() -> str:
+    query = request.args.get("q", "").strip()
+    product_results = []
+
+    if query:
+        product_results = db_repo.search_products(query)
+
+    pages = [
+        {
+            "title": "Home",
+            "url": url_for("home"),
+            "hint": "Homepage and Highlights",
+            "keywords": ["home", "start", "floravis"],
+        },
+        {
+            "title": "Shop",
+            "url": url_for("shop"),
+            "hint": "Soaps and Sets",
+            "keywords": ["products", "soaps", "sets"],
+        },
+        {
+            "title": "About us",
+            "url": url_for("about_us"),
+            "hint": "Our Story",
+            "keywords": ["about", "brand", "story"],
+        },
+        {
+            "title": "Contact",
+            "url": url_for("contact"),
+            "hint": "Contact Us",
+            "keywords": ["kontakt", "help", "support"],
+        },
+        {
+            "title": "Profile",
+            "url": url_for("profil"),
+            "hint": "Login and Profile",
+            "keywords": ["login", "profile", "account"],
+        },
+        {
+            "title": "Settings",
+            "url": url_for("settings"),
+            "hint": "Settings",
+            "keywords": ["settings", "preferences"],
+        },
+    ]
+
+    page_results = []
+    if query:
+        q_lower = query.lower()
+        for page in pages:
+            haystack = " ".join([page["title"], page["hint"]] + page["keywords"]).lower()
+            if q_lower in haystack:
+                page_results.append(page)
+
+    return render_template(
+        "search_results.html",
+        query=query,
+        products=product_results,
+        pages=page_results,
+    )
 
 @app.route("/searchbar")
 def searchbar() -> str:
@@ -263,11 +364,5 @@ def add_product():
     return redirect(url_for("home"))
 
 
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, debug=True)

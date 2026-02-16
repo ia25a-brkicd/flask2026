@@ -1,0 +1,141 @@
+:root {
+  --search-bg: linear-gradient(160deg, #fdf3ee 0%, #f6dcd2 60%, #f4cfc3 100%);
+  --search-card: #fffaf7;
+  --search-border: rgba(201, 154, 138, 0.35);
+}
+
+.search-hero {
+  background: var(--search-bg);
+  border-bottom: 1px solid var(--line);
+  padding: 3.5rem 2.5rem 2.75rem;
+}
+
+.search-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.search-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.search-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-subtitle {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.search-results {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 4rem;
+  display: grid;
+  gap: 2.5rem;
+}
+
+.results-group {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(231, 216, 207, 0.9);
+  border-radius: 22px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(74, 52, 44, 0.1);
+}
+
+.results-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.results-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+}
+
+.results-count {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.result-card {
+  background: var(--search-card);
+  border: 1px solid var(--search-border);
+  border-radius: 18px;
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 170px;
+  box-shadow: 0 12px 24px rgba(201, 154, 138, 0.15);
+}
+
+.result-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+}
+
+.result-price {
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.result-meta {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.result-link {
+  align-self: flex-start;
+  margin-top: 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--accent-strong);
+  border-bottom: 1px solid transparent;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.result-link:hover {
+  color: #8f6a5d;
+  border-color: currentColor;
+}
+
+.results-empty {
+  color: var(--muted);
+  padding: 0.75rem 0;
+}
+
+@media (max-width: 900px) {
+  .search-hero {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .search-results {
+    padding: 2rem 1.5rem 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-hero h1 {
+    font-size: 2.1rem;
+  }
+
+  .results-group {
+    padding: 1.5rem;
+  }
+}
