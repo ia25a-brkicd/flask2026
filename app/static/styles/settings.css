@@ -194,11 +194,6 @@ h1{
 }
 
 /* === ARROW ICON === */
-.arrow {
-    font-size: 24px;
-    color: #999;
-    font-weight: 300;
-}
 
 .clickable:hover .arrow {
     color: #f08669;
