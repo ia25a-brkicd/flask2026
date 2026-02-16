@@ -44,21 +44,17 @@
               Shop
             </a>
             <div class="dropdown-menu">
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('shop') }}" class="dropdown-item">
+                <i class="fa fa-th-large"></i>
+                Alle Produkte
+              </a>
+              <a href="{{ url_for('shop', category='classic') }}" class="dropdown-item">
                 <i class="fa fa-soap"></i>
                 Classic Soaps
               </a>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('shop', category='luxury') }}" class="dropdown-item">
                 <i class="fa fa-gem"></i>
                 Luxury Soaps
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-heart"></i>
-                Gift Sets
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-droplet"></i>
-                Soap Bundles
               </a>
             </div>
           </div>
@@ -148,7 +144,7 @@
       <div class="search-bar-container">
         <form
           class="search-form"
-          action="{{ url_for('home') }}"
+          action="{{ url_for('search') }}"
           method="get"
           role="search"
           onsubmit="showSearchLoading(event)"
@@ -161,6 +157,7 @@
             name="q"
             placeholder="Auf floravis.com suchen"
             aria-label="Search"
+            value="{{ request.args.get('q', '') }}"
           />
           <button type="submit" aria-label="Search">
             <i class="fa fa-search"></i>
@@ -247,6 +244,32 @@
         overlay.classList.toggle("active");
         document.body.classList.toggle("menu-open");
       }
+
+      // Mobile dropdown toggle
+      function setupMobileDropdown() {
+        const isMobile = window.innerWidth <= 720;
+        const dropdownTriggers = document.querySelectorAll(".nav-item-with-dropdown");
+        
+        dropdownTriggers.forEach((trigger) => {
+          if (isMobile) {
+            const navLink = trigger.querySelector(".nav-link-with-icon");
+            if (navLink) {
+              navLink.style.cursor = "pointer";
+              navLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                const menu = trigger.querySelector(".dropdown-menu");
+                if (menu) {
+                  trigger.classList.toggle("dropdown-open");
+                }
+              });
+            }
+          }
+        });
+      }
+
+      // Initialize on load and on resize
+      window.addEventListener("load", setupMobileDropdown);
+      window.addEventListener("resize", setupMobileDropdown);
 
       // Search loading indicator
       function showSearchLoading(event) {

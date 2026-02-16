@@ -59,21 +59,6 @@ h1{
     width: 100%;
 }
 
-/* === PROFILBILD PLATZHALTER (Quadrat 220x220px) === */
-.profile-image-placeholder {
-    width: 280px;
-    height: 280px;
-    border-radius: 0;
-    background-color: white;
-    margin-top: 3%;
-    margin-bottom: 4%;
-}
-
-.profile-image-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
 /* === FORMULAR ELEMENTE === */
 /* Alle Texte/Labels im Formular */
@@ -95,6 +80,10 @@ p{
     transition: background-color 0.3s ease;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.profil .login-btn {
+    margin-top: 2%;
 }
 
 .profil button:hover,

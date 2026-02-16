@@ -10,10 +10,12 @@
       <!-- Slide 1 -->
       <div class="carousel-slide active" data-slide="0">
         <div class="product-image">
-          <img
-            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-            alt="Lavender Premium Soap"
-          />
+          <a href="{{ url_for('product_detail', product_id=1) }}">
+            <img
+              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+              alt="Lavender Premium Soap"
+            />
+          </a>
         </div>
         <div class="product-info">
           <h1>Lavender Dream Soap</h1>
@@ -21,22 +23,31 @@
             Handcrafted with real lavender flowers and essential oils. Relax
             your senses with every wash.
           </p>
-          <button
-            class="buy-btn"
-            onclick="carouselBuyNow('Lavender Dream Soap', 12.99)"
-          >
-            Buy Now
-          </button>
+          <div class="carousel-btns">
+            <button
+              class="buy-btn"
+              onclick="carouselBuyNow('Lavender Dream Soap', 12.99)"
+            >
+              Buy Now
+            </button>
+            <a
+              href="{{ url_for('product_detail', product_id=1) }}"
+              class="details-btn"
+              >Details</a
+            >
+          </div>
         </div>
       </div>
 
       <!-- Slide 2 -->
       <div class="carousel-slide" data-slide="1">
         <div class="product-image">
-          <img
-            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-            alt="Rose Premium Soap"
-          />
+          <a href="{{ url_for('product_detail', product_id=2) }}">
+            <img
+              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+              alt="Rose Premium Soap"
+            />
+          </a>
         </div>
         <div class="product-info">
           <h1>Rose Garden Soap</h1>
@@ -44,22 +55,31 @@
             Infused with rose petals and natural moisturizers. Experience luxury
             skincare daily.
           </p>
-          <button
-            class="buy-btn"
-            onclick="carouselBuyNow('Rose Garden Soap', 13.99)"
-          >
-            Buy Now
-          </button>
+          <div class="carousel-btns">
+            <button
+              class="buy-btn"
+              onclick="carouselBuyNow('Rose Garden Soap', 13.99)"
+            >
+              Buy Now
+            </button>
+            <a
+              href="{{ url_for('product_detail', product_id=2) }}"
+              class="details-btn"
+              >Details</a
+            >
+          </div>
         </div>
       </div>
 
       <!-- Slide 3 -->
       <div class="carousel-slide" data-slide="2">
         <div class="product-image">
-          <img
-            src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-            alt="Honey Premium Soap"
-          />
+          <a href="{{ url_for('product_detail', product_id=3) }}">
+            <img
+              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
+              alt="Honey Premium Soap"
+            />
+          </a>
         </div>
         <div class="product-info">
           <h1>Honey Glow Soap</h1>
@@ -67,12 +87,19 @@
             Made with organic honey and oatmeal. Nourish and soften your skin
             naturally.
           </p>
-          <button
-            class="buy-btn"
-            onclick="carouselBuyNow('Honey Glow Soap', 12.49)"
-          >
-            Buy Now
-          </button>
+          <div class="carousel-btns">
+            <button
+              class="buy-btn"
+              onclick="carouselBuyNow('Honey Glow Soap', 12.49)"
+            >
+              Buy Now
+            </button>
+            <a
+              href="{{ url_for('product_detail', product_id=3) }}"
+              class="details-btn"
+              >Details</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -94,145 +121,68 @@
   </div>
 
   <section class="products-section">
-    <h2>Unsere Seifen</h2>
+    <h2>Our Soaps</h2>
+
+    <!-- Category Filter -->
+    <div class="category-filter">
+      <a
+        href="{{ url_for('shop') }}"
+        class="filter-btn {% if not category %}active{% endif %}"
+        >All</a
+      >
+      <a
+        href="{{ url_for('shop', category='classic') }}"
+        class="filter-btn {% if category == 'classic' %}active{% endif %}"
+        >Classic</a
+      >
+      <a
+        href="{{ url_for('shop', category='luxury') }}"
+        class="filter-btn {% if category == 'luxury' %}active{% endif %}"
+        >Luxury</a
+      >
+    </div>
+
     <div class="products-grid">
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Lavender Soap"
-        />
-        <h3>Lavender Soap</h3>
-        <p class="price">12.99 CHF</p>
+      {% for product in products %}
+      <div
+        class="product-card"
+        data-product-name="{{ product.name }}"
+        data-product-price="{{ product.price }}"
+      >
+        <a
+          href="{{ url_for('product_detail', product_id=product.id) }}"
+          class="product-card-link"
+        >
+          <img
+            src="{{ url_for('static', filename=product.image) }}"
+            alt="{{ product.name }}"
+          />
+          <h3>{{ product.name }}</h3>
+          <p class="product-short">{{ product.short }}</p>
+        </a>
+        <p class="price">{{ "%.2f"|format(product.price) }} CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
           </div>
           <div class="pack-btn-wrapper">
             <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
           </div>
           <div class="pack-btn-wrapper">
             <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
           </div>
         </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
       </div>
-
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Rose Soap"
-        />
-        <h3>Rose Soap</h3>
-        <p class="price">13.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Charcoal Soap"
-        />
-        <h3>Charcoal Soap</h3>
-        <p class="price">14.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Mint Soap"
-        />
-        <h3>Mint Soap</h3>
-        <p class="price">11.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Honey Soap"
-        />
-        <h3>Honey Soap</h3>
-        <p class="price">12.49 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-          alt="Coconut Soap"
-        />
-        <h3>Coconut Soap</h3>
-        <p class="price">13.49 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">1</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">2</button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">3</button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
+      {% endfor %}
     </div>
   </section>
 </div>
@@ -278,37 +228,43 @@
       // Get the product card and original price
       const productCard = this.closest(".product-card");
       const priceElement = productCard.querySelector(".price");
-      const priceText = priceElement.getAttribute("data-original-price") || priceElement.textContent;
-      
+      const priceText =
+        priceElement.getAttribute("data-original-price") ||
+        priceElement.textContent;
+
       // Store original price if not already stored
       if (!priceElement.getAttribute("data-original-price")) {
         priceElement.setAttribute("data-original-price", priceText);
       }
-      
+
       // Get the quantity from data attribute
       const quantity = parseInt(this.getAttribute("data-quantity"));
-      
+
       // Extract base price (remove "CHF" and parse as float)
-      const basePrice = parseFloat(priceText.replace(" CHF", "").replace(",", "."));
-      
+      const basePrice = parseFloat(
+        priceText.replace(" CHF", "").replace(",", "."),
+      );
+
       // Calculate new price with discounts
       let newPrice = basePrice * quantity;
       if (quantity === 2) {
-        newPrice = newPrice * 0.90; // 10% discount
+        newPrice = newPrice * 0.9; // 10% discount
       } else if (quantity === 3) {
-        newPrice = newPrice * 0.80; // 20% discount
+        newPrice = newPrice * 0.8; // 20% discount
       }
-      
+
       // Round to .99
       newPrice = Math.floor(newPrice) + 0.99;
-      
+
       // Update the price display
       priceElement.textContent = newPrice.toFixed(2) + " CHF";
-      
+
       // Remove active class from all pack buttons in this selector
-      this.closest(".pack-selector").querySelectorAll(".pack-btn").forEach((sibling) => {
-        sibling.classList.remove("active");
-      });
+      this.closest(".pack-selector")
+        .querySelectorAll(".pack-btn")
+        .forEach((sibling) => {
+          sibling.classList.remove("active");
+        });
       // Add active class to clicked button
       this.classList.add("active");
     });
@@ -320,11 +276,15 @@
       const productCard = this.closest(".product-card");
       const productName = productCard.querySelector("h3").textContent;
       const priceElement = productCard.querySelector(".price");
-      
+
       // Get the original base price (not the discounted displayed price)
-      const originalPriceText = priceElement.getAttribute("data-original-price") || priceElement.textContent;
-      const basePrice = parseFloat(originalPriceText.replace(" CHF", "").replace(",", "."));
-      
+      const originalPriceText =
+        priceElement.getAttribute("data-original-price") ||
+        priceElement.textContent;
+      const basePrice = parseFloat(
+        originalPriceText.replace(" CHF", "").replace(",", "."),
+      );
+
       const quantityBtn = productCard.querySelector(".pack-btn.active");
       const quantity = parseInt(quantityBtn.getAttribute("data-quantity")) || 1;
 

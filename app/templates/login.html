@@ -1,180 +1,108 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/profil.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="profil">
-<h1 id="welcome-title">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</h1>
+<div class="contact-wrapper">
+    <div class="contact-hero">
+        <h1>Login</h1>
+        <p class="hero-subtitle">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</p>
+    </div>
 
+    <div class="contact-container">
+        <div class="form-section">
+            <form action="{{ url_for('login') }}" method="post" novalidate>
+                <div class="input-group">
+                    <label for="email">
+                        <i class="fa fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <span class="input-border"></span>
+                </div>
 
+                <div class="input-group">
+                    <label for="password">
+                        <i class="fa fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="input-border"></span>
+                </div>
 
-{% if not session.get("user_id") %}
+                <button type="submit" id="registrieren-btn" class="submit-btn">
+                    <span>Login</span>
+                    <i class="fa fa-sign-in"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 
-<div id="wegWennLogin">
-<div class="login-header">
-    <h1>Login</h1>
+    <div id="notification" class="notification success-notification">
+        <i class="fa fa-check-circle"></i>
+        <div class="notification-content">
+            <h4>Success!</h4>
+            <p>You have successfully logged in!</p>
+        </div>
+    </div>
+
+    <div id="error-notification" class="notification error-notification">
+        <i class="fa fa-exclamation-circle"></i>
+        <div class="notification-content">
+            <h4>Error</h4>
+            <p id="error-text">Not all fields were filled out!</p>
+        </div>
+    </div>
 </div>
 
-<form action="{{ url_for('login') }}" method="post">
-<div class="header">
-
-    <p>E-Mail</p>
-    <input id="email" name="email" rows="1" cols="100"></input>
-
-    <p>Password</p>
-    <input id="password" name="password" rows="1" cols="100"></input>
-</div>
-
-<button type="button" id="registrieren-btn">Login</button>
-
-
-</form>
-</div>
-
-
-
-<!-- Push Benachrichtigung für Erfolg -->
-<div id="notification" class="notification">
-    Your login was successful!
-</div>
-
-<!-- Push Benachrichtigung für Fehler -->
-<div id="error-notification" class="notification error-notification">
-    Not all fields were filled out!
-</div>
-</div>
 <script>
+function showError(message) {
+    var errorNotification = document.getElementById('error-notification');
+    var errorText = document.getElementById('error-text');
+    errorText.textContent = message;
+    errorNotification.classList.remove('hide');
+    errorNotification.classList.add('show');
+
+    if (window.loginErrorTimeoutId) {
+        clearTimeout(window.loginErrorTimeoutId);
+    }
+
+    window.loginErrorTimeoutId = setTimeout(function () {
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+    }, 4000);
+}
 
 function validateEmail(email) {
-    // Muss @ enthalten
     var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-// Variable um den Timeout-Timer zu speichern
-var errorTimeoutId = null;
+var loginForm = document.querySelector('form[action="{{ url_for('login') }}"]');
+if (loginForm) {
+    loginForm.addEventListener('submit', function (e) {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
 
-/* Greift auf den Button mit der ID "registrieren-btn" zu
-   und fügt einen Klick-Event-Listener hinzu */
-document.getElementById('registrieren-btn').addEventListener('click', function(e) {
-    
-    var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
-    var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
-    
-    // Prüft, ob eines der Felder leer ist
-    if (!email || !password) {
-        
-        // Greift auf die Fehler-Benachrichtigung zu
-        var errorNotification = document.getElementById('error-notification');
-        
-        // Entfernt die Verstecken-Klasse, falls vorhanden
-        errorNotification.classList.remove('hide');
-        
-        // Fügt die CSS-Klasse "show" hinzu, um die Fehlermeldung anzuzeigen
-        errorNotification.classList.add('show');
-        
-        // Löscht den alten Timeout, falls vorhanden
-        if (errorTimeoutId !== null) {
-            clearTimeout(errorTimeoutId);
+        if (!email || !password) {
+            e.preventDefault();
+            showError('Not all fields were filled out!');
+            return;
         }
-        
-        // Startet einen Timer von 4 Sekunden
-        errorTimeoutId = setTimeout(function() {
-            
-            // Entfernt die Klasse "show"
-            errorNotification.classList.remove('show');
-            
-            // Fügt die Klasse "hide" hinzu, um die Fehlermeldung auszublenden
-            errorNotification.classList.add('hide');
-        
-        }, 4000); // 4000 Millisekunden = 4 Sekunden
-        
-        // Beendet die Funktion, damit keine Daten gesendet werden
-        return;
-    }
 
-    // Prüfe E-Mail (muss @ enthalten)
-    if (!validateEmail(email)) {
-        var errorNotification = document.getElementById('error-notification');
-        errorNotification.textContent = 'Email must contain an @ and be valid';
-        errorNotification.classList.remove('hide');
-        errorNotification.classList.add('show');
-        
-        if (errorTimeoutId !== null) {
-            clearTimeout(errorTimeoutId);
+        if (!validateEmail(email)) {
+            e.preventDefault();
+            showError('Email must contain an @ and be valid');
         }
-        
-        errorTimeoutId = setTimeout(function () {
-            errorNotification.classList.remove('show');
-            errorNotification.classList.add('hide');
-            errorNotification.textContent = 'Not all fields were filled out!';
-        }, 4000);
-        return;
-    }
-    
-    // Löscht den Timeout, falls vorhanden
-    if (errorTimeoutId !== null) {
-        clearTimeout(errorTimeoutId);
-    }
-    
-    // Erstellt ein neues FormData-Objekt zum Versenden der Daten
-    var formData = new FormData();
-    
-    formData.append('email', email);// Fügt die E-Mail zu den Formulardaten hinzu
-    formData.append('password', password); // Fügt das Passwort zu den Formulardaten hinzu
-    
-    // Sendet die Formulardaten per POST an die Server-Route "login"
-    fetch('{{ url_for("login") }}', {
-        method: 'POST', // HTTP-Methode
-        body: formData  // Gesendete Daten
-    }).then(function(response) {
-        
-        // Versteckt die Fehler-Benachrichtigung
-        var errorNotification = document.getElementById('error-notification');
-        errorNotification.classList.remove('show');
-        errorNotification.classList.add('hide');
-        
-        
-        // Versteckt das Registrierungsformular
-        var wegWennLogin = document.getElementById('wegWennLogin');
-        if (wegWennLogin) {
-            wegWennLogin.style.display = 'none';
-        }
-        
-       
-        document.getElementById('email').value = '';// Leert das E-Mail-Feld
-        document.getElementById('password').value = '';// Leert das Passwort-Feld
-        
-        // Greift auf die Erfolgs-Benachrichtigung zu
-        var notification = document.getElementById('notification');
-        
-        // Entfernt die Verstecken-Klasse
-        notification.classList.remove('hide');
-        
-        // Zeigt die Benachrichtigung an
-        notification.classList.add('show');
-        
-        // Versteckt die Benachrichtigung nach 1ms und lädt die Seite neu
-        setTimeout(function() {
-            
-            // Entfernt die "show"-Klasse
-            notification.classList.remove('show');
-            
-            // Fügt die "hide"-Klasse hinzu
-            notification.classList.add('hide');
-            
-            // Lädt die Seite neu, um die Profilansicht anzuzeigen
-            window.location.reload();
-        
-        }, 1); 
     });
-});
+}
 </script>
 
 {% endblock %}
