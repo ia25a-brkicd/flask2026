@@ -127,16 +127,24 @@ content %}
     document.getElementById("item-count").textContent = itemCount;
 
     // Zeige/Verstecke leeren Warenkorb
+    var sectionLines = document.querySelectorAll(".section-line");
+
     if (items.length === 0) {
       document.getElementById("shoppingcart").style.display = "none";
       document.getElementById("cart-summary").style.display = "none";
       document.getElementById("empty-cart").style.display = "flex";
       document.querySelector(".shoppingcart-header").style.display = "none";
+      sectionLines.forEach(function (line) {
+        line.style.display = "none";
+      });
     } else {
       document.getElementById("shoppingcart").style.display = "flex";
       document.getElementById("cart-summary").style.display = "flex";
       document.getElementById("empty-cart").style.display = "none";
       document.querySelector(".shoppingcart-header").style.display = "block";
+      sectionLines.forEach(function (line) {
+        line.style.display = "block";
+      });
     }
   }
 
