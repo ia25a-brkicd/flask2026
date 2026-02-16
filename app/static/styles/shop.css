@@ -211,6 +211,29 @@
     justify-content: center;
 }
 
+.pack-btn-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.discount-badge {
+    position: absolute;
+    top: -15px;
+    right: -8px;
+    background: #d32f2f;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 .pack-btn {
     flex: 1;
     font-family: 'Inter', sans-serif;
@@ -223,6 +246,7 @@
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .pack-btn:hover {

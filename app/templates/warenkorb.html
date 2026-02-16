@@ -39,6 +39,21 @@ content %}
 </div>
 
 <script>
+  // Calculate discounted price based on quantity
+  function calculateDiscountedPrice(basePrice, quantity) {
+    var total = basePrice * quantity;
+    
+    if (quantity === 2) {
+      total = total * 0.90; // 10% discount
+    } else if (quantity >= 3) {
+      total = total * 0.80; // 20% discount
+    }
+    
+    // Round to .99
+    total = Math.floor(total) + 0.99;
+    return total;
+  }
+
   // Lade den Warenkorb aus localStorage und rendere die Items
   function loadCart() {
     var cart = getCart();
@@ -60,6 +75,8 @@ content %}
     div.setAttribute("data-price", item.price);
     div.setAttribute("data-name", item.name);
 
+    var itemTotal = calculateDiscountedPrice(item.price, item.quantity);
+
     div.innerHTML = `
                 <img class="image" src="../static/styles/images/seife.png" alt="${item.name}">
                 <div class="shoppingcart-Itemname">${item.name}</div>
@@ -72,7 +89,7 @@ content %}
                         <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
                     </button>
                 </div>
-                <div class="price">CHF <span class="item-price">${(item.price * item.quantity).toFixed(2)}</span></div>
+                <div class="price">CHF <span class="item-price">${itemTotal.toFixed(2)}</span></div>
                 <div class="delete-buttons">
                     <button type="button" class="delete-button-button" onclick="deleteItem(this)">
                         <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
@@ -93,7 +110,7 @@ content %}
       var countEl = items[i].querySelector(".count");
       var quantity = parseInt(countEl.textContent);
       var price = parseFloat(items[i].getAttribute("data-price"));
-      var itemTotal = quantity * price;
+      var itemTotal = calculateDiscountedPrice(price, quantity);
 
       // Aktualisiere den Preis pro Zeile
       var priceEl = items[i].querySelector(".item-price");
