@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 
-from repository.customer_repo import add_customer_addres, add_customer_payment
+from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
@@ -144,7 +144,9 @@ def profil():
         # HIER: "einloggen"
         session['user_id'] = email          # oder irgendeine ID
         session['user_name'] = firstname    # optional
-        session['user_lastname'] = lastname       # optional
+        session['user_lastname'] = lastname
+
+        add_login(email,firstname, lastname,password)# optional
 
         return redirect(url_for("home"))    # zurück zur Startseite
 

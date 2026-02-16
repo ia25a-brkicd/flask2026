@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS products (
     price DECIMAL(10, 2) NOT NULL
 );
 
-CREATE IF NOT EXISTS customer (
+CREATE IF NOT EXISTS login (
+    login_id SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL,
-    surname VARCHAR(50) NOT NULL,
-    name VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     password VARCHAR(50),
-    customer_id SERIAL PRIMARY KEY,
     order_id INT REFERENCES orders(order_id)
 );
 
