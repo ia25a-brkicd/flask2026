@@ -11,42 +11,106 @@
 {% endblock %}
 
 {% block content %}
-    <div class="contact">
-        <h1>Contact</h1>
+    <div class="contact-wrapper">
+        <div class="contact-hero">
+            <h1>Get in Touch</h1>
+            <p class="hero-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+        </div>
 
-        <form action="mailto:floravissocialmedia@gmail.com" method="post" enctype="text/plain">
-            <div class="header">
+        <div class="contact-container">
+            <!-- Contact Form -->
+            <div class="form-section">
+                <form action="mailto:floravissocialmedia@gmail.com" method="post" enctype="text/plain">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="firstname">
+                                <i class="fa fa-user"></i>
+                                First Name
+                            </label>
+                            <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                            <span class="input-border"></span>
+                        </div>
 
-                <p>Lastname</p>
-                <input id="lastname" name="lastname" rows="1" cols="100"></input>
+                        <div class="input-group">
+                            <label for="lastname">
+                                <i class="fa fa-user"></i>
+                                Last Name
+                            </label>
+                            <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+                            <span class="input-border"></span>
+                        </div>
+                    </div>
 
-                <p>Firstname</p>
-                <input id="firstname" name="firstname" rows="1" cols="100"></input>
+                    <div class="input-group">
+                        <label for="email">
+                            <i class="fa fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        <span class="input-border"></span>
+                    </div>
 
-                <p>E-Mail</p>
-                <input id="email" name="email" rows="1" cols="100"></input>
+                    <div class="input-group">
+                        <label for="message">
+                            <i class="fa fa-comment"></i>
+                            Your Message
+                        </label>
+                        <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help you..." maxlength="500" required></textarea>
+                        <span class="input-border"></span>
+                        <div class="char-counter">
+                            <span id="char-count">0</span>/500 characters
+                        </div>
+                    </div>
 
-                <p>Message</p>
-                <textarea id="message" name="message" rows="10" cols="100"></textarea>
+                    <button type="button" id="absenden-btn" class="submit-btn">
+                        <span>Send Message</span>
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </form>
             </div>
-
-            <button type="button" id="absenden-btn">Submit</button>
-        </form>
-
-
+        </div>
 
         <!-- Push Benachrichtigung für Erfolg -->
-        <div id="notification" class="notification">
-            Thank you for your message! We will get back to you as soon as possible.
+        <div id="notification" class="notification success-notification">
+            <i class="fa fa-check-circle"></i>
+            <div class="notification-content">
+                <h4>Success!</h4>
+                <p>Thank you for your message! We will get back to you as soon as possible.</p>
+            </div>
         </div>
 
         <!-- Push Benachrichtigung für Fehler -->
         <div id="error-notification" class="notification error-notification">
-            Not all fields were filled out!
+            <i class="fa fa-exclamation-circle"></i>
+            <div class="notification-content">
+                <h4>Error</h4>
+                <p id="error-text">Not all fields were filled out!</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // Character counter for textarea
+        const messageField = document.getElementById('message');
+        const charCount = document.getElementById('char-count');
+        
+        messageField.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        // Add floating label effect
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
 
         // Validierungsfunktionen
         function validateName(name) {
@@ -60,6 +124,23 @@
             // Muss @ enthalten
             var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return regex.test(email);
+        }
+
+        function showError(message) {
+            var errorNotification = document.getElementById('error-notification');
+            var errorText = document.getElementById('error-text');
+            errorText.textContent = message;
+            errorNotification.classList.remove('hide');
+            errorNotification.classList.add('show');
+            
+            if (errorTimeoutId !== null) {
+                clearTimeout(errorTimeoutId);
+            }
+            
+            errorTimeoutId = setTimeout(function () {
+                errorNotification.classList.remove('show');
+                errorNotification.classList.add('hide');
+            }, 4000);
         }
 
 
@@ -81,88 +162,25 @@
 
             // Prüft, ob eines der Felder leer ist
             if (!lastname || !firstname || !email || !message) {
-
-                // Greift auf die Fehler-Benachrichtigung zu
-                var errorNotification = document.getElementById('error-notification');
-
-                // Entfernt die Verstecken-Klasse, falls vorhanden
-                errorNotification.classList.remove('hide');
-
-                // Zeigt die Fehlermeldung an
-                errorNotification.classList.add('show');
-
-                // Löscht den alten Timeout, falls vorhanden
-                if (errorTimeoutId !== null) {
-                    clearTimeout(errorTimeoutId);
-                }
-
-                // Versteckt die Fehlermeldung nach 7 Sekunden
-                errorTimeoutId = setTimeout(function () {
-                    // Entfernt die Anzeige-Klasse
-                    errorNotification.classList.remove('show');
-
-                    // Fügt die Verstecken-Klasse hinzu
-                    errorNotification.classList.add('hide');
-                }, 4000); // 4000 ms = 4 Sekunden
-
-                // Bricht die Funktion ab, es werden keine Daten gesendet
+                showError('Not all fields were filled out!');
                 return;
             }
 
             // Prüfe Nachname (keine Zahlen)
             if (!validateName(lastname)) {
-                var errorNotification = document.getElementById('error-notification');
-                errorNotification.textContent = 'Last name may not contain numbers';
-                errorNotification.classList.remove('hide');
-                errorNotification.classList.add('show');
-                
-                if (errorTimeoutId !== null) {
-                    clearTimeout(errorTimeoutId);
-                }
-                
-                errorTimeoutId = setTimeout(function () {
-                    errorNotification.classList.remove('show');
-                    errorNotification.classList.add('hide');
-                    errorNotification.textContent = 'Not all fields were filled out!';
-                }, 4000);
+                showError('Last name may not contain numbers');
                 return;
             }
 
             // Prüfe Vorname (keine Zahlen)
             if (!validateName(firstname)) {
-                var errorNotification = document.getElementById('error-notification');
-                errorNotification.textContent = 'First name may not contain numbers';
-                errorNotification.classList.remove('hide');
-                errorNotification.classList.add('show');
-                
-                if (errorTimeoutId !== null) {
-                    clearTimeout(errorTimeoutId);
-                }
-                
-                errorTimeoutId = setTimeout(function () {
-                    errorNotification.classList.remove('show');
-                    errorNotification.classList.add('hide');
-                    errorNotification.textContent = 'Not all fields were filled out!';
-                }, 4000);
+                showError('First name may not contain numbers');
                 return;
             }
 
             // Prüfe E-Mail (muss @ enthalten)
             if (!validateEmail(email)) {
-                var errorNotification = document.getElementById('error-notification');
-                errorNotification.textContent = 'Email must contain an @ and be valid';
-                errorNotification.classList.remove('hide');
-                errorNotification.classList.add('show');
-                
-                if (errorTimeoutId !== null) {
-                    clearTimeout(errorTimeoutId);
-                }
-                
-                errorTimeoutId = setTimeout(function () {
-                    errorNotification.classList.remove('show');
-                    errorNotification.classList.add('hide');
-                    errorNotification.textContent = 'Not all fields were filled out!';
-                }, 4000);
+                showError('Email must contain an @ and be valid');
                 return;
             }
 
@@ -196,6 +214,7 @@
                     document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
                     document.getElementById('email').value = '';// Leert das E-Mail-Feld
                     document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
+                    document.getElementById('char-count').textContent = '0'; // Reset character counter
 
                     // Greift auf die Erfolgs-Benachrichtigung zu
                     var notification = document.getElementById('notification');
@@ -212,29 +231,11 @@
                     }, 4000); // 4 Sekunden
                 } else {
                     console.error('Server-Fehler:', response.status);
-                    // Zeige Fehlermeldung an
-                    var errorNotification = document.getElementById('error-notification');
-                    errorNotification.textContent = 'An error occurred. Please try again later.';
-                    errorNotification.classList.remove('hide');
-                    errorNotification.classList.add('show');
-                    setTimeout(function () {
-                        errorNotification.classList.remove('show');
-                        errorNotification.classList.add('hide');
-                        errorNotification.textContent = 'Not all fields were filled out!';
-                    }, 4000);
+                    showError('An error occurred. Please try again later.');
                 }
             }).catch(function (error) {
                 console.error('Network error:', error);
-                // Zeige Fehlermeldung an
-                var errorNotification = document.getElementById('error-notification');
-                errorNotification.textContent = 'Network error. Please check your connection.';
-                errorNotification.classList.remove('hide');
-                errorNotification.classList.add('show');
-                setTimeout(function () {
-                    errorNotification.classList.remove('show');
-                    errorNotification.classList.add('hide');
-                    errorNotification.textContent = 'Not all fields were filled out!';
-                }, 4000);
+                showError('Network error. Please check your connection.');
             });
         });
     </script>
