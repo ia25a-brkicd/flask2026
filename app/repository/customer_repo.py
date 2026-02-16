@@ -35,7 +35,7 @@ def add_customer_payment(payment_method,card_name,card_number,expiry_date,cvv):
     finally:
         cur.close()
 
-
+#push test
 
 def add_login(email, first_name, last_name, password):
     conn = get_db()
