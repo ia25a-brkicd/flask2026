@@ -236,6 +236,10 @@ body {
     overflow: hidden;
 }
 
+.submit-btn.login-btn {
+    margin-top: 2%;
+}
+
 .submit-btn::before {
     content: '';
     position: absolute;
