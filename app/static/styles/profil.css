@@ -4,6 +4,7 @@
 }
 */
 
+
 @import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
 
 /* === ALLGEMEINE LAYOUT & BODY === */
@@ -20,6 +21,14 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
+}
+
+#wegWennLogin {
+    width: 100%;
+    max-width: 715px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
@@ -85,6 +94,7 @@ p{
     padding: 2%;
     transition: background-color 0.3s ease;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .profil button:hover,
@@ -92,28 +102,7 @@ p{
     background-color: #fda78f;
 }
 
-/* === ALTERNATIVE ACCOUNT SECTION === */
-/* Dunkelblaue Box mit weißer Schrift für "anderes konto verwenden" */
-.alternative-account {
-    background-color: #f08669;
-    width: 90%;
-    padding: 30px;
-    margin-top: 10%;
-    text-align: center;
-}
 
-.alternative-account h1 {
-    color: white;
-    margin: 0;
- 
-}
-
-.alternative-account img {
-    width: 400px;
-    height: auto;
-    margin-top: 10%;
-    margin-bottom: 10%;
-}
 
 .links {
     display: flex;
@@ -146,8 +135,8 @@ p{
 
 /* Formular Container (Name, Vorname, E-Mail, Passwort) */
 .header{
-    width: 100%;
-    max-width: 655px;
+    width: 715px;
+    max-width: 100%;
 }
 
 /* === FORMULAR INPUT FELDER === */
@@ -211,21 +200,7 @@ p{
     background-color: #fda78f;
 }
 
-/* Message/Text-Area (Kontaktformular) */
-#message{
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: none;   /* User kann sie nicht größer ziehen */
-    transition: background-color 0.3s ease;
-}
 
-#message:hover {
-    background-color: #fda78f;
-}
 
 /* === PUSH BENACHRICHTIGUNG === */
 .notification {
