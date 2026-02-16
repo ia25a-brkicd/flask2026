@@ -249,7 +249,84 @@ def save_checkout_data():
 
 @app.route("/shop")
 def shop() -> str:
-    return render_template("shop.html")  
+    category = request.args.get("category", "").strip()
+    if category:
+        products = db_repo.get_products_by_category(category)
+    else:
+        products = db_repo.get_all_products_local()
+    return render_template("shop.html", products=products, category=category)
+
+
+@app.route("/product/<int:product_id>")
+def product_detail(product_id):
+    product = db_repo.get_product_by_id(product_id)
+    if product is None:
+        return redirect(url_for("shop"))
+    # Get related products (same category, excluding current)
+    related = [p for p in db_repo.get_products_by_category(product["category"]) if p["id"] != product_id][:3]
+    return render_template("product_detail.html", product=product, related=related)  
+
+@app.route("/search")
+def search() -> str:
+    query = request.args.get("q", "").strip()
+    product_results = []
+
+    if query:
+        product_results = db_repo.search_products(query)
+
+    pages = [
+        {
+            "title": "Home",
+            "url": url_for("home"),
+            "hint": "Homepage and Highlights",
+            "keywords": ["home", "start", "floravis"],
+        },
+        {
+            "title": "Shop",
+            "url": url_for("shop"),
+            "hint": "Soaps and Sets",
+            "keywords": ["products", "soaps", "sets"],
+        },
+        {
+            "title": "About us",
+            "url": url_for("about_us"),
+            "hint": "Our Story",
+            "keywords": ["about", "brand", "story"],
+        },
+        {
+            "title": "Contact",
+            "url": url_for("contact"),
+            "hint": "Contact Us",
+            "keywords": ["kontakt", "help", "support"],
+        },
+        {
+            "title": "Profile",
+            "url": url_for("profil"),
+            "hint": "Login and Profile",
+            "keywords": ["login", "profile", "account"],
+        },
+        {
+            "title": "Settings",
+            "url": url_for("settings"),
+            "hint": "Settings",
+            "keywords": ["settings", "preferences"],
+        },
+    ]
+
+    page_results = []
+    if query:
+        q_lower = query.lower()
+        for page in pages:
+            haystack = " ".join([page["title"], page["hint"]] + page["keywords"]).lower()
+            if q_lower in haystack:
+                page_results.append(page)
+
+    return render_template(
+        "search_results.html",
+        query=query,
+        products=product_results,
+        pages=page_results,
+    )
 
 @app.route("/searchbar")
 def searchbar() -> str:
@@ -263,11 +340,5 @@ def add_product():
     return redirect(url_for("home"))
 
 
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
