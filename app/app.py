@@ -2,7 +2,7 @@ import db
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
-
+from mail import send_simple_message, send_order_confirmation
 from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -97,6 +97,8 @@ def contact():
         print(f"E-Mail: {email}")
         print(f"Nachricht: {message}")
         print("========================")
+
+        send_simple_message()
 
         recipient = os.getenv("MAIL_RECIPIENT")
         if recipient and app.config.get("MAIL_USERNAME") and app.config.get("MAIL_PASSWORD"):
@@ -251,10 +253,46 @@ def checkout():
         add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
         add_customer_payment(payment,card_name,card_number,expiration,cvv)
 
+        # ═══════════════════════════════════════════════════════════════
+        # BESTELLBESTÄTIGUNG PER E-MAIL SENDEN (MAILGUN)
+        # ═══════════════════════════════════════════════════════════════
+        # Warenkorb-Items aus Session holen (falls vorhanden)
+        cart_items = session.get('cart', [])
 
+        # Falls keine Cart-Items in Session, erstelle Standard-Item
+        if not cart_items:
+            cart_items = [{'name': 'Floravis Seife', 'quantity': 1, 'price': 11.99}]
+
+        # Total berechnen
+        order_total = sum(item.get('quantity', 1) * item.get('price', 11.99) for item in cart_items)
+
+        # Order-Daten für E-Mail zusammenstellen
+        order_data = {
+            'salutation': salutation,
+            'name': name,
+            'surname': surname,
+            'address': address,
+            'plz': plz,
+            'city': city,
+            'tel': tel,
+            'payment': payment,
+            'items': cart_items,
+            'total': order_total
+        }
+
+        # Bestätigungs-E-Mail senden
+        recipient_name = f"{surname} {name}"
+        if email:
+            try:
+                send_order_confirmation(email, recipient_name, order_data)
+                print(f"📧 Bestätigungs-E-Mail an {email} gesendet!")
+            except Exception as e:
+                print(f"⚠️ E-Mail konnte nicht gesendet werden: {e}")
+        # ═══════════════════════════════════════════════════════════════
 
         # Session-Daten löschen nach erfolgreichem Checkout
         session.pop('checkout_data', None)
+        session.pop('cart', None)  # Warenkorb leeren
 
         return "OK", 200
 
