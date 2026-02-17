@@ -14,7 +14,7 @@
         <div class="addres-card-container">
 
             <div class="addres-details">
-                <div class="addres-details-title">Adressdaten</div>
+                <div class="addres-details-title">Adressdetails</div>
                 <div class="salutation">Anrede</div>
 
                 <div class="salutation-buttons">
@@ -45,13 +45,13 @@
                 <label>
                     <input class="surname-input" type="text" name="surname" placeholder="Vorname" value="{{ checkout_data.get('surname', '') }}">
                 </label>
-                <div class="addres">Strasse + Nr.</div>
+                <div class="addres">Straße + Nr.</div>
                 <label>
-                    <input class="addres-input" type="text" name="address" placeholder="Strasse + Nr." value="{{ checkout_data.get('address', '') }}">
+                    <input class="addres-input" type="text" name="address" placeholder="Straße + Nr." value="{{ checkout_data.get('address', '') }}">
                 </label>
                 <div class="ortplz">
                     <div class="place-flex">
-                        <div class="place">PLZ</div>
+                        <div class="place">Postleitzahl</div>
                         <label>
                             <input
                                     class="place-input"
@@ -65,9 +65,9 @@
                         </label>
                     </div>
                     <div class="city-flex">
-                        <div class="city">Ort</div>
+                        <div class="city">Stadt</div>
                         <label>
-                            <input class="city-input" type="text" name="city" placeholder="Ort" value="{{ checkout_data.get('city', '') }}">
+                            <input class="city-input" type="text" name="city" placeholder="Stadt" value="{{ checkout_data.get('city', '') }}">
                         </label>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                             class="email-input"
                             type="email"
                             name="email"
-                            placeholder="name@example.com"
+                            placeholder="name@beispiel.com"
                             autocomplete="email"
                             value="{{ checkout_data.get('email', '') }}"
                     >
@@ -89,7 +89,7 @@
             </div>
 
             <div class="card-details">
-                <div class="card-details-title">Kartendaten</div>
+                <div class="card-details-title">Kartendetails</div>
 
                 <div class="payment-methods">Zahlungsmethoden</div>
 
@@ -125,7 +125,7 @@
 
 
                 <div class="card-details-fields" id="card-details-fields" style="display: none;">
-                    <div class="card-name">Name auf der Karte</div>
+                    <div class="card-name">Name auf Karte</div>
                 <label>
                     <input class="name-input" type="text" name="card_name" placeholder="Name" value="{{ checkout_data.get('card_name', '') }}">
                 </label>
@@ -178,9 +178,9 @@
 
                 <div class="txt">Zwischensumme</div>
                 <div class="txt">Versand</div>
-                <div class="txt">Gesamt (inkl. MwSt.)</div>
+                <div class="txt">Gesamt (Steuern inbegriffen)</div>
                 <button type="button" class="checkout-button" onclick="handleCheckout()">
-                    Bestellen
+                    Kasse
                 </button>
             </div>
 
@@ -195,13 +195,13 @@
         <div class="thank-you-content">
             <div class="thank-you-icon">✓</div>
             <h1>Vielen Dank!</h1>
-            <p>Deine Bestellung wurde erfolgreich aufgegeben</p>
+            <p>Ihre Bestellung wurde erfolgreich aufgegeben</p>
             <div class="thank-you-message">
-                <p>Wir haben deine Bestellung erhalten und werden sie in Kürze bearbeiten.</p>
-                <p>Eine Bestätigungs-E-Mail wird dir in den nächsten Minuten zugesendet.</p>
+                <p>Wir haben Ihre Bestellung erhalten und werden sie kürze verarbeiten.</p>
+                <p>Eine Bestätigungse-Mail wird in den nächsten Minuten an Sie versendet.</p>
             </div>
             <a href="{{ url_for('shop') }}" class="back-to-shop">Zurück zum Shop</a>
-            <a href="{{ url_for('orders') }}" class="view-orders">Meine Bestellungen</a>
+            <a href="{{ url_for('orders') }}" class="view-orders">Meine Bestellungen anzeigen</a>
         </div>
     </div>
 
@@ -393,7 +393,7 @@
             // Prüfe Name (keine Zahlen)
             var nameInput = document.querySelector('input[name="name"]');
             if (!nameInput || !validateName(nameInput.value)) {
-                showToast('Name darf keine Zahlen enthalten', 'error');
+                showToast('Nachname darf keine Zahlen enthalten', 'error');
                 if (nameInput) nameInput.focus();
                 return false;
             }
@@ -409,7 +409,7 @@
             // Prüfe Adresse
             var addressInput = document.querySelector('input[name="address"]');
             if (!addressInput || addressInput.value.trim() === '') {
-                showToast('Bitte fülle das Feld "Strasse + Nr." aus', 'error');
+                showToast('Bitte fülle das Feld "Straße + Nr." aus', 'error');
                 if (addressInput) addressInput.focus();
                 return false;
             }
@@ -417,7 +417,7 @@
             // Prüfe PLZ (genau 4 Zahlen)
             var plzInput = document.querySelector('input[name="plz"]');
             if (!plzInput || !validatePLZ(plzInput.value)) {
-                showToast('PLZ muss genau 4 Zahlen haben', 'error');
+                showToast('Postleitzahl muss genau 4 Ziffern haben', 'error');
                 if (plzInput) plzInput.focus();
                 return false;
             }
@@ -425,7 +425,7 @@
             // Prüfe Ort
             var cityInput = document.querySelector('input[name="city"]');
             if (!cityInput || !validateName(cityInput.value)) {
-                showToast('Ort darf keine Zahlen enthalten', 'error');
+                showToast('Stadt darf keine Zahlen enthalten', 'error');
                 if (cityInput) cityInput.focus();
                 return false;
             }
@@ -453,10 +453,10 @@
                 return false;
             }
 
-            // Prüfe Name on Card (keine Zahlen)
+            // Prüfe Name auf Karte (keine Zahlen)
             var cardNameInput = document.querySelector('input[name="card_name"]');
             if (!cardNameInput || !validateName(cardNameInput.value)) {
-                showToast('Name on Card darf keine Zahlen enthalten', 'error');
+                showToast('Name auf Karte darf keine Zahlen enthalten', 'error');
                 if (cardNameInput) cardNameInput.focus();
                 return false;
             }
@@ -469,7 +469,7 @@
                 return false;
             }
 
-            // Prüfe Expiration Date (MM/YY)
+            // Prüfe Ablaufdatum (MM/YY)
             var expirationInput = document.querySelector('input[name="expiration"]');
             if (!expirationInput || !validateExpiration(expirationInput.value)) {
                 showToast('Ablaufdatum muss im Format MM/YY sein (z.B. 03/25)', 'error');

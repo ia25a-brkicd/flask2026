@@ -1,157 +1,206 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Einstellungen | Flor'Avis{% endblock
+%} {% block head %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
+  rel="stylesheet"
+/>
 
-{% block title %}Einstellungen | Flor'Avis{% endblock %}
-
-{% block head %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
-{% endblock %}
-
-{% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/settings.css') }}"
+/>
+{% endblock %} {% block content %}
 <div class="settings">
-    <h1 id="title">Einstellungen</h1>
+  <h1 id="title">Einstellungen</h1>
 
-    <!-- General Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">⚙️</span>
-            <h2>Allgemein</h2>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Sprache</label>
-                <p class="setting-description">Wähle deine bevorzugte Sprache</p>
-            </div>
-            <select class="setting-control">
-                <option value="de">Deutsch</option>
-                <option value="en">English</option>
-                <option value="fr">Français</option>
-                <option value="it">Italiano</option>
-            </select>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Region / Land</label>
-                <p class="setting-description">Lege deinen Standort fest</p>
-            </div>
-            <select class="setting-control">
-                <option value="ch">Schweiz</option>
-                <option value="de">Deutschland</option>
-                <option value="fr">Frankreich</option>
-                <option value="it">Italien</option>
-                <option value="other">Andere</option>
-            </select>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Dunkelmodus</label>
-                <p class="setting-description">Dunklen Modus für die Anwendung aktivieren</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+  <!-- General Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">⚙️</span>
+      <h2>Allgemein</h2>
     </div>
 
-    <!-- Notifications Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">🔔</span>
-            <h2>Benachrichtigungen</h2>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Push-Benachrichtigungen</label>
-                <p class="setting-description">Benachrichtigungen über Bestellungen erhalten</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Sprache</label>
+        <p class="setting-description">Wählen Sie Ihre bevorzugte Sprache</p>
+      </div>
+      <select class="setting-control">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+      </select>
     </div>
 
-    <!-- Privacy & Security Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">🔒</span>
-            <h2>Datenschutz & Sicherheit</h2>
-        </div>
-        
-    
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Zwei-Faktor-Authentifizierung</label>
-                <p class="setting-description">Zusätzlicher Schutz für dein Konto</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('App-Berechtigungen verwalten')">
-            <div class="setting-info">
-                <label>App-Berechtigungen</label>
-                <p class="setting-description">Zugriff und Berechtigungen verwalten</p>
-            </div>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Cookies</label>
-                <p class="setting-description">Alle Cookies für besseren Schutz und Funktionalität zulassen</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Region / Land</label>
+        <p class="setting-description">Legen Sie Ihren Standort fest</p>
+      </div>
+      <select class="setting-control">
+        <option value="de">Deutschland</option>
+        <option value="fr">Frankreich</option>
+        <option value="ch">Schweiz</option>
+        <option value="it">Italien</option>
+        <option value="other">Sonstiges</option>
+      </select>
     </div>
 
-    <!-- Account / Profile Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">👤</span>
-            <h2>Konto / Profil</h2>
-        </div>
-        
-        <div class="setting-item clickable" onclick="alert('Profilbild ändern')">
-            <div class="setting-info">
-                <label>Profilbild ändern</label>
-                <p class="setting-description">Neues Profilbild hochladen</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('Name / E-Mail bearbeiten')">
-            <div class="setting-info">
-                <label>Name / E-Mail bearbeiten</label>
-                <p class="setting-description">Persönliche Informationen bearbeiten</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('Passwort zurücksetzen')">
-            <div class="setting-info">
-                <label>Passwort zurücksetzen</label>
-                <p class="setting-description">Neues Passwort festlegen</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable danger" onclick="alert('Konto wird gelöscht')">
-            <div class="setting-info">
-                <label>Konto löschen</label>
-                <p class="setting-description">Konto dauerhaft entfernen</p>
-            </div>
-            <span class="arrow">›</span>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Dunkler Modus</label>
+        <p class="setting-description">
+          Aktivieren Sie den dunklen Modus für die Anwendung
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked />
+        <span class="slider"></span>
+      </label>
     </div>
+  </div>
+
+  <!-- Notifications Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">🔔</span>
+      <h2>Benachrichtigungen</h2>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Push-Benachrichtigungen</label>
+        <p class="setting-description">
+          Benachrichtigungen über Bestellungen erhalten
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Privacy & Security Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">🔒</span>
+      <h2>Datenschutz & Sicherheit</h2>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Zwei-Faktor-Authentifizierung</label>
+        <p class="setting-description">Zusätzlicher Schutz für Ihr Konto</p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div
+      class="setting-item clickable"
+      onclick="alert('App-Berechtigungen verwalten')"
+    >
+      <div class="setting-info">
+        <label>App-Berechtigungen</label>
+        <p class="setting-description">
+          Verwalten Sie Zugriff und Berechtigungen
+        </p>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Cookies</label>
+        <p class="setting-description">
+          Alle Cookies zulassen für besseren Schutz und Funktionalität
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Account / Profile Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">👤</span>
+      <h2>Konto / Profil</h2>
+    </div>
+
+    <div class="setting-item clickable" onclick="alert('Profilbild ändern')">
+      <div class="setting-info">
+        <label>Profilbild ändern</label>
+        <p class="setting-description">Laden Sie ein neues Profilbild hoch</p>
+      </div>
+    </div>
+
+    <div
+      class="setting-item clickable"
+      onclick="alert('Name / E-Mail bearbeiten')"
+    >
+      <div class="setting-info">
+        <label>Name / E-Mail bearbeiten</label>
+        <p class="setting-description">
+          Bearbeiten Sie Ihre persönlichen Informationen
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="setting-item clickable"
+      onclick="alert('Passwort zurücksetzen')"
+    >
+      <div class="setting-info">
+        <label>Passwort zurücksetzen</label>
+        <<<<<<< HEAD
+        <p class="setting-description">Neues Passwort festlegen</p>
+      </div>
+    </div>
+
+    <div
+      class="setting-item clickable danger"
+      onclick="alert('Konto wird gelöscht')"
+    >
+      <div class="setting-info">
+        <label>Konto löschen</label>
+        <p class="setting-description">Konto dauerhaft entfernen</p>
+        =======
+        <p class="setting-description">Legen Sie ein neues Passwort fest</p>
+      </div>
+    </div>
+
+    <<<<<<< HEAD
+    <div
+      class="setting-item clickable danger"
+      onclick="alert('Account will be deleted')"
+    >
+      =======
+      <div
+        class="setting-item clickable danger"
+        onclick="
+          if (confirm('Möchten Sie Ihr Konto wirklich löschen?'))
+            alert('Konto wird gelöscht');
+        "
+      >
+        >>>>>>> sevbranch
+        <div class="setting-info">
+          <label>Konto löschen</label>
+          <p class="setting-description">Entfernen Sie Ihr Konto dauerhaft</p>
+          >>>>>>> ae4852d6a7dbb87c317e4c27a95167277d96a8c1
+        </div>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
