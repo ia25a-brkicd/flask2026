@@ -52,6 +52,27 @@ def add_login(email, first_name, last_name, password):
         cur.close()
 
 
+def get_login_by_email(email):
+    conn = get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            "SELECT login_id, email, first_name, last_name, password FROM login WHERE email = %s",
+            (email,),
+        )
+        return cur.fetchone()
+    finally:
+        cur.close()
+
+
+def verify_login(email, password):
+    row = get_login_by_email(email)
+    if not row:
+        return False, None
+    hashed_password = row[4]
+    return check_password_hash(hashed_password, password), row
+
+
 def get_all_products():
     conn = get_db()
     cur = conn.cursor()

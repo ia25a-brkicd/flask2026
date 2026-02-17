@@ -59,11 +59,11 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="password">
+                    <label for="password_repeat">
                         <i class="fa fa-lock"></i>
                         Repeat Password
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Repeat your password" required>
+                    <input type="password" id="password_repeat" name="password_repeat" placeholder="Repeat your password" required>
                     <span class="input-border"></span>
                 </div>
 
@@ -174,12 +174,18 @@ if (registerButton) {
         var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
         var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
         var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
+        var passwordRepeat = document.getElementById('password_repeat').value; // Liest den Wert aus dem Eingabefeld "password_repeat"
         
         // Prüft, ob eines der Felder leer ist
-        if (!lastname || !firstname || !email || !password) {
+        if (!lastname || !firstname || !email || !password || !passwordRepeat) {
             showError('Not all fields were filled out!');
             return;
         }
+                if (password !== passwordRepeat) {
+                    showError('Passwords do not match');
+                    return;
+                }
+
         
         // Prüfe Nachname (keine Zahlen)
         if (!validateName(lastname)) {
@@ -227,6 +233,7 @@ if (registerButton) {
                 document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
                 document.getElementById('email').value = '';// Leert das E-Mail-Feld
                 document.getElementById('password').value = '';// Leert das Passwort-Feld
+                document.getElementById('password_repeat').value = '';// Leert das Wiederholungsfeld
                 
                 var notification = document.getElementById('notification');
                 notification.classList.add('show');
@@ -237,7 +244,11 @@ if (registerButton) {
                     window.location.reload();
                 }, 4000);
             } else {
-                showError('An error occurred. Please try again later.');
+                response.json().then(function(data) {
+                    showError(data.message || 'An error occurred. Please try again later.');
+                }).catch(function () {
+                    showError('An error occurred. Please try again later.');
+                });
             }
         }).catch(function () {
             showError('Network error. Please check your connection.');
