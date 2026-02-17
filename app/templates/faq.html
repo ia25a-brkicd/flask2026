@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block title %}FAQ | Flor'Avis{% endblock %} {%
+block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/base.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<div class="faq-container">
+  <h1>Häufig gestellte Fragen (FAQ)</h1>
+
+  <div class="faq-content">
+    <div class="faq-item">
+      <h2>Wie lange hält eine Seife?</h2>
+      <p>
+        Unsere hochwertigen Naturseifen halten typischerweise 3-4 Wochen, je
+        nach Häufigkeit der Anwendung und Lagerung. Eine gute Trocknung zwischen
+        den Anwendungen verlängert die Lebensdauer.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h2>Sind die Seifen für empfindliche Haut geeignet?</h2>
+      <p>
+        Ja! Unsere Seifen bestehen aus natürlichen Inhaltsstoffen ohne
+        schädliche Chemikalien. Sie sind jedoch für sehr empfindliche Haut zu
+        testen. Bei Fragen kontaktieren Sie uns bitte.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h2>Wie versenden Sie die Produkte?</h2>
+      <p>
+        Wir versenden mit zuverlässigen Partnern. Weitere Details finden Sie auf
+        unserer
+        <a href="{{ url_for('shipping') }}">Versandrichtlinien</a> Seite.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h2>Kann ich meine Bestellung ändern?</h2>
+      <p>
+        Kontaktieren Sie uns so schnell wie möglich unter
+        <a href="{{ url_for('contact') }}">Kontakt</a>, wenn Sie Ihre Bestellung
+        ändern möchten. Wir helfen gerne!
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h2>Bieten Sie internationale Versände an?</h2>
+      <p>
+        Derzeit versenden wir hauptsächlich innerhalb von Deutschland. Für
+        spezielle Anfragen kontaktieren Sie uns bitte.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-cta">
+    <p>Haben Sie weitere Fragen?</p>
+    <a href="{{ url_for('contact') }}" class="btn-primary"
+      >Kontaktieren Sie uns</a
+    >
+  </div>
+</div>
+
+<style>
+  .faq-container {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 20px;
+    font-family: "Source Sans 3", sans-serif;
+  }
+
+  .faq-container h1 {
+    text-align: center;
+    font-family: "Playfair Display", serif;
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    color: #333;
+  }
+
+  .faq-item {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-item h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .faq-item p {
+    line-height: 1.6;
+    color: #666;
+    font-size: 1em;
+  }
+
+  .faq-item a {
+    color: #c59a72;
+    text-decoration: none;
+  }
+
+  .faq-item a:hover {
+    text-decoration: underline;
+  }
+
+  .faq-cta {
+    text-align: center;
+    margin-top: 60px;
+    padding: 40px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #c59a72;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-primary:hover {
+    background-color: #a67c52;
+  }
+</style>
+
+{% endblock %}

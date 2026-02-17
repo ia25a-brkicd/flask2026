@@ -1,22 +1,69 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Kontakt & Support | Flor'Avis{%
+endblock %} {% block head %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
+  rel="stylesheet"
+/>
 
-{% block title %}Contact & Support | Flor'Avis{% endblock %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/contact.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="contact-wrapper">
+  <div class="contact-hero">
+    <h1>Kontaktieren Sie uns</h1>
+    <p class="hero-subtitle">
+      Wir würden gerne von Ihnen hören. Senden Sie uns eine Nachricht und wir
+      antworten so bald wie möglich.
+    </p>
+  </div>
 
-{% block head %}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
-          rel="stylesheet">
+  <div class="contact-container">
+    <!-- Contact Form -->
+    <div class="form-section">
+      <form
+        action="mailto:floravissocialmedia@gmail.com"
+        method="post"
+        enctype="text/plain"
+      >
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="firstname">
+              <i class="fa fa-user"></i>
+              Vorname
+            </label>
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              placeholder="Geben Sie Ihren Vornamen ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
-{% endblock %}
-
-{% block content %}
-    <div class="contact-wrapper">
-        <div class="contact-hero">
-            <h1>Get in Touch</h1>
-            <p class="hero-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+          <div class="input-group">
+            <label for="lastname">
+              <i class="fa fa-user"></i>
+              Nachname
+            </label>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              placeholder="Geben Sie Ihren Nachnamen ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
         </div>
 
+<<<<<<< HEAD
         <div class="contact-container">
             <!-- Contact Form -->
             <div class="form-section">
@@ -67,177 +114,222 @@
                     </button>
                 </form>
             </div>
+=======
+        <div class="input-group">
+          <label for="email">
+            <i class="fa fa-envelope"></i>
+            E-Mail-Adresse
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="ihre.email@beispiel.com"
+            required
+          />
+          <span class="input-border"></span>
+>>>>>>> 5fa61b2bb2dc9214fa83150f993a37af8d9b590e
         </div>
 
-        <!-- Push Benachrichtigung für Erfolg -->
-        <div id="notification" class="notification success-notification">
-            <i class="fa fa-check-circle"></i>
-            <div class="notification-content">
-                <h4>Success!</h4>
-                <p>Thank you for your message! We will get back to you as soon as possible.</p>
-            </div>
+        <div class="input-group">
+          <label for="message">
+            <i class="fa fa-comment"></i>
+            Ihre Nachricht
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            placeholder="Teilen Sie uns mit, wie wir Ihnen helfen können..."
+            maxlength="500"
+            required
+          ></textarea>
+          <span class="input-border"></span>
+          <div class="char-counter">
+            <span id="char-count">0</span>/500 Zeichen
+          </div>
         </div>
 
-        <!-- Push Benachrichtigung für Fehler -->
-        <div id="error-notification" class="notification error-notification">
-            <i class="fa fa-exclamation-circle"></i>
-            <div class="notification-content">
-                <h4>Error</h4>
-                <p id="error-text">Not all fields were filled out!</p>
-            </div>
-        </div>
+        <button type="button" id="absenden-btn" class="submit-btn">
+          <span>Nachricht senden</span>
+          <i class="fa fa-paper-plane"></i>
+        </button>
+      </form>
     </div>
+  </div>
 
-    <script>
-        // Character counter for textarea
-        const messageField = document.getElementById('message');
-        const charCount = document.getElementById('char-count');
-        
-        messageField.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-        });
+  <!-- Push Benachrichtigung für Erfolg -->
+  <div id="notification" class="notification success-notification">
+    <i class="fa fa-check-circle"></i>
+    <div class="notification-content">
+      <h4>Erfolg!</h4>
+      <p>
+        Danke für Ihre Nachricht! Wir werden Sie so bald wie möglich
+        kontaktieren.
+      </p>
+    </div>
+  </div>
 
-        // Add floating label effect
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-        });
+  <!-- Push Benachrichtigung für Fehler -->
+  <div id="error-notification" class="notification error-notification">
+    <i class="fa fa-exclamation-circle"></i>
+    <div class="notification-content">
+      <h4>Fehler</h4>
+      <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
+    </div>
+  </div>
+</div>
 
-        // Validierungsfunktionen
-        function validateName(name) {
-            // Keine Zahlen erlaubt
-            var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
-            return regex.test(name) && name.trim().length > 0;
-        }
+<script>
+  // Character counter for textarea
+  const messageField = document.getElementById("message");
+  const charCount = document.getElementById("char-count");
 
+  messageField.addEventListener("input", function () {
+    charCount.textContent = this.value.length;
+  });
 
-        function validateEmail(email) {
-            // Muss @ enthalten
-            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
-        }
+  // Add floating label effect
+  const inputs = document.querySelectorAll("input, textarea");
+  inputs.forEach((input) => {
+    input.addEventListener("focus", function () {
+      this.parentElement.classList.add("focused");
+    });
 
-        function showError(message) {
-            var errorNotification = document.getElementById('error-notification');
-            var errorText = document.getElementById('error-text');
-            errorText.textContent = message;
-            errorNotification.classList.remove('hide');
-            errorNotification.classList.add('show');
-            
-            if (errorTimeoutId !== null) {
-                clearTimeout(errorTimeoutId);
-            }
-            
-            errorTimeoutId = setTimeout(function () {
-                errorNotification.classList.remove('show');
-                errorNotification.classList.add('hide');
-            }, 4000);
-        }
+    input.addEventListener("blur", function () {
+      if (!this.value) {
+        this.parentElement.classList.remove("focused");
+      }
+    });
+  });
 
+  // Validierungsfunktionen
+  function validateName(name) {
+    // Keine Zahlen erlaubt
+    var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
+    return regex.test(name) && name.trim().length > 0;
+  }
 
-        // Variable um den Timeout-Timer zu speichern
-        var errorTimeoutId = null;
+  function validateEmail(email) {
+    // Muss @ enthalten
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
 
-        /* Greift auf den Button mit der ID "absenden-btn" zu
+  function showError(message) {
+    var errorNotification = document.getElementById("error-notification");
+    var errorText = document.getElementById("error-text");
+    errorText.textContent = message;
+    errorNotification.classList.remove("hide");
+    errorNotification.classList.add("show");
+
+    if (errorTimeoutId !== null) {
+      clearTimeout(errorTimeoutId);
+    }
+
+    errorTimeoutId = setTimeout(function () {
+      errorNotification.classList.remove("show");
+      errorNotification.classList.add("hide");
+    }, 4000);
+  }
+
+  // Variable um den Timeout-Timer zu speichern
+  var errorTimeoutId = null;
+
+  /* Greift auf den Button mit der ID "absenden-btn" zu
            und reagiert auf einen Klick */
-        document.getElementById('absenden-btn').addEventListener('click', function (e) {
+  document
+    .getElementById("absenden-btn")
+    .addEventListener("click", function (e) {
+      // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
+      e.preventDefault();
 
-            // Verhindert das Standardverhalten (z. B. Formular wird neu geladen)
-            e.preventDefault();
+      var lastname = document.getElementById("lastname").value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+      var firstname = document.getElementById("firstname").value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+      var email = document.getElementById("email").value; // Liest den Wert aus dem Eingabefeld "email"
+      var message = document.getElementById("message").value; // Liest den Wert aus dem Textfeld "message" (Nachricht)
 
+      // Prüft, ob eines der Felder leer ist
+      if (!lastname || !firstname || !email || !message) {
+        showError("Nicht alle Felder wurden ausgefüllt!");
+        return;
+      }
 
-            var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
-            var firstname = document.getElementById('firstname').value;// Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
-            var email = document.getElementById('email').value;// Liest den Wert aus dem Eingabefeld "email"
-            var message = document.getElementById('message').value;// Liest den Wert aus dem Textfeld "message" (Nachricht)
+      // Prüfe Nachname (keine Zahlen)
+      if (!validateName(lastname)) {
+        showError("Nachname darf keine Zahlen enthalten");
+        return;
+      }
 
-            // Prüft, ob eines der Felder leer ist
-            if (!lastname || !firstname || !email || !message) {
-                showError('Not all fields were filled out!');
-                return;
-            }
+      // Prüfe Vorname (keine Zahlen)
+      if (!validateName(firstname)) {
+        showError("Vorname darf keine Zahlen enthalten");
+        return;
+      }
 
-            // Prüfe Nachname (keine Zahlen)
-            if (!validateName(lastname)) {
-                showError('Last name may not contain numbers');
-                return;
-            }
+      // Prüfe E-Mail (muss @ enthalten)
+      if (!validateEmail(email)) {
+        showError("E-Mail muss ein @ enthalten und gültig sein");
+        return;
+      }
 
-            // Prüfe Vorname (keine Zahlen)
-            if (!validateName(firstname)) {
-                showError('First name may not contain numbers');
-                return;
-            }
+      // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
+      var errorNotification = document.getElementById("error-notification");
+      errorNotification.classList.remove("show");
+      errorNotification.classList.add("hide");
 
-            // Prüfe E-Mail (muss @ enthalten)
-            if (!validateEmail(email)) {
-                showError('Email must contain an @ and be valid');
-                return;
-            }
+      // Löscht den Timeout, falls vorhanden
+      if (errorTimeoutId !== null) {
+        clearTimeout(errorTimeoutId);
+      }
 
-            // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
-            var errorNotification = document.getElementById('error-notification');
-            errorNotification.classList.remove('show');
-            errorNotification.classList.add('hide');
+      // Erstellt ein neues FormData-Objekt für die Übertragung
+      var formData = new FormData();
 
-            // Löscht den Timeout, falls vorhanden
-            if (errorTimeoutId !== null) {
-                clearTimeout(errorTimeoutId);
-            }
+      formData.append("lastname", lastname); // Fügt den Nachnamen hinzu
+      formData.append("firstname", firstname); // Fügt den Vornamen hinzu
+      formData.append("email", email); // Fügt die E-Mail-Adresse hinzu
+      formData.append("message", message); // Fügt die Nachricht hinzu
 
-            // Erstellt ein neues FormData-Objekt für die Übertragung
-            var formData = new FormData();
+      // Sendet die Daten per POST an die Server-Route "contact"
+      fetch('{{ url_for("contact") }}', {
+        method: "POST", // HTTP-Methode
+        body: formData, // Formulardaten
+      })
+        .then(function (response) {
+          if (response.ok) {
+            // Leert die Felder nur bei Erfolg
+            document.getElementById("lastname").value = ""; // Leert das Nachnamen-Feld
+            document.getElementById("firstname").value = ""; // Leert das Vornamen-Feld
+            document.getElementById("email").value = ""; // Leert das E-Mail-Feld
+            document.getElementById("message").value = ""; // Leert das Nachrichten-Feld
+            document.getElementById("char-count").textContent = "0"; // Reset character counter
 
+            // Greift auf die Erfolgs-Benachrichtigung zu
+            var notification = document.getElementById("notification");
 
-            formData.append('lastname', lastname);// Fügt den Nachnamen hinzu
-            formData.append('firstname', firstname);  // Fügt den Vornamen hinzu
-            formData.append('email', email); // Fügt die E-Mail-Adresse hinzu
-            formData.append('message', message);// Fügt die Nachricht hinzu
+            // Zeigt die Benachrichtigung an
+            notification.classList.add("show");
 
-            // Sendet die Daten per POST an die Server-Route "contact"
-            fetch('{{ url_for("contact") }}', {
-                method: 'POST', // HTTP-Methode
-                body: formData  // Formulardaten
-            }).then(function (response) {
-                if (response.ok) {
-                    // Leert die Felder nur bei Erfolg
-                    document.getElementById('lastname').value = '';// Leert das Nachnamen-Feld
-                    document.getElementById('firstname').value = '';  // Leert das Vornamen-Feld
-                    document.getElementById('email').value = '';// Leert das E-Mail-Feld
-                    document.getElementById('message').value = ''; // Leert das Nachrichten-Feld
-                    document.getElementById('char-count').textContent = '0'; // Reset character counter
-
-                    // Greift auf die Erfolgs-Benachrichtigung zu
-                    var notification = document.getElementById('notification');
-
-                    // Zeigt die Benachrichtigung an
-                    notification.classList.add('show');
-
-                    // Versteckt die Benachrichtigung nach 4 Sekunden
-                    setTimeout(function () {
-                        // Entfernt die Anzeige-Klasse
-                        notification.classList.remove('show');
-                        // Fügt die Verstecken-Klasse hinzu
-                        notification.classList.add('hide');
-                    }, 4000); // 4 Sekunden
-                } else {
-                    console.error('Server-Fehler:', response.status);
-                    showError('An error occurred. Please try again later.');
-                }
-            }).catch(function (error) {
-                console.error('Network error:', error);
-                showError('Network error. Please check your connection.');
-            });
+            // Versteckt die Benachrichtigung nach 4 Sekunden
+            setTimeout(function () {
+              // Entfernt die Anzeige-Klasse
+              notification.classList.remove("show");
+              // Fügt die Verstecken-Klasse hinzu
+              notification.classList.add("hide");
+            }, 4000); // 4 Sekunden
+          } else {
+            console.error("Server-Fehler:", response.status);
+            showError(
+              "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
+            );
+          }
+        })
+        .catch(function (error) {
+          console.error("Network error:", error);
+          showError("Netzwerkfehler. Bitte prüfe deine Verbindung.");
         });
-    </script>
-
+    });
+</script>
 
 {% endblock %}

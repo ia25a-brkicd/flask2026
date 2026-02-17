@@ -1,157 +1,571 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Einstellungen | Flor'Avis{% endblock
+%} {% block head %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
+  rel="stylesheet"
+/>
 
-{% block title %}Settings | Flor'Avis{% endblock %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/settings.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/contact.css') }}"
+/>
+<style>
+.arrow {
+    font-size: 24px;
+    color: #999;
+    font-weight: 300;
+}
+.setting-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
 
-{% block head %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+/* Custom Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    width: 500px;
+    max-width: 90%;
+    background: white;
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    font-family: 'Inter', sans-serif;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/settings.css') }}">
-{% endblock %}
+.notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
 
-{% block content %}
+.notification.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-100px);
+}
+
+.notification .icon-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.error-notification {
+    border-left: 4px solid #d9534f;
+}
+
+.error-notification .icon-circle {
+    background-color: #d9534f;
+}
+
+.error-notification .icon-circle i {
+    color: white;
+    font-size: 24px;
+}
+
+.success-notification {
+    border-left: 4px solid #28a745;
+}
+
+.success-notification .icon-circle {
+    background-color: #28a745;
+}
+
+.success-notification .icon-circle i {
+    color: white;
+    font-size: 24px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-content h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    letter-spacing: 0.3px;
+}
+
+.error-notification .notification-content h4 {
+    color: #d9534f;
+}
+
+.success-notification .notification-content h4 {
+    color: #28a745;
+}
+
+.notification-content p {
+    font-size: 15px;
+    margin: 0;
+    color: #333;
+    line-height: 1.4;
+}
+</style>
+{% endblock %} {% block content %}
 <div class="settings">
-    <h1 id="title">Settings</h1>
+  <h1 id="title">Einstellungen</h1>
 
-    <!-- General Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">⚙️</span>
-            <h2>General</h2>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Language</label>
-                <p class="setting-description">Choose your preferred language</p>
-            </div>
-            <select class="setting-control">
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-                <option value="it">Italiano</option>
-            </select>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Region / Country</label>
-                <p class="setting-description">Set your location</p>
-            </div>
-            <select class="setting-control">
-                <option value="de">Germany</option>
-                <option value="fr">France</option>
-                <option value="ch">Switzerland</option>
-                <option value="it">Italy</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Dark Mode</label>
-                <p class="setting-description">Enable dark mode for the application</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+  <!-- General Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">⚙️</span>
+      <h2>Allgemein</h2>
     </div>
 
-    <!-- Notifications Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">🔔</span>
-            <h2>Notifications</h2>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Push Notifications</label>
-                <p class="setting-description">Receive notifications about orders</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Sprache</label>
+        <p class="setting-description">Wählen Sie Ihre bevorzugte Sprache</p>
+      </div>
+      <select class="setting-control">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+      </select>
     </div>
 
-    <!-- Privacy & Security Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">🔒</span>
-            <h2>Privacy & Security</h2>
-        </div>
-        
-    
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Two-Factor Authentication</label>
-                <p class="setting-description">Additional protection for your account</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('Manage App Permissions')">
-            <div class="setting-info">
-                <label>App Permissions</label>
-                <p class="setting-description">Manage access and permissions</p>
-            </div>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-info">
-                <label>Cookies</label>
-                <p class="setting-description">Allow all cookies for better protection and functionality</p>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Region / Land</label>
+        <p class="setting-description">Legen Sie Ihren Standort fest</p>
+      </div>
+      <select class="setting-control">
+        <option value="de">Deutschland</option>
+        <option value="fr">Frankreich</option>
+        <option value="ch">Schweiz</option>
+        <option value="it">Italien</option>
+        <option value="other">Sonstiges</option>
+      </select>
     </div>
 
-    <!-- Account / Profile Section -->
-    <div class="settings-section">
-        <div class="section-header">
-            <span class="section-icon">👤</span>
-            <h2>Account / Profile</h2>
-        </div>
-        
-        <div class="setting-item clickable" onclick="alert('Change Profile Picture')">
-            <div class="setting-info">
-                <label>Change Profile Picture</label>
-                <p class="setting-description">Upload a new profile picture</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('Edit Name / Email')">
-            <div class="setting-info">
-                <label>Edit Name / Email</label>
-                <p class="setting-description">Edit your personal information</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable" onclick="alert('Reset Password')">
-            <div class="setting-info">
-                <label>Reset Password</label>
-                <p class="setting-description">Set a new password</p>
-            </div>
-        </div>
-
-        <div class="setting-item clickable danger" onclick="alert('Account will be deleted')">
-            <div class="setting-info">
-                <label>Delete Account</label>
-                <p class="setting-description">Permanently remove your account</p>
-            </div>
-            <span class="arrow">›</span>
-        </div>
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Dunkler Modus</label>
+        <p class="setting-description">
+          Aktivieren Sie den dunklen Modus für die Anwendung
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked />
+        <span class="slider"></span>
+      </label>
     </div>
+  </div>
+
+  <!-- Notifications Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">🔔</span>
+      <h2>Benachrichtigungen</h2>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Push-Benachrichtigungen</label>
+        <p class="setting-description">
+          Benachrichtigungen über Bestellungen erhalten
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Privacy & Security Section -->
+  <div class="settings-section">
+    <div class="section-header">
+      <span class="section-icon">🔒</span>
+      <h2>Datenschutz & Sicherheit</h2>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Zwei-Faktor-Authentifizierung</label>
+        <p class="setting-description">Zusätzlicher Schutz für Ihr Konto</p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div
+      class="setting-item clickable"
+      onclick="alert('App-Berechtigungen verwalten')"
+    >
+      <div class="setting-info">
+        <label>App-Berechtigungen</label>
+        <p class="setting-description">
+          Verwalten Sie Zugriff und Berechtigungen
+        </p>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Cookies</label>
+        <p class="setting-description">
+          Alle Cookies zulassen für besseren Schutz und Funktionalität
+        </p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Account / Profile Section -->
+  <div class="settings-section" id="konto-profil">
+    <div class="section-header">
+      <span class="section-icon">👤</span>
+      <h2>Konto / Profil</h2>
+    </div>
+
+    {% if request.args.get('edit') == 'adresse' %}
+    <!-- Adresse Eingabe Formular -->
+    <div class="contact-container">
+      <div class="form-section">
+        <form action="{{ url_for('settings') }}" method="post">
+          <div class="input-group">
+            <label for="strasse">
+              <i class="fa fa-home"></i>
+              Straße und Hausnummer
+            </label>
+            <input
+              type="text"
+              id="strasse"
+              name="strasse"
+              placeholder="Geben Sie Ihre Straße und Hausnummer ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="plz">
+                <i class="fa fa-map-pin"></i>
+                Postleitzahl
+              </label>
+              <input
+                type="text"
+                id="plz"
+                name="plz"
+                placeholder="Geben Sie Ihre Postleitzahl ein"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+              <label for="stadt">
+                <i class="fa fa-city"></i>
+                Stadt
+              </label>
+              <input
+                type="text"
+                id="stadt"
+                name="stadt"
+                placeholder="Geben Sie Ihre Stadt ein"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="land">
+              <i class="fa fa-flag"></i>
+              Land
+            </label>
+            <input
+              type="text"
+              id="land"
+              name="land"
+              placeholder="Geben Sie Ihr Land ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <button type="submit" class="submit-btn" id="save-adresse-btn">
+            <span>Adresse speichern</span>
+            <i class="fa fa-save"></i>
+          </button>
+
+          <button type="button" class="submit-btn cancel-btn" id="cancel-adresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
+            <span>Abbrechen</span>
+            <i class="fa fa-times"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {% elif request.args.get('edit') == 'versandadresse' %}
+    <!-- Versandadresse Eingabe Formular -->
+    <div class="contact-container">
+      <div class="form-section">
+        <form action="{{ url_for('settings') }}" method="post">
+          <div class="input-group">
+            <label for="versand_strasse">
+              <i class="fa fa-home"></i>
+              Straße und Hausnummer
+            </label>
+            <input
+              type="text"
+              id="versand_strasse"
+              name="versand_strasse"
+              placeholder="Geben Sie Ihre Straße und Hausnummer ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="versand_plz">
+                <i class="fa fa-map-pin"></i>
+                Postleitzahl
+              </label>
+              <input
+                type="text"
+                id="versand_plz"
+                name="versand_plz"
+                placeholder="Geben Sie Ihre Postleitzahl ein"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+              <label for="versand_stadt">
+                <i class="fa fa-city"></i>
+                Stadt
+              </label>
+              <input
+                type="text"
+                id="versand_stadt"
+                name="versand_stadt"
+                placeholder="Geben Sie Ihre Stadt ein"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="versand_land">
+              <i class="fa fa-flag"></i>
+              Land
+            </label>
+            <input
+              type="text"
+              id="versand_land"
+              name="versand_land"
+              placeholder="Geben Sie Ihr Land ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <button type="submit" class="submit-btn" id="save-versandadresse-btn">
+            <span>Versandadresse speichern</span>
+            <i class="fa fa-save"></i>
+          </button>
+
+          <button type="button" class="submit-btn cancel-btn" id="cancel-versandadresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
+            <span>Abbrechen</span>
+            <i class="fa fa-times"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- Normale Ansicht -->
+    <div
+      class="setting-item clickable"
+      data-href="{{ url_for('settings') }}?edit=adresse#konto-profil"
+    >
+      <div class="setting-info">
+        <label>Adresse</label>
+        <p class="setting-description">
+          Geben Sie ihre Adresse ein
+        </p>
+      </div>
+      <span class="arrow">›</span>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Versandadresse</label>
+        <p class="setting-description">Versandadresse ist dieselbe, wie Adresse</p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="versandadresse-toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div
+      id="versandadresse-item"
+      class="setting-item clickable"
+      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"
+    >
+      <div class="setting-info">
+        <label>Versandadresse</label>
+        <p class="setting-description">
+          Geben Sie ihre Versandadresse ein
+        </p>
+      </div>
+      <span class="arrow">›</span>
+    </div>
+
+    <div
+      class="setting-item clickable danger"
+      onclick="alert('Konto wird gelöscht')"
+    >
+      <div class="setting-info">
+        <label>Konto löschen</label>
+        <p class="setting-description">Konto dauerhaft entfernen</p>
+      </div>
+      <span class="arrow">›</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Notifications -->
+  <div id="notification" class="notification success-notification">
+    <div class="icon-circle">
+      <i class="fa fa-check"></i>
+    </div>
+    <div class="notification-content">
+      <h4>Erfolg</h4>
+      <p id="success-text">Die Daten wurden erfolgreich gespeichert!</p>
+    </div>
+  </div>
+
+  <div id="error-notification" class="notification error-notification">
+    <div class="icon-circle">
+      <i class="fa fa-exclamation"></i>
+    </div>
+    <div class="notification-content">
+      <h4>Fehler</h4>
+      <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
+    </div>
+  </div>
 </div>
+
+<script>
+// Toggle Funktionalität für Versandadresse
+const versandadresseToggle = document.getElementById('versandadresse-toggle');
+const versandadresseItem = document.getElementById('versandadresse-item');
+
+if (versandadresseToggle && versandadresseItem) {
+  versandadresseToggle.addEventListener('change', function() {
+    if (this.checked) {
+      versandadresseItem.classList.add('disabled');
+    } else {
+      versandadresseItem.classList.remove('disabled');
+    }
+  });
+}
+
+// Clickable items mit data-href
+const clickableItems = document.querySelectorAll('.setting-item.clickable[data-href]');
+clickableItems.forEach(item => {
+  item.addEventListener('click', function() {
+    const href = this.getAttribute('data-href');
+    if (href) {
+      window.location.href = href;
+    }
+  });
+});
+
+// Cancel buttons - specific IDs
+const cancelAdresseBtn = document.getElementById('cancel-adresse-btn');
+if (cancelAdresseBtn) {
+  cancelAdresseBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "{{ url_for('settings') }}#konto-profil";
+  });
+}
+
+const cancelVersandadresseBtn = document.getElementById('cancel-versandadresse-btn');
+if (cancelVersandadresseBtn) {
+  cancelVersandadresseBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "{{ url_for('settings') }}#konto-profil";
+  });
+}
+
+// Input Focus Effekte
+const inputs = document.querySelectorAll('input:not([type="checkbox"]), textarea');
+inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', function() {
+        if (!this.value) {
+            this.parentElement.classList.remove('focused');
+        }
+    });
+});
+
+// Fehlermeldungen anzeigen
+function showError(message) {
+    const errorNotification = document.getElementById('error-notification');
+    const errorText = document.getElementById('error-text');
+    errorText.textContent = message;
+    errorNotification.classList.remove('hide');
+    errorNotification.classList.add('show');
+    
+    setTimeout(function () {
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+    }, 4000);
+}
+
+// Erfolgsmeldungen anzeigen
+function showSuccess(message) {
+    const successNotification = document.getElementById('notification');
+    const successText = document.getElementById('success-text');
+    successText.textContent = message;
+    successNotification.classList.remove('hide');
+    successNotification.classList.add('show');
+    
+    setTimeout(function () {
+        successNotification.classList.remove('show');
+        successNotification.classList.add('hide');
+    }, 4000);
+}
+</script>
 {% endblock %}

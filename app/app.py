@@ -2,7 +2,7 @@ import db
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
-
+from mail import send_simple_message, send_order_confirmation
 from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -64,7 +64,8 @@ languages = [
 def home():
     print(math_service.add(1.0, 2.0))
     app.logger.info("Rendering home page")
-    return render_template("home.html")
+    products = db_repo.get_all_products_local()[:6]  # Get first 6 products for carousel
+    return render_template("home.html", products=products)
 
 @app.route('/result/', defaults={'name': 'Guest'})
 @app.route('/result/<name>')
@@ -177,8 +178,55 @@ def login():
 def orders():
     return render_template("orders.html")
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 def settings():
+    if request.method == "POST":
+        app.logger.info("Settings form submitted")
+        
+        # Adresse Daten
+        strasse = request.form.get("strasse")
+        plz = request.form.get("plz")
+        stadt = request.form.get("stadt")
+        land = request.form.get("land")
+        
+        # Versandadresse Daten
+        versand_strasse = request.form.get("versand_strasse")
+        versand_plz = request.form.get("versand_plz")
+        versand_stadt = request.form.get("versand_stadt")
+        versand_land = request.form.get("versand_land")
+        
+        # Speichere in Session (oder DB wenn gewünscht)
+        if strasse and plz and stadt and land:
+            session['adresse'] = {
+                'strasse': strasse,
+                'plz': plz,
+                'stadt': stadt,
+                'land': land
+            }
+            print("=== Adresse gespeichert ===")
+            print(f"Straße: {strasse}")
+            print(f"PLZ: {plz}")
+            print(f"Stadt: {stadt}")
+            print(f"Land: {land}")
+            print("===========================")
+        
+        if versand_strasse and versand_plz and versand_stadt and versand_land:
+            session['versandadresse'] = {
+                'strasse': versand_strasse,
+                'plz': versand_plz,
+                'stadt': versand_stadt,
+                'land': versand_land
+            }
+            print("=== Versandadresse gespeichert ===")
+            print(f"Straße: {versand_strasse}")
+            print(f"PLZ: {versand_plz}")
+            print(f"Stadt: {versand_stadt}")
+            print(f"Land: {versand_land}")
+            print("===================================")
+        
+        # Redirect zurück zu settings mit konto-profil anchor
+        return redirect(url_for("settings") + "#konto-profil")
+    
     return render_template("settings.html")
 
 @app.route("/logout")
@@ -358,6 +406,18 @@ def add_product():
     price = request.form["price"]
     db_repo.add_product(name, price)
     return redirect(url_for("home"))
+
+@app.route("/faq")
+def faq():
+    return render_template("faq.html")
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+@app.route("/shipping")
+def shipping():
+    return render_template("shipping.html")
 
 
 if __name__ == '__main__':

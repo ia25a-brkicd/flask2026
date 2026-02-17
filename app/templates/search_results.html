@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %}Search | Flor'Avis{% endblock %} {%
+{% extends 'base.html' %} {% block title %}Suche | Flor'Avis{% endblock %} {%
 block head %}
 <link
   rel="stylesheet"
@@ -7,12 +7,12 @@ block head %}
 {% endblock %} {% block content %}
 <section class="search-hero">
   <div class="search-hero-inner">
-    <p class="search-kicker">Flor'Avis Search</p>
-    <h1>Search Results</h1>
+    <p class="search-kicker">Flor'Avis Suche</p>
+    <h1>Suchergebnisse</h1>
     {% if query %}
-    <p class="search-subtitle">Results for "{{ query }}"</p>
+    <p class="search-subtitle">Ergebnisse für "{{ query }}"</p>
     {% else %}
-    <p class="search-subtitle">Please enter a search term.</p>
+    <p class="search-subtitle">Bitte gib einen Suchbegriff ein.</p>
     {% endif %}
   </div>
 </section>
@@ -21,8 +21,8 @@ block head %}
   {% if query %}
   <div class="results-group">
     <div class="results-header">
-      <h2>Products</h2>
-      <span class="results-count">{{ products|length }} Results</span>
+      <h2>Produkte</h2>
+      <span class="results-count">{{ products|length }} Ergebnisse</span>
     </div>
     {% if products %}
     <div class="results-grid">
@@ -38,20 +38,20 @@ block head %}
         <a
           class="result-link"
           href="{{ url_for('product_detail', product_id=product.id) }}"
-          >View</a
+          >Ansehen</a
         >
       </article>
       {% endfor %}
     </div>
     {% else %}
-    <p class="results-empty">No products found.</p>
+    <p class="results-empty">Keine Produkte gefunden.</p>
     {% endif %}
   </div>
 
   <div class="results-group">
     <div class="results-header">
-      <h2>Pages</h2>
-      <span class="results-count">{{ pages|length }} Results</span>
+      <h2>Seiten</h2>
+      <span class="results-count">{{ pages|length }} Ergebnisse</span>
     </div>
     {% if pages %}
     <div class="results-grid">
@@ -61,12 +61,12 @@ block head %}
           <h3>{{ page.title }}</h3>
           <p class="result-meta">{{ page.hint }}</p>
         </div>
-        <a class="result-link" href="{{ page.url }}">Open</a>
+        <a class="result-link" href="{{ page.url }}">Öffnen</a>
       </article>
       {% endfor %}
     </div>
     {% else %}
-    <p class="results-empty">No pages found.</p>
+    <p class="results-empty">Keine Seiten gefunden.</p>
     {% endif %}
   </div>
   {% endif %}

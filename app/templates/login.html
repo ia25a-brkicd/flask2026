@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Login | Flor'Avis{% endblock %}
+{% block title %}Anmelden | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,33 +12,33 @@
 {% block content %}
 <div class="contact-wrapper">
     <div class="contact-hero">
-        <h1>Login</h1>
-        <p class="hero-subtitle">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</p>
+        <h1>Anmelden</h1>
+        <p class="hero-subtitle">Willkommen {{ session.get('user_name', 'Gast') }} {{ session.get('user_lastname', '') }}</p>
     </div>
 
     <div class="contact-container">
         <div class="form-section">
-            <form action="{{ url_for('login') }}" method="post" novalidate>
+            <form id="login-form" action="{{ url_for('login') }}" method="post" novalidate>
                 <div class="input-group">
                     <label for="email">
                         <i class="fa fa-envelope"></i>
-                        Email Address
+                        E-Mail-Adresse
                     </label>
-                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <input type="email" id="email" name="email" placeholder="deine.email@beispiel.com" required>
                     <span class="input-border"></span>
                 </div>
 
                 <div class="input-group">
                     <label for="password">
                         <i class="fa fa-lock"></i>
-                        Password
+                        Passwort
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" placeholder="Dein Passwort eingeben" required>
                     <span class="input-border"></span>
                 </div>
 
                 <button type="submit" id="registrieren-btn" class="submit-btn">
-                    <span>Login</span>
+                    <span>Anmelden</span>
                     <i class="fa fa-sign-in"></i>
                 </button>
             </form>
@@ -46,27 +46,65 @@
     </div>
 
     <div id="notification" class="notification success-notification">
-        <i class="fa fa-check-circle"></i>
+        <div class="icon-circle">
+            <i class="fa fa-check"></i>
+        </div>
         <div class="notification-content">
-            <h4>Success!</h4>
-            <p>You have successfully logged in!</p>
+            <h4>Erfolg</h4>
+            <p>Du hast dich erfolgreich angemeldet!</p>
         </div>
     </div>
 
-    <div id="error-notification" class="notification error-notification">
-        <i class="fa fa-exclamation-circle"></i>
+    <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('') }}">
+        <div class="icon-circle">
+            <i class="fa fa-exclamation"></i>
+        </div>
         <div class="notification-content">
-            <h4>Error</h4>
-            <p id="error-text">Not all fields were filled out!</p>
+            <h4>Fehler</h4>
+            <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
+            <button id="register-btn" class="submit-btn" data-href="{{ url_for('profil') }}" style="display: none; margin-top: 15px; padding: 10px 20px; font-size: 14px;">
+                <span>Jetzt registrieren</span>
+                <i class="fa fa-user-plus"></i>
+            </button>
         </div>
     </div>
 </div>
 
 <script>
+// Registrierungs-Button Click Handler
+document.addEventListener('DOMContentLoaded', function() {
+    var registerBtn = document.getElementById('register-btn');
+    if (registerBtn) {
+        registerBtn.addEventListener('click', function() {
+            var href = this.getAttribute('data-href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    }
+    
+    // Server-Fehlermeldung anzeigen falls vorhanden
+    var errorNotification = document.getElementById('error-notification');
+    var serverErrorMessage = errorNotification.getAttribute('data-server-error');
+    if (serverErrorMessage) {
+        showError(serverErrorMessage);
+    }
+});
+
 function showError(message) {
     var errorNotification = document.getElementById('error-notification');
     var errorText = document.getElementById('error-text');
+    var registerBtn = document.getElementById('register-btn');
+    
     errorText.textContent = message;
+    
+    // Zeige Registrierungs-Button nur bei "Kein Konto gefunden" Fehler
+    if (message && (message.toLowerCase().includes('kein konto') || message.toLowerCase().includes('nicht gefunden') || message.toLowerCase().includes('no account'))) {
+        registerBtn.style.display = 'flex';
+    } else {
+        registerBtn.style.display = 'none';
+    }
+    
     errorNotification.classList.remove('hide');
     errorNotification.classList.add('show');
 
@@ -77,7 +115,8 @@ function showError(message) {
     window.loginErrorTimeoutId = setTimeout(function () {
         errorNotification.classList.remove('show');
         errorNotification.classList.add('hide');
-    }, 4000);
+        registerBtn.style.display = 'none';
+    }, 6000); // Länger anzeigen wenn Button sichtbar ist
 }
 
 function validateEmail(email) {
@@ -85,7 +124,7 @@ function validateEmail(email) {
     return regex.test(email);
 }
 
-var loginForm = document.querySelector('form[action="{{ url_for('login') }}"]');
+var loginForm = document.getElementById('login-form');
 if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
         var email = document.getElementById('email').value;
@@ -93,13 +132,13 @@ if (loginForm) {
 
         if (!email || !password) {
             e.preventDefault();
-            showError('Not all fields were filled out!');
+            showError('Nicht alle Felder wurden ausgefüllt!');
             return;
         }
 
         if (!validateEmail(email)) {
             e.preventDefault();
-            showError('Email must contain an @ and be valid');
+            showError('E-Mail muss ein @ enthalten und gültig sein');
         }
     });
 }
