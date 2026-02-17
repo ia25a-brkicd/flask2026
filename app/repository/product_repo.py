@@ -6,91 +6,92 @@ from db import get_db
 PRODUCTS = [
     {
         "id": 1,
-        "name": "Lavender Dream Soap",
+        "name": "Green Apple & Lemon mix",
         "price": 12.99,
         "category": "classic",
-        "image": "styles/image/soaps.jpg",
-        "short": "Handcrafted with real lavender flowers and essential oils.",
+        "image": "images/Green Apple & Lemon mix.jpg",
+        "short": "Erfrischende Mischung aus grünem Apfel und Zitrone.",
         "description": (
-            "Our Lavender Dream Soap is handcrafted and contains authentic lavender flowers "
-            "and essential oils from Provence. The soothing aroma relaxes body and mind with every wash. "
-            "Suitable for all skin types, especially sensitive skin. Vegan and cruelty-free."
+            "Diese handgefertigte Seife kombiniert den frischen Duft von grünem Apfel mit der spritzigen Note von Zitrone. "
+            "Die natürlichen Inhaltsstoffe reinigen sanft und hinterlassen ein erfrischendes Gefühl auf der Haut. "
+            "Perfekt für den täglichen Gebrauch und alle Hauttypen."
         ),
-        "ingredients": "Olive Oil, Coconut Oil, Shea Butter, Lavender Oil, Lavender Flowers, Vitamin E",
+        "ingredients": "Olivenöl, Kokosöl, Sheabutter, Apfelextrakt, Zitronenöl, Vitamin E",
         "weight": "120g",
     },
     {
         "id": 2,
-        "name": "Rose Garden Soap",
+        "name": "Green Apple & Lemon & Vanille Mix",
         "price": 13.99,
         "category": "luxury",
-        "image": "styles/image/soaps.jpg",
-        "short": "Infused with rose petals and natural moisturizers.",
+        "image": "images/Green Apple & Lemon & Vanille Mix.jpg",
+        "short": "Luxuriöse Kombination aus Apfel, Zitrone und Vanille.",
         "description": (
-            "Rose Garden Soap combines the elegance of rose petals with natural moisturizers. "
-            "Each bar is lovingly handcrafted and decorated with authentic rose flowers. "
-            "Pampers your skin to silky softness and leaves behind a delicate rose fragrance."
+            "Eine exquisite Mischung aus grünem Apfel, Zitrone und cremiger Vanille. "
+            "Diese Luxusseife verwöhnt die Sinne mit ihrem einzigartigen Duft und pflegt die Haut "
+            "mit hochwertigen natürlichen Ölen. Handgefertigt mit Liebe zum Detail."
         ),
-        "ingredients": "Shea Butter, Coconut Oil, Rose Oil, Rose Petals, Jojoba Oil, Glycerin",
+        "ingredients": "Sheabutter, Kokosöl, Apfelextrakt, Zitronenöl, Vanilleextrakt, Jojobaöl, Glycerin",
         "weight": "120g",
     },
     {
         "id": 3,
-        "name": "Honey Glow Soap",
-        "price": 12.49,
-        "category": "classic",
-        "image": "styles/image/soaps.jpg",
-        "short": "Made with organic honey and oatmeal.",
+        "name": "Green Apple & Lemon with Stamp",
+        "price": 14.99,
+        "category": "luxury",
+        "image": "images/Green Apple & Lemon with Stamp.jpg",
+        "short": "Exklusive Seife mit dekorativem Stempel.",
         "description": (
-            "Our Honey Glow Soap combines organic honey with fine oatmeal for a gentle exfoliating experience. "
-            "The honey provides intensive moisture, while the oatmeal removes dead skin cells. "
-            "Ideal for dry and sensitive skin."
+            "Unsere Premium-Seife mit handgeprägtem Stempel vereint grünen Apfel und Zitrone. "
+            "Jedes Stück ist ein Unikat und wird sorgfältig von Hand gefertigt. "
+            "Die ideale Wahl für besondere Anlässe oder als besonderes Geschenk."
         ),
-        "ingredients": "Organic Honey, Oatmeal, Olive Oil, Coconut Oil, Beeswax, Vitamin E",
+        "ingredients": "Bio-Honig, Haferflocken, Olivenöl, Kokosöl, Apfelextrakt, Zitronenöl, Bienenwachs, Vitamin E",
         "weight": "130g",
     },
     {
         "id": 4,
-        "name": "Charcoal Detox Soap",
-        "price": 14.99,
+        "name": "Green Apple & Lemon",
+        "price": 11.99,
         "category": "classic",
-        "image": "styles/image/soaps.jpg",
-        "short": "Deep cleansing with activated charcoal.",
+        "image": "images/Green Apple & Lemon.jpg",
+        "short": "Die klassische Seife mit Apfel und Zitrone.",
         "description": (
-            "Charcoal Detox Soap deeply cleanses skin with activated charcoal. "
-            "It draws out impurities and toxins from pores, leaving skin refreshed and clear. "
-            "Especially suitable for oily and blemish-prone skin."
+            "Unsere klassische Green Apple & Lemon Seife bietet pure Frische zu einem unschlagbaren Preis. "
+            "Die bewährte Rezeptur reinigt gründlich und hinterlässt einen belebenden Duft. "
+            "Ideal für die ganze Familie."
         ),
-        "ingredients": "Activated Charcoal, Coconut Oil, Tea Tree Oil, Shea Butter, Castor Oil",
+        "ingredients": "Aktivkohle, Kokosöl, Teebaumöl, Sheabutter, Rizinusöl, Apfelextrakt, Zitronenöl",
         "weight": "110g",
     },
     {
         "id": 5,
-        "name": "Mint Fresh Soap",
-        "price": 11.99,
+        "name": "Green Apple & Vanille",
+        "price": 12.49,
         "category": "classic",
-        "image": "styles/image/soaps.jpg",
-        "short": "Refreshing peppermint for an energizing wash.",
+        "image": "images/Green Apple & Vanille.jpg",
+        "short": "Sanfte Kombination aus Apfel und Vanille.",
         "description": (
-            "Mint Fresh Soap invigorates with cool peppermint and eucalyptus. "
-            "Perfect as a morning refresher – the mint scent awakens your senses and leaves "
-            "a pleasantly tingling sensation on your skin."
+            "Die harmonische Verbindung von frischem grünem Apfel und süßer Vanille macht diese Seife zu etwas Besonderem. "
+            "Sie pflegt die Haut sanft und hinterlässt einen angenehm warmen Duft. "
+            "Perfekt für entspannende Momente."
         ),
-        "ingredients": "Peppermint Oil, Eucalyptus Oil, Coconut Oil, Olive Oil, Menthol, Green Clay",
+        "ingredients": "Pfefferminzöl, Eukalyptusöl, Kokosöl, Olivenöl, Apfelextrakt, Vanilleextrakt, Menthol, Grüne Tonerde",
         "weight": "115g",
     },
     {
         "id": 6,
-        "name": "Coconut Bliss Soap",
+        "name": "Green Apple & Vanille",
         "price": 13.49,
         "category": "luxury",
-        "image": "styles/image/soaps.jpg",
-        "short": "Tropical coconut for silky smooth skin.",
+        "image": "images/GreenAppleVanille.jpg",
+        "short": "Premium Apfel-Vanille Seife mit extra Pflege.",
         "description": (
-            "Coconut Bliss Soap transports you to the tropics. Rich coconut oil and coconut milk "
-            "pamper your skin to silky softness. The exotic fragrance brings vacation vibes to every wash."
+            "Unsere Luxus-Variante der Green Apple & Vanille Seife bietet intensive Pflege. "
+            "Mit reichhaltigen Ölen und Butter verwöhnt sie die Haut und hinterlässt sie seidig weich. "
+            "Der exotische Duft bringt Urlaubsgefühle in jede Dusche."
         ),
-        "ingredients": "Coconut Oil, Coconut Milk, Shea Butter, Cocoa Butter, Vitamin E",
+        "ingredients": "Kokosöl, Kokosmilch, Sheabutter, Kakaobutter, Apfelextrakt, Vanilleextrakt, Vitamin E",
         "weight": "125g",
     },
 ]
