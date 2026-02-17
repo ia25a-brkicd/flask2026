@@ -173,7 +173,7 @@ www.floravis.ch
         </div>
         <div class="footer">
             <p>🌿 Floravis - Natürliche Seifen</p>
-            <p><a href="https://www.floravis.onrender.com">www.floravis.onrender.ch</a></p>
+            <p><a href="https://floravis.onrender.com">floravis.onrender.com</a></p>
         </div>
     </div>
 </body>
