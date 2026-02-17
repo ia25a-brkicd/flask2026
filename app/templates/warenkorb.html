@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block title %}Warenkorb | Flor'Avis{% endblock %} {% block
 content %}
-<h1 class="title">Shopping Cart</h1>
+<h1 class="title">Warenkorb</h1>
 <hr class="section-line" />
 <div class="shoppingcart-header">
-  <div class="title-shoppingcart">Shopping cart</div>
+  <div class="title-shoppingcart">Warenkorb</div>
   <div class="title-shoppingcart-description">
-    You have <span id="item-count">0</span> items in your shopping cart
+    Sie haben <span id="item-count">0</span> Artikel in Ihrem Warenkorb
   </div>
 </div>
 <div class="shoppingcart" id="shoppingcart">
@@ -16,11 +16,11 @@ content %}
 
 <div class="cart-summary" id="cart-summary">
   <div class="cart-total">
-    <span class="cart-total-label">Total:</span>
+    <span class="cart-total-label">Gesamt:</span>
     <span class="cart-total-price">CHF <span id="total-price">0.00</span></span>
   </div>
   <a href="{{ url_for('checkout') }}" class="continue-button">
-    Continue to payment
+    Zur Bezahlung fortfahren
     <span class="arrow">→</span>
   </a>
 </div>
@@ -29,10 +29,10 @@ content %}
 <div class="empty-cart" id="empty-cart" style="display: none">
   <div class="empty-cart-message">
     <span class="empty-cart-icon"><i class="fa fa-shopping-cart"></i></span>
-    <h2>Your shopping cart is empty</h2>
-    <p>Add some products to proceed.</p>
+    <h2>Ihr Warenkorb ist leer</h2>
+    <p>Fügen Sie Produkte hinzu, um fortzufahren.</p>
     <a href="{{ url_for('shop') }}" class="continue-button">
-      Go to Shop
+      Zum Shop gehen
       <span class="arrow">→</span>
     </a>
   </div>
@@ -77,8 +77,10 @@ content %}
 
     var itemTotal = calculateDiscountedPrice(item.price, item.quantity);
 
+    var itemName = item.name + ".jpg";  
+
     div.innerHTML = `
-                <img class="image" src="../static/styles/images/seife.png" alt="${item.name}">
+                <img class="image" src="../../static/images/${itemName}" alt="${itemName}">
                 <div class="shoppingcart-Itemname">${item.name}</div>
                 <div class="count">${item.quantity}</div>
                 <div class="count-button">
