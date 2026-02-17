@@ -20,15 +20,15 @@
         <div class="product-info">
           <h1>Lavender Dream Soap</h1>
           <p>
-            Handcrafted with real lavender flowers and essential oils. Relax
-            your senses with every wash.
+            Handgefertigt mit echten Lavendelblüten und ätherischen Ölen. Entspanne
+            deine Sinne bei jeder Wäsche.
           </p>
           <div class="carousel-btns">
             <button
               class="buy-btn"
               onclick="carouselBuyNow('Lavender Dream Soap', 12.99)"
             >
-              Buy Now
+              Jetzt kaufen
             </button>
             <a
               href="{{ url_for('product_detail', product_id=1) }}"
@@ -52,15 +52,15 @@
         <div class="product-info">
           <h1>Rose Garden Soap</h1>
           <p>
-            Infused with rose petals and natural moisturizers. Experience luxury
-            skincare daily.
+            Mit Rosenblättern und natürlichen Feuchtigkeitsspendern angereichert. Erlebe täglich
+            luxuriöse Hautpflege.
           </p>
           <div class="carousel-btns">
             <button
               class="buy-btn"
               onclick="carouselBuyNow('Rose Garden Soap', 13.99)"
             >
-              Buy Now
+              Jetzt kaufen
             </button>
             <a
               href="{{ url_for('product_detail', product_id=2) }}"
@@ -84,15 +84,15 @@
         <div class="product-info">
           <h1>Honey Glow Soap</h1>
           <p>
-            Made with organic honey and oatmeal. Nourish and soften your skin
-            naturally.
+            Hergestellt mit Bio-Honig und Haferflocken. Pfläge und pflege deine Haut
+            auf natürliche Weise.
           </p>
           <div class="carousel-btns">
             <button
               class="buy-btn"
               onclick="carouselBuyNow('Honey Glow Soap', 12.49)"
             >
-              Buy Now
+              Jetzt kaufen
             </button>
             <a
               href="{{ url_for('product_detail', product_id=3) }}"
@@ -121,24 +121,24 @@
   </div>
 
   <section class="products-section">
-    <h2>Our Soaps</h2>
+    <h2>Unsere Seifen</h2>
 
     <!-- Category Filter -->
     <div class="category-filter">
       <a
         href="{{ url_for('shop') }}"
         class="filter-btn {% if not category %}active{% endif %}"
-        >All</a
+        >Alle</a
       >
       <a
         href="{{ url_for('shop', category='classic') }}"
         class="filter-btn {% if category == 'classic' %}active{% endif %}"
-        >Classic</a
+        >Klassisch</a
       >
       <a
         href="{{ url_for('shop', category='luxury') }}"
         class="filter-btn {% if category == 'luxury' %}active{% endif %}"
-        >Luxury</a
+        >Luxus</a
       >
     </div>
 
@@ -180,7 +180,7 @@
             </button>
           </div>
         </div>
-        <button class="add-to-cart-btn">Add to Cart</button>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
       </div>
       {% endfor %}
     </div>

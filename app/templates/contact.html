@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact & Support | Flor'Avis{% endblock %}
+{% block title %}Kontakt & Support | Flor'Avis{% endblock %}
 
 {% block head %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 {% block content %}
     <div class="contact-wrapper">
         <div class="contact-hero">
-            <h1>Get in Touch</h1>
-            <p class="hero-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+            <h1>Kontakt aufnehmen</h1>
+            <p class="hero-subtitle">Wir freuen uns von dir zu hören. Sende uns eine Nachricht und wir antworten so schnell wie möglich.</p>
         </div>
 
         <div class="contact-container">
@@ -25,18 +25,18 @@
                         <div class="input-group">
                             <label for="firstname">
                                 <i class="fa fa-user"></i>
-                                First Name
+                                Vorname
                             </label>
-                            <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                            <input type="text" id="firstname" name="firstname" placeholder="Dein Vorname" required>
                             <span class="input-border"></span>
                         </div>
 
                         <div class="input-group">
                             <label for="lastname">
                                 <i class="fa fa-user"></i>
-                                Last Name
+                                Nachname
                             </label>
-                            <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+                            <input type="text" id="lastname" name="lastname" placeholder="Dein Nachname" required>
                             <span class="input-border"></span>
                         </div>
                     </div>
@@ -44,26 +44,26 @@
                     <div class="input-group">
                         <label for="email">
                             <i class="fa fa-envelope"></i>
-                            Email Address
+                            E-Mail-Adresse
                         </label>
-                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        <input type="email" id="email" name="email" placeholder="deine.email@beispiel.com" required>
                         <span class="input-border"></span>
                     </div>
 
                     <div class="input-group">
                         <label for="message">
                             <i class="fa fa-comment"></i>
-                            Your Message
+                            Deine Nachricht
                         </label>
-                        <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help you..." maxlength="500" required></textarea>
+                        <textarea id="message" name="message" rows="6" placeholder="Erzähl uns, wie wir dir helfen können..." maxlength="500" required></textarea>
                         <span class="input-border"></span>
                         <div class="char-counter">
-                            <span id="char-count">0</span>/500 characters
+                            <span id="char-count">0</span>/500 Zeichen
                         </div>
                     </div>
 
                     <button type="button" id="absenden-btn" class="submit-btn">
-                        <span>Send Message</span>
+                        <span>Nachricht senden</span>
                         <i class="fa fa-paper-plane"></i>
                     </button>
                 </form>
@@ -74,8 +74,8 @@
         <div id="notification" class="notification success-notification">
             <i class="fa fa-check-circle"></i>
             <div class="notification-content">
-                <h4>Success!</h4>
-                <p>Thank you for your message! We will get back to you as soon as possible.</p>
+                <h4>Erfolg!</h4>
+                <p>Vielen Dank für deine Nachricht! Wir melden uns so schnell wie möglich bei dir.</p>
             </div>
         </div>
 
@@ -83,8 +83,8 @@
         <div id="error-notification" class="notification error-notification">
             <i class="fa fa-exclamation-circle"></i>
             <div class="notification-content">
-                <h4>Error</h4>
-                <p id="error-text">Not all fields were filled out!</p>
+                <h4>Fehler</h4>
+                <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
             </div>
         </div>
     </div>
@@ -162,25 +162,25 @@
 
             // Prüft, ob eines der Felder leer ist
             if (!lastname || !firstname || !email || !message) {
-                showError('Not all fields were filled out!');
+                showError('Nicht alle Felder wurden ausgefüllt!');
                 return;
             }
 
             // Prüfe Nachname (keine Zahlen)
             if (!validateName(lastname)) {
-                showError('Last name may not contain numbers');
+                showError('Nachname darf keine Zahlen enthalten');
                 return;
             }
 
             // Prüfe Vorname (keine Zahlen)
             if (!validateName(firstname)) {
-                showError('First name may not contain numbers');
+                showError('Vorname darf keine Zahlen enthalten');
                 return;
             }
 
             // Prüfe E-Mail (muss @ enthalten)
             if (!validateEmail(email)) {
-                showError('Email must contain an @ and be valid');
+                showError('E-Mail muss ein @ enthalten und gültig sein');
                 return;
             }
 
@@ -231,11 +231,11 @@
                     }, 4000); // 4 Sekunden
                 } else {
                     console.error('Server-Fehler:', response.status);
-                    showError('An error occurred. Please try again later.');
+                    showError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.');
                 }
             }).catch(function (error) {
                 console.error('Network error:', error);
-                showError('Network error. Please check your connection.');
+                showError('Netzwerkfehler. Bitte prüfe deine Verbindung.');
             });
         });
     </script>

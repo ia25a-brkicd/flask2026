@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Logout | Flor'Avis{% endblock %}
+{% block title %}Abmelden | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,25 +11,25 @@
 
 {% block content %}
 <div class="logout">
-    <h1 id="title">Logout</h1>
+    <h1 id="title">Abmelden</h1>
 
      <!-- logout Section -->
     <div class="logout-section">
         <div class="section-header">
             <span class="section-icon"><i class="fa fa-user"></i></span>
-            <h2>Profile</h2>
+            <h2>Profil</h2>
         </div>
         
         <div class="logout-item">
             <div class="logout-info">
-                <label>Lastname</label>
+                <label>Nachname</label>
                 <p class="logout-description">{{ user.lastname }}</p>
             </div>
         </div>
 
         <div class="logout-item">
             <div class="logout-info">
-                <label>Firstname</label>
+                <label>Vorname</label>
                 <p class="logout-description">{{ user.firstname }}</p>
             </div>
         </div>
@@ -43,12 +43,12 @@
 
         <div class="logout-item">
             <div class="logout-info">
-                <label>Password</label>
+                <label>Passwort</label>
                 <p class="logout-description">{{ user.password }}</p>
             </div>
         </div>
 
-       <a href="{{ url_for('do_logout') }}"><button>Logout</button></a>
+       <a href="{{ url_for('do_logout') }}"><button>Abmelden</button></a>
     </div>
 
 {% endblock %}

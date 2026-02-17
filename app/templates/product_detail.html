@@ -8,7 +8,7 @@ endblock %} {% block head %}
 <div class="product-detail-container">
   <!-- Breadcrumb -->
   <nav class="breadcrumb">
-    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('home') }}">Startseite</a>
     <i class="fa fa-chevron-right"></i>
     <a href="{{ url_for('shop') }}">Shop</a>
     <i class="fa fa-chevron-right"></i>
@@ -36,24 +36,24 @@ endblock %} {% block head %}
 
       <!-- Pack Selector -->
       <div class="detail-pack-selector">
-        <p class="pack-label">Select Quantity:</p>
+        <p class="pack-label">Menge wählen:</p>
         <div class="pack-options">
           <div class="pack-option active" data-quantity="1" data-discount="0">
-            <span class="pack-qty">1 Piece</span>
+            <span class="pack-qty">1 Stück</span>
             <span class="pack-price"
               >{{ "%.2f"|format(product.price) }} CHF</span
             >
           </div>
           <div class="pack-option" data-quantity="2" data-discount="10">
             <span class="pack-discount-tag">-10%</span>
-            <span class="pack-qty">2 Pieces</span>
+            <span class="pack-qty">2 Stück</span>
             <span class="pack-price"
               >{{ "%.2f"|format(product.price * 2 * 0.9) }} CHF</span
             >
           </div>
           <div class="pack-option" data-quantity="3" data-discount="20">
             <span class="pack-discount-tag">-20%</span>
-            <span class="pack-qty">3 Pieces</span>
+            <span class="pack-qty">3 Stück</span>
             <span class="pack-price"
               >{{ "%.2f"|format(product.price * 3 * 0.8) }} CHF</span
             >
@@ -63,14 +63,14 @@ endblock %} {% block head %}
 
       <button class="detail-add-to-cart-btn" id="addToCartBtn">
         <i class="fa fa-shopping-cart"></i>
-        Add to Cart
+        In den Warenkorb
       </button>
 
       <!-- Product Details -->
       <div class="product-details-accordion">
         <div class="accordion-item open">
           <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span>Description</span>
+            <span>Beschreibung</span>
             <i class="fa fa-chevron-down"></i>
           </button>
           <div class="accordion-content">
@@ -79,7 +79,7 @@ endblock %} {% block head %}
         </div>
         <div class="accordion-item">
           <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span>Ingredients</span>
+            <span>Inhaltsstoffe</span>
             <i class="fa fa-chevron-down"></i>
           </button>
           <div class="accordion-content">
@@ -93,12 +93,12 @@ endblock %} {% block head %}
           </button>
           <div class="accordion-content">
             <ul>
-              <li><strong>Weight:</strong> {{ product.weight }}</li>
+              <li><strong>Gewicht:</strong> {{ product.weight }}</li>
               <li>
-                <strong>Category:</strong> {{ product.category | capitalize }}
+                <strong>Kategorie:</strong> {{ product.category | capitalize }}
               </li>
-              <li><strong>Handcrafted:</strong> Yes</li>
-              <li><strong>Vegan:</strong> Yes</li>
+              <li><strong>Handgefertigt:</strong> Ja</li>
+              <li><strong>Vegan:</strong> Ja</li>
             </ul>
           </div>
         </div>
@@ -109,7 +109,7 @@ endblock %} {% block head %}
   <!-- Related Products -->
   {% if related %}
   <section class="related-products">
-    <h2>You Might Also Like</h2>
+    <h2>Das könnte dir auch gefallen</h2>
     <div class="related-grid">
       {% for item in related %}
       <a

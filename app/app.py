@@ -300,40 +300,40 @@ def search() -> str:
 
     pages = [
         {
-            "title": "Home",
+            "title": "Startseite",
             "url": url_for("home"),
-            "hint": "Homepage and Highlights",
-            "keywords": ["home", "start", "floravis"],
+            "hint": "Startseite und Highlights",
+            "keywords": ["home", "start", "floravis", "startseite"],
         },
         {
             "title": "Shop",
             "url": url_for("shop"),
-            "hint": "Soaps and Sets",
-            "keywords": ["products", "soaps", "sets"],
+            "hint": "Seifen und Sets",
+            "keywords": ["produkte", "seifen", "sets", "shop"],
         },
         {
-            "title": "About us",
+            "title": "\u00dcber uns",
             "url": url_for("about_us"),
-            "hint": "Our Story",
-            "keywords": ["about", "brand", "story"],
+            "hint": "Unsere Geschichte",
+            "keywords": ["\u00fcber", "marke", "geschichte", "about"],
         },
         {
-            "title": "Contact",
+            "title": "Kontakt",
             "url": url_for("contact"),
-            "hint": "Contact Us",
-            "keywords": ["kontakt", "help", "support"],
+            "hint": "Kontaktiere uns",
+            "keywords": ["kontakt", "hilfe", "support"],
         },
         {
-            "title": "Profile",
+            "title": "Profil",
             "url": url_for("profil"),
-            "hint": "Login and Profile",
-            "keywords": ["login", "profile", "account"],
+            "hint": "Anmeldung und Profil",
+            "keywords": ["login", "profil", "konto", "anmelden"],
         },
         {
-            "title": "Settings",
+            "title": "Einstellungen",
             "url": url_for("settings"),
-            "hint": "Settings",
-            "keywords": ["settings", "preferences"],
+            "hint": "Einstellungen",
+            "keywords": ["einstellungen", "settings"],
         },
     ]
 

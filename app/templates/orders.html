@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Orders | Flor'Avis{% endblock %}
+{% block title %}Bestellungen | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="orders">
-    <h1 id="title">My Orders</h1>
+    <h1 id="title">Meine Bestellungen</h1>
 
     <!-- Orders Container -->
     <div class="orders-container" id="orders-container">
@@ -22,10 +22,10 @@
     <div class="empty-orders" id="empty-orders" style="display: none;">
         <div class="empty-orders-message">
             <span class="empty-orders-icon">📦</span>
-            <h2>No orders yet</h2>
-            <p>You haven't placed any orders yet. Start shopping now!</p>
+            <h2>Noch keine Bestellungen</h2>
+            <p>Du hast noch keine Bestellungen aufgegeben. Jetzt einkaufen!</p>
             <a href="{{ url_for('shop') }}" class="shop-button">
-                Go to Shop
+                Zum Shop
                 <span class="arrow">→</span>
             </a>
         </div>
@@ -47,7 +47,7 @@
 
     function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
+        return date.toLocaleDateString('de-DE', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
@@ -86,7 +86,7 @@
             orderCard.innerHTML = `
                 <div class="order-header">
                     <div class="order-title-section">
-                        <h2>Order ${index + 1}</h2>
+                        <h2>Bestellung ${index + 1}</h2>
                         <span class="order-date">${formatDate(order.date)}</span>
                     </div>
                     <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
@@ -95,7 +95,7 @@
                     ${itemsHTML}
                 </div>
                 <div class="order-footer">
-                    <span class="order-total-label">Total Price:</span>
+                    <span class="order-total-label">Gesamtpreis:</span>
                     <span class="order-total-price">CHF ${order.total.toFixed(2)}</span>
                 </div>
             `;
