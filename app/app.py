@@ -43,9 +43,9 @@ app.config.update(
     MAIL_PORT=int(os.getenv("MAIL_PORT", "465")),
     MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
     MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
-    MAIL_USE_TLS=os.getenv("MAIL_USE_TLS", "false").lower() == "true",
-    MAIL_USE_SSL=os.getenv("MAIL_USE_SSL", "true").lower() == "true",
-    MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER", os.getenv("MAIL_USERNAME")),
+    MAIL_USE_TLS=False,
+    MAIL_USE_SSL=True,
+    MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER"),
 )
 
 mail = Mail(app)
@@ -85,41 +85,37 @@ def submit():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
+    
+    print("MAIL USER:", app.config.get("MAIL_USERNAME"))
+    print("MAIL SERVER:", app.config.get("MAIL_SERVER"))
+
     if request.method == "POST":
-        app.logger.info("Form submitted")
         lastname = request.form.get("lastname")
         firstname = request.form.get("firstname")
         email = request.form.get("email")
         message = request.form.get("message")
-        
-        print("=== Contact Form Data ===")
-        print(f"Name: {lastname}")
-        print(f"Vorname: {firstname}")
-        print(f"E-Mail: {email}")
-        print(f"Nachricht: {message}")
-        print("========================")
 
-        recipient = os.getenv("MAIL_RECIPIENT")
-        if recipient and app.config.get("MAIL_USERNAME") and app.config.get("MAIL_PASSWORD"):
-            try:
-                msg = Message(
-                    subject="Kontaktformular",
-                    recipients=[recipient],
-                    reply_to=email,
-                    body=(
-                        "Neue Nachricht vom Kontaktformular\n\n"
-                        f"Nachname: {lastname}\n"
-                        f"Vorname: {firstname}\n"
-                        f"E-Mail: {email}\n\n"
-                        f"Nachricht:\n{message}\n"
-                    ),
-                )
-                mail.send(msg)
-                app.logger.info("Contact email sent")
-            except Exception:
-                app.logger.exception("Failed to send contact email")
-        else:
-            app.logger.warning("Mail is not configured; skipping send")
+        if not lastname or not firstname or not email or not message:
+            return jsonify({"error": "Missing data"}), 400
+
+        try:
+            msg = Message(
+                subject=f"New Contact Message from {firstname} {lastname}",
+                recipients=[os.getenv("MAIL_RECIPIENT")],
+                reply_to=email,
+                body=(
+                    f"First Name: {firstname}\n"
+                    f"Last Name: {lastname}\n"
+                    f"Email: {email}\n\n"
+                    f"Message:\n{message}\n"
+                ),
+            )
+            mail.send(msg)
+            return jsonify({"success": True}), 200
+        except Exception as e:
+            app.logger.exception("Mail send failed")
+            return jsonify({"error": "Mail failed"}), 500
+
     products = db_repo.get_all_products()
     return render_template("contact.html", products=products)
 
