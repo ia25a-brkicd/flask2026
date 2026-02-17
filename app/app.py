@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.secret_key = 'floravis-secret-key-2026'  # Für Session-Cookies
 
 """
-Festlegen einer Route für die Homepage. Der String in den Klammern
+Festlegen einer Route für die Homepage. Der String in den Klammernpip
 bildet das URL-Muster ab, unter dem der folgende Code ausgeführt
 werden soll.
 z.B.

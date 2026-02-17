@@ -413,6 +413,42 @@ body {
     color: #721c24;
 }
 
+.profile-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.profile-action-grid .submit-btn {
+    width: 100%;
+    min-height: 64px;
+    white-space: nowrap;
+    justify-content: center;
+}
+
+.profile-address {
+    margin-top: 10px;
+}
+
+.profile-address-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2f221c;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-address-list {
+    color: #7a6259;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+
+
 /* Animations */
 @keyframes fadeInDown {
     from {
