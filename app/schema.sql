@@ -40,15 +40,31 @@ CREATE TABLE IF NOT EXISTS orders (
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS products_shop (
     product_shop_id SERIAL PRIMARY KEY,
     product_id INT REFERENCES products(product_id),
     stock INT
 );
 
-CREATE TABLE IF NOT EXISTS products (
-    product_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL
+CREATE TABLE IF NOT EXISTS login (
+    login_id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    order_id INT REFERENCES orders(order_id)
+);
+
+CREATE TABLE IF NOT EXISTS customer (
+    customer_id SERIAL PRIMARY KEY,
+    login_id INT REFERENCES login(login_id),
+    customer_addres_id INT REFERENCES customer_addres(customer_addres_id),
+    customer_payment_id INT REFERENCES customer_payment(customer_payment_id)
 );
 

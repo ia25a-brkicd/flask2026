@@ -10,7 +10,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/warenkorb.css') }}"
     />
+<<<<<<< HEAD
     <link rel="icon" href="{{ url_for('static', filename='images/BL-512x512.png') }}" type="image/x-icon">
+=======
+    <link rel="icon" href="{{ url_for('static', filename='images/BL-512x512.png') }}" sizes="512x512" type="image/x-icon">
+>>>>>>> bf127ead69e535d228a7d6e9e9aaf52964e1d4f5
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -44,21 +48,17 @@
               Shop
             </a>
             <div class="dropdown-menu">
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('shop') }}" class="dropdown-item">
+                <i class="fa fa-th-large"></i>
+                Alle Produkte
+              </a>
+              <a href="{{ url_for('shop', category='classic') }}" class="dropdown-item">
                 <i class="fa fa-soap"></i>
-                Classic Soaps
+                Klassische Seifen
               </a>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url_for('shop', category='luxury') }}" class="dropdown-item">
                 <i class="fa fa-gem"></i>
-                Luxury Soaps
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-heart"></i>
-                Gift Sets
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-droplet"></i>
-                Soap Bundles
+                Luxus-Seifen
               </a>
             </div>
           </div>
@@ -67,14 +67,14 @@
             class="nav-link nav-link-with-icon {% if request.endpoint == 'about_us' %}active{% endif %}"
           >
             <i class="fa fa-info-circle"></i>
-            About us
-          </a>
+              Über uns
+            </a>
           <a
             href="{{ url_for('contact') }}"
             class="nav-link nav-link-with-icon {% if request.endpoint == 'contact' %}active{% endif %}"
           >
             <i class="fa fa-envelope"></i>
-            Contact
+            Kontakt
           </a>
         </nav>
 
@@ -97,12 +97,11 @@
           >
             <i class="fa fa-shopping-cart"></i>
             <span class="cart-text-container">
-              Shopping Cart
+              Warenkorb
               <span class="cart-badge" id="cartBadge">0</span>
             </span>
           </a>
           <div class="nav-item-with-dropdown">
-            <a
           {% if session.get('user_id') %}
     <!-- Eingeloggt: Profil-Link -->
             <a
@@ -110,7 +109,7 @@
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
             >
               <i class="fa fa-user"></i>
-              Profile
+              Profil
             </a>
           {% else %}
           <!-- Nicht eingeloggt: Login-Link -->
@@ -119,27 +118,27 @@
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
             >
               <i class="fa fa-sign-in-alt"></i>
-              Login
+              Anmelden
             </a>
           {% endif %}
 
             <div class="dropdown-menu dropdown-menu-right">
               <a href="{{ url_for('profil') }}" class="dropdown-item">
                 <i class="fa fa-user-circle"></i>
-                My Profile
+                Mein Profil
               </a>
               <a href="{{ url_for('orders') }}" class="dropdown-item">
                 <i class="fa fa-box"></i>
-                Orders
+                Bestellungen
               </a>
               <a href="{{ url_for('settings') }}" class="dropdown-item">
                 <i class="fa fa-cog"></i>
-                Settings
+                Einstellungen
               </a>
               <div class="dropdown-divider"></div>
               <a href="{{ url_for('logout') }}" class="dropdown-item">
                 <i class="fa fa-sign-out-alt"></i>
-                Logout
+                Abmelden
               </a>
             </div>
           </div>
@@ -148,7 +147,7 @@
       <div class="search-bar-container">
         <form
           class="search-form"
-          action="{{ url_for('home') }}"
+          action="{{ url_for('search') }}"
           method="get"
           role="search"
           onsubmit="showSearchLoading(event)"
@@ -161,6 +160,7 @@
             name="q"
             placeholder="Auf floravis.com suchen"
             aria-label="Search"
+            value="{{ request.args.get('q', '') }}"
           />
           <button type="submit" aria-label="Search">
             <i class="fa fa-search"></i>
@@ -247,6 +247,32 @@
         overlay.classList.toggle("active");
         document.body.classList.toggle("menu-open");
       }
+
+      // Mobile dropdown toggle
+      function setupMobileDropdown() {
+        const isMobile = window.innerWidth <= 720;
+        const dropdownTriggers = document.querySelectorAll(".nav-item-with-dropdown");
+        
+        dropdownTriggers.forEach((trigger) => {
+          if (isMobile) {
+            const navLink = trigger.querySelector(".nav-link-with-icon");
+            if (navLink) {
+              navLink.style.cursor = "pointer";
+              navLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                const menu = trigger.querySelector(".dropdown-menu");
+                if (menu) {
+                  trigger.classList.toggle("dropdown-open");
+                }
+              });
+            }
+          }
+        });
+      }
+
+      // Initialize on load and on resize
+      window.addEventListener("load", setupMobileDropdown);
+      window.addEventListener("resize", setupMobileDropdown);
 
       // Search loading indicator
       function showSearchLoading(event) {

@@ -1,0 +1,163 @@
+{% extends 'base.html' %} {% block title %}{{ product.name }} | Flor'Avis{%
+endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/product_detail.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="product-detail-container">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="{{ url_for('home') }}">Startseite</a>
+    <i class="fa fa-chevron-right"></i>
+    <a href="{{ url_for('shop') }}">Shop</a>
+    <i class="fa fa-chevron-right"></i>
+    <span>{{ product.name }}</span>
+  </nav>
+
+  <!-- Product Main Section -->
+  <div class="product-main">
+    <div class="product-image-section">
+      <div class="product-image-wrapper">
+        <img
+          src="{{ url_for('static', filename=product.image) }}"
+          alt="{{ product.name }}"
+        />
+      </div>
+    </div>
+
+    <div class="product-info-section">
+      <span class="product-category-badge"
+        >{{ product.category | capitalize }}</span
+      >
+      <h1 class="product-title">{{ product.name }}</h1>
+      <p class="product-price">{{ "%.2f"|format(product.price) }} CHF</p>
+      <p class="product-short-desc">{{ product.short }}</p>
+
+      <!-- Pack Selector -->
+      <div class="detail-pack-selector">
+        <p class="pack-label">Menge wählen:</p>
+        <div class="pack-options">
+          <div class="pack-option active" data-quantity="1" data-discount="0">
+            <span class="pack-qty">1 Stück</span>
+            <span class="pack-price"
+              >{{ "%.2f"|format(product.price) }} CHF</span
+            >
+          </div>
+          <div class="pack-option" data-quantity="2" data-discount="10">
+            <span class="pack-discount-tag">-10%</span>
+            <span class="pack-qty">2 Stück</span>
+            <span class="pack-price"
+              >{{ "%.2f"|format(product.price * 2 * 0.9) }} CHF</span
+            >
+          </div>
+          <div class="pack-option" data-quantity="3" data-discount="20">
+            <span class="pack-discount-tag">-20%</span>
+            <span class="pack-qty">3 Stück</span>
+            <span class="pack-price"
+              >{{ "%.2f"|format(product.price * 3 * 0.8) }} CHF</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <button class="detail-add-to-cart-btn" id="addToCartBtn">
+        <i class="fa fa-shopping-cart"></i>
+        In den Warenkorb
+      </button>
+
+      <!-- Product Details -->
+      <div class="product-details-accordion">
+        <div class="accordion-item open">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Beschreibung</span>
+            <i class="fa fa-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <p>{{ product.description }}</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Inhaltsstoffe</span>
+            <i class="fa fa-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <p>{{ product.ingredients }}</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Details</span>
+            <i class="fa fa-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <ul>
+              <li><strong>Gewicht:</strong> {{ product.weight }}</li>
+              <li>
+                <strong>Kategorie:</strong> {{ product.category | capitalize }}
+              </li>
+              <li><strong>Handgefertigt:</strong> Ja</li>
+              <li><strong>Vegan:</strong> Ja</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  {% if related %}
+  <section class="related-products">
+    <h2>Das könnte dir auch gefallen</h2>
+    <div class="related-grid">
+      {% for item in related %}
+      <a
+        href="{{ url_for('product_detail', product_id=item.id) }}"
+        class="related-card"
+      >
+        <img
+          src="{{ url_for('static', filename=item.image) }}"
+          alt="{{ item.name }}"
+        />
+        <h3>{{ item.name }}</h3>
+        <p class="related-price">{{ "%.2f"|format(item.price) }} CHF</p>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+
+<script>
+  const basePrice = {{ product.price }};
+  const productName = "{{ product.name }}";
+  let selectedQuantity = 1;
+
+  // Pack option selection
+  document.querySelectorAll(".pack-option").forEach((option) => {
+    option.addEventListener("click", function () {
+      document.querySelectorAll(".pack-option").forEach((o) => o.classList.remove("active"));
+      this.classList.add("active");
+      selectedQuantity = parseInt(this.getAttribute("data-quantity"));
+    });
+  });
+
+  // Add to cart
+  document.getElementById("addToCartBtn").addEventListener("click", function () {
+    addToCart(productName, selectedQuantity, basePrice);
+  });
+
+  // Accordion
+  function toggleAccordion(header) {
+    const item = header.closest(".accordion-item");
+    const isOpen = item.classList.contains("open");
+    // Close all
+    document.querySelectorAll(".accordion-item").forEach((i) => i.classList.remove("open"));
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add("open");
+    }
+  }
+</script>
+{% endblock %}

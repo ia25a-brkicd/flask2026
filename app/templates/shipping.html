@@ -1,0 +1,156 @@
+{% extends 'base.html' %} {% block title %}Versandrichtlinien | Flor'Avis{%
+endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/base.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<div class="shipping-container">
+  <h1>Versandrichtlinien</h1>
+
+  <div class="shipping-content">
+    <section class="shipping-section">
+      <h2>Versandgebiet und -dauer</h2>
+      <p>
+        Wir versenden derzeit innerhalb von Deutschland. Die Lieferung erfolgt
+        normalerweise innerhalb von 3-5 Arbeitstagen nach Bestellaufgabe.
+        Wochenenden und Feiertage sind ausgenommen.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Versandkosten</h2>
+      <ul>
+        <li>Deutschland (Standard): 3,99 €</li>
+        <li>Bestellungen ab 50 €: Versand kostenlos</li>
+        <li>Express (1-2 Tage): 7,99 €</li>
+      </ul>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Versandpartner</h2>
+      <p>
+        Wir arbeiten mit zuverlässigen Versandpartnern zusammen. Nach Versand
+        erhalten Sie eine Tracking-Nummer per E-Mail, mit der Sie Ihre Sendung
+        verfolgen können.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Verpackung und Schutz</h2>
+      <p>
+        Alle Produkte werden sorgfältig verpackt, um Beschädigungen während des
+        Transports zu vermeiden. Unsere Seifen sind stoßfest verpackt und werden
+        mit Schutzpuffer versandt.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Versand ins Ausland</h2>
+      <p>
+        Für internationalen Versand kontaktieren Sie uns bitte unter
+        <a href="{{ url_for('contact') }}">Kontakt</a>. Wir prüfen gerne, ob wir
+        in Ihr Land liefern können.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Rücksendungen</h2>
+      <p>
+        Wenn ein Produkt beschädigt ankommt, kontaktieren Sie uns sofort. Wir
+        ersetzen das Produkt kostenlos. Gemäß unseren
+        <a href="{{ url_for('terms') }}">Geschäftsbedingungen</a>
+        haben Sie 14 Tage Zeit, um Ihre Bestellung zu widerrufen.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Haftung</h2>
+      <p>
+        Flor'Avis übernimmt Haftung für Versand bis zu dem auf dem Paket
+        angegebenen Wert. Bei Verlust oder Beschädigung kontaktieren Sie bitte
+        unser Team.
+      </p>
+    </section>
+
+    <section class="shipping-section">
+      <h2>Fragen?</h2>
+      <p>
+        Haben Sie Fragen zu Versand oder Versandkosten? Kontaktieren Sie uns
+        gerne unter
+        <a href="{{ url_for('contact') }}">Kontakt</a>.
+      </p>
+    </section>
+  </div>
+
+  <div class="shipping-footer">
+    <p>Zuletzt aktualisiert: Februar 2026</p>
+  </div>
+</div>
+
+<style>
+  .shipping-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+    font-family: "Source Sans 3", sans-serif;
+  }
+
+  .shipping-container h1 {
+    text-align: center;
+    font-family: "Playfair Display", serif;
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    color: #333;
+  }
+
+  .shipping-content {
+    line-height: 1.8;
+    color: #555;
+  }
+
+  .shipping-section {
+    margin-bottom: 40px;
+  }
+
+  .shipping-section h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .shipping-section p {
+    font-size: 1em;
+  }
+
+  .shipping-section ul {
+    margin-left: 20px;
+    font-size: 1em;
+  }
+
+  .shipping-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .shipping-section a {
+    color: #c59a72;
+    text-decoration: none;
+  }
+
+  .shipping-section a:hover {
+    text-decoration: underline;
+  }
+
+  .shipping-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #e0e0e0;
+    color: #999;
+    font-size: 0.9em;
+  }
+</style>
+
+{% endblock %}

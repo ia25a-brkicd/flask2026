@@ -1,0 +1,74 @@
+{% extends 'base.html' %} {% block title %}Suche | Flor'Avis{% endblock %} {%
+block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/search.css') }}"
+/>
+{% endblock %} {% block content %}
+<section class="search-hero">
+  <div class="search-hero-inner">
+    <p class="search-kicker">Flor'Avis Suche</p>
+    <h1>Suchergebnisse</h1>
+    {% if query %}
+    <p class="search-subtitle">Ergebnisse für "{{ query }}"</p>
+    {% else %}
+    <p class="search-subtitle">Bitte gib einen Suchbegriff ein.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="search-results">
+  {% if query %}
+  <div class="results-group">
+    <div class="results-header">
+      <h2>Produkte</h2>
+      <span class="results-count">{{ products|length }} Ergebnisse</span>
+    </div>
+    {% if products %}
+    <div class="results-grid">
+      {% for product in products %}
+      <article class="result-card">
+        <div class="result-card-body">
+          <h3>{{ product.name }}</h3>
+          <p class="result-price">{{ "%.2f"|format(product.price) }} CHF</p>
+          {% if product.short %}
+          <p class="result-meta">{{ product.short }}</p>
+          {% endif %}
+        </div>
+        <a
+          class="result-link"
+          href="{{ url_for('product_detail', product_id=product.id) }}"
+          >Ansehen</a
+        >
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="results-empty">Keine Produkte gefunden.</p>
+    {% endif %}
+  </div>
+
+  <div class="results-group">
+    <div class="results-header">
+      <h2>Seiten</h2>
+      <span class="results-count">{{ pages|length }} Ergebnisse</span>
+    </div>
+    {% if pages %}
+    <div class="results-grid">
+      {% for page in pages %}
+      <article class="result-card">
+        <div class="result-card-body">
+          <h3>{{ page.title }}</h3>
+          <p class="result-meta">{{ page.hint }}</p>
+        </div>
+        <a class="result-link" href="{{ page.url }}">Öffnen</a>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="results-empty">Keine Seiten gefunden.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
