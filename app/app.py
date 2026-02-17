@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 
-from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
+from repository.customer_repo import add_customer_addres, add_customer_payment, add_login, verify_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
@@ -141,14 +141,21 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
 
+        exists, _ = verify_login(email, password)
+        if exists:
+            return jsonify({
+                "status": "exists",
+                "message": "Du hast bereits ein Konto und kannst dich direkt einloggen.",
+            }), 409
+
+        add_login(email, firstname, lastname, password)
+
         # HIER: "einloggen"
-        session['user_id'] = email          # oder irgendeine ID
-        session['user_name'] = firstname    # optional
+        session['user_id'] = email
+        session['user_name'] = firstname
         session['user_lastname'] = lastname
 
-        add_login(email,firstname, lastname,password)# optional
-
-        return redirect(url_for("home"))    # zurück zur Startseite
+        return jsonify({"status": "success"}), 200
 
     # GET-Anfrage: nur Formular anzeigen
     # GET-Anfrage: nur Formular anzeigen
@@ -167,10 +174,16 @@ def login():
         print(f"Passwort: {password}")
         print("=======================")
 
-        # HIER: "einloggen"
-        session['user_id'] = email
-        session['user_name'] = (email or "").split("@")[0]
-        session['user_lastname'] = session.get('user_lastname', '')
+        exists, row = verify_login(email, password)
+        if not exists:
+            return render_template(
+                "login.html",
+                error_message="Kein Konto gefunden. Bitte registriere dich zuerst.",
+            )
+
+        session['user_id'] = row[1]
+        session['user_name'] = row[2]
+        session['user_lastname'] = row[3]
 
         return redirect(url_for("profil"))
 

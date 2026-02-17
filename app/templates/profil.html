@@ -59,11 +59,11 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="password">
+                    <label for="password_repeat">
                         <i class="fa fa-lock"></i>
                         Passwort wiederholen
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Passwort wiederholen" required>
+                    <input type="password" id="password_repeat" name="password_repeat" placeholder="Repeat your password" required>
                     <span class="input-border"></span>
                 </div>
 
@@ -164,15 +164,22 @@ if (registerButton) {
     registerButton.addEventListener('click', function(e) {
         e.preventDefault();
 
-        var lastname = document.getElementById('lastname').value;
-        var firstname = document.getElementById('firstname').value;
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
+        var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+        var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+        var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
+        var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
+        var passwordRepeat = document.getElementById('password_repeat').value; // Liest den Wert aus dem Eingabefeld "password_repeat"
         
-        if (!lastname || !firstname || !email || !password) {
-            showError('Nicht alle Felder wurden ausgefüllt!');
+        // Prüft, ob eines der Felder leer ist
+        if (!lastname || !firstname || !email || !password || !passwordRepeat) {
+            showError('Not all fields were filled out!');
             return;
         }
+                if (password !== passwordRepeat) {
+                    showError('Passwords do not match');
+                    return;
+                }
+
         
         if (!validateName(lastname)) {
             showError('Nachname darf keine Zahlen enthalten');
@@ -208,10 +215,11 @@ if (registerButton) {
             body: formData
         }).then(function(response) {
             if (response.ok) {
-                document.getElementById('lastname').value = '';
-                document.getElementById('firstname').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('password').value = '';
+                document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
+                document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
+                document.getElementById('email').value = '';// Leert das E-Mail-Feld
+                document.getElementById('password').value = '';// Leert das Passwort-Feld
+                document.getElementById('password_repeat').value = '';// Leert das Wiederholungsfeld
                 
                 var notification = document.getElementById('notification');
                 notification.classList.add('show');
