@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Login | Flor'Avis{% endblock %}
+{% block title %}Anmelden | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
 {% block content %}
 <div class="contact-wrapper">
     <div class="contact-hero">
-        <h1>Login</h1>
-        <p class="hero-subtitle">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</p>
+        <h1>Anmelden</h1>
+        <p class="hero-subtitle">Willkommen {{ session.get('user_name', 'Gast') }} {{ session.get('user_lastname', '') }}</p>
     </div>
 
     <div class="contact-container">
@@ -22,23 +22,23 @@
                 <div class="input-group">
                     <label for="email">
                         <i class="fa fa-envelope"></i>
-                        Email Address
+                        E-Mail-Adresse
                     </label>
-                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <input type="email" id="email" name="email" placeholder="deine.email@beispiel.com" required>
                     <span class="input-border"></span>
                 </div>
 
                 <div class="input-group">
                     <label for="password">
                         <i class="fa fa-lock"></i>
-                        Password
+                        Passwort
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" placeholder="Dein Passwort eingeben" required>
                     <span class="input-border"></span>
                 </div>
 
                 <button type="submit" id="registrieren-btn" class="submit-btn">
-                    <span>Login</span>
+                    <span>Anmelden</span>
                     <i class="fa fa-sign-in"></i>
                 </button>
             </form>
@@ -48,16 +48,16 @@
     <div id="notification" class="notification success-notification">
         <i class="fa fa-check-circle"></i>
         <div class="notification-content">
-            <h4>Success!</h4>
-            <p>You have successfully logged in!</p>
+            <h4>Erfolg!</h4>
+            <p>Du hast dich erfolgreich angemeldet!</p>
         </div>
     </div>
 
     <div id="error-notification" class="notification error-notification">
         <i class="fa fa-exclamation-circle"></i>
         <div class="notification-content">
-            <h4>Error</h4>
-            <p id="error-text">Not all fields were filled out!</p>
+            <h4>Fehler</h4>
+            <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
         </div>
     </div>
 </div>
@@ -85,6 +85,11 @@ function validateEmail(email) {
     return regex.test(email);
 }
 
+var serverErrorMessage = {{ error_message|default('')|tojson }};
+if (serverErrorMessage) {
+    showError(serverErrorMessage);
+}
+
 var loginForm = document.querySelector('form[action="{{ url_for('login') }}"]');
 if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
@@ -93,13 +98,13 @@ if (loginForm) {
 
         if (!email || !password) {
             e.preventDefault();
-            showError('Not all fields were filled out!');
+            showError('Nicht alle Felder wurden ausgefüllt!');
             return;
         }
 
         if (!validateEmail(email)) {
             e.preventDefault();
-            showError('Email must contain an @ and be valid');
+            showError('E-Mail muss ein @ enthalten und gültig sein');
         }
     });
 }

@@ -1,0 +1,666 @@
+<<<<<<< HEAD
+{% extends 'base.html' %} {% block title %}Profil | Flor'Avis{% endblock %} {%
+block head %}
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="icon"
+  href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}"
+  type="image/x-icon"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/contact.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="contact-wrapper">
+  <div class="contact-hero">
+    <h1>Profil</h1>
+    <p class="hero-subtitle">
+      Willkommen {{ session.get('user_name', 'Gast') }} {{
+      session.get('user_lastname', '') }}
+    </p>
+  </div>
+
+  <div class="contact-container">
+    {% if not session.get("user_id") %}
+    <div class="form-section">
+      <form action="{{ url_for('profil') }}" method="post">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="lastname">
+              <i class="fa fa-user"></i>
+              Nachname
+            </label>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              placeholder="Dein Nachname"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="firstname">
+              <i class="fa fa-user"></i>
+              Vorname
+            </label>
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              placeholder="Dein Vorname"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+=======
+{% extends 'base.html' %}
+
+{% block title %}Profile | Flor'Avis{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<<<<<<< HEAD
+<div class="contact-wrapper">
+    <div class="contact-hero">
+        <h1>Profile</h1>
+        <p class="hero-subtitle">Welcome {{ session.get('user_name', 'Guest') }} {{ session.get('user_lastname', '') }}</p>
+=======
+<div class="profil">
+<h1 id="welcome-title">Willkommen {{ session.get('user_name', 'Gast') }} {{ session.get('user_lastname', '') }}</h1>
+<div class="profile-image-placeholder">
+    <img src="../static/images/profil.jpg" alt="Profile picture">
+</div>
+
+
+{% if not session.get("user_id") %}
+
+<div id="wegWennLogin">
+<div class="profile-header">
+    <h1>Registrierung</h1>
+</div>
+
+<form action="{{ url_for('profil') }}" method="post">
+<div class="header">
+
+    <p>Nachname</p>
+    <input id="lastname" name="lastname" rows="1" cols="100"></input>
+
+    <p>Vorname</p>
+    <input id="firstname" name="firstname" rows="1" cols="100"></input>
+
+    <p>E-Mail</p>
+    <input id="email" name="email" rows="1" cols="100"></input>
+
+    <p>Passwort</p>
+    <input id="password" name="password" rows="1" cols="100"></input>
+</div>
+
+<button type="button" id="registrieren-btn">Registrieren</button>
+<div class="alternative-account">
+    <div class="alternative-text">
+        <h1>Verwenden Sie ein anderes Konto</h1>
+>>>>>>> sevbranch
+    </div>
+
+<<<<<<< HEAD
+    <div class="contact-container">
+        {% if not session.get("user_id") %}
+        <div class="form-section">
+            <form action="{{ url_for('profil') }}" method="post">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="lastname">
+                            <i class="fa fa-user"></i>
+                            Last Name
+                        </label>
+                        <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+                        <span class="input-border"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="firstname">
+                            <i class="fa fa-user"></i>
+                            First Name
+                        </label>
+                        <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                        <span class="input-border"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">
+                        <i class="fa fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <span class="input-border"></span>
+                </div>
+=======
+</form>
+</div>
+{% else %}
+<div class="links">
+    <button class="link" onclick="window.location.href='{{ url_for('settings') }}'">
+        Zu den Einstellungen
+    </button>
+    <a href="{{ url_for('settings') }}" class="link"> 
+    </a>
+
+    <button class="link" onclick="window.location.href='{{ url_for('orders') }}'">
+        Zu meinen Bestellungen    
+    </button>
+    <a href="{{ url_for('orders') }}" class="link">
+    </a>
+
+    <button class="link" onclick="window.location.href='{{ url_for('logout') }}'">
+        Zur Abmeldung                
+    </button>
+    <a href="{{ url_for('logout') }}" class="link">
+    </a>
+   
+</div>
+>>>>>>> sevbranch
+
+                <div class="input-group">
+                    <label for="password">
+                        <i class="fa fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">
+                        <i class="fa fa-lock"></i>
+                        Repeat Password
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Repeat your password" required>
+                    <span class="input-border"></span>
+                </div>
+
+<<<<<<< HEAD
+                <button type="button" id="registrieren-btn" class="submit-btn">
+                    <span>Register</span>
+                    <i class="fa fa-user-plus"></i>
+                </button>
+
+                <button type="button" class="submit-btn login-btn" onclick="window.location.href='{{ url_for('login') }}'">
+                    <span>Login</span>
+                    <i class="fa fa-sign-in"></i>
+                </button>
+            </form>
+>>>>>>> ae4852d6a7dbb87c317e4c27a95167277d96a8c1
+        </div>
+
+        <div class="input-group">
+          <label for="email">
+            <i class="fa fa-envelope"></i>
+            E-Mail-Adresse
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="deine.email@beispiel.com"
+            required
+          />
+          <span class="input-border"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="password">
+            <i class="fa fa-lock"></i>
+            Passwort
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Passwort erstellen"
+            required
+          />
+          <span class="input-border"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="password">
+            <i class="fa fa-lock"></i>
+            Passwort wiederholen
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Passwort wiederholen"
+            required
+          />
+          <span class="input-border"></span>
+        </div>
+
+        <button type="button" id="registrieren-btn" class="submit-btn">
+          <span>Registrieren</span>
+          <i class="fa fa-user-plus"></i>
+        </button>
+
+        <button
+          type="button"
+          class="submit-btn login-btn"
+          onclick="window.location.href='{{ url_for('login') }}'"
+        >
+          <span>Anmelden</span>
+          <i class="fa fa-sign-in"></i>
+        </button>
+      </form>
+    </div>
+<<<<<<< HEAD
+    {% else %}
+    <div class="form-section">
+      <div class="form-grid">
+        <button
+          type="button"
+          class="submit-btn"
+          onclick="window.location.href='{{ url_for('settings') }}'"
+        >
+          <span>Zu den Einstellungen</span>
+          <i class="fa fa-cog"></i>
+        </button>
+
+        <button
+          type="button"
+          class="submit-btn"
+          onclick="window.location.href='{{ url_for('orders') }}'"
+        >
+          <span>Zu den Bestellungen</span>
+          <i class="fa fa-receipt"></i>
+        </button>
+
+        <button
+          type="button"
+          class="submit-btn"
+          onclick="window.location.href='{{ url_for('logout') }}'"
+        >
+          <span>Abmelden</span>
+          <i class="fa fa-sign-out"></i>
+        </button>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div id="notification" class="notification success-notification">
+    <i class="fa fa-check-circle"></i>
+    <div class="notification-content">
+      <h4>Erfolg!</h4>
+      <p>Vielen Dank für deine Registrierung!</p>
+    </div>
+  </div>
+
+  <div id="error-notification" class="notification error-notification">
+    <i class="fa fa-exclamation-circle"></i>
+    <div class="notification-content">
+      <h4>Fehler</h4>
+      <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
+    </div>
+  </div>
+=======
+=======
+<!-- Push Benachrichtigung für Erfolg -->
+<div id="notification" class="notification">
+    Danke für Ihre Registrierung!
+</div>
+
+<!-- Push Benachrichtigung für Fehler -->
+<div id="error-notification" class="notification error-notification">
+    Nicht alle Felder wurden ausgefüllt!
+</div>
+>>>>>>> sevbranch
+>>>>>>> ae4852d6a7dbb87c317e4c27a95167277d96a8c1
+</div>
+<script>
+  const inputs = document.querySelectorAll("input, textarea");
+  inputs.forEach((input) => {
+    input.addEventListener("focus", function () {
+      this.parentElement.classList.add("focused");
+    });
+
+    input.addEventListener("blur", function () {
+      if (!this.value) {
+        this.parentElement.classList.remove("focused");
+      }
+    });
+  });
+
+  // Validierungsfunktionen
+  function validateName(name) {
+    // Keine Zahlen erlaubt
+    var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
+    return regex.test(name) && name.trim().length > 0;
+  }
+
+  function validateEmail(email) {
+    // Muss @ enthalten
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function showError(message) {
+    var errorNotification = document.getElementById("error-notification");
+    var errorText = document.getElementById("error-text");
+    errorText.textContent = message;
+    errorNotification.classList.remove("hide");
+    errorNotification.classList.add("show");
+
+    if (errorTimeoutId !== null) {
+      clearTimeout(errorTimeoutId);
+    }
+
+    errorTimeoutId = setTimeout(function () {
+      errorNotification.classList.remove("show");
+      errorNotification.classList.add("hide");
+    }, 4000);
+  }
+
+  // Variable um den Timeout-Timer zu speichern
+  var errorTimeoutId = null;
+
+  /* Greift auf den Button mit der ID "registrieren-btn" zu
+   und fügt einen Klick-Event-Listener hinzu */
+<<<<<<< HEAD
+  var registerButton = document.getElementById("registrieren-btn");
+  if (registerButton) {
+    registerButton.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      var lastname = document.getElementById("lastname").value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+      var firstname = document.getElementById("firstname").value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+      var email = document.getElementById("email").value; // Liest den Wert aus dem Eingabefeld "email"
+      var password = document.getElementById("password").value; // Liest den Wert aus dem Eingabefeld "password"
+=======
+<<<<<<< HEAD
+var registerButton = document.getElementById('registrieren-btn');
+if (registerButton) {
+    registerButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+        var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+        var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
+        var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
+=======
+document.getElementById('registrieren-btn').addEventListener('click', function(e) {
+    
+    
+    
+   
+    var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname) 
+    var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+    var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
+    var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
+    
+    // Prüft, ob eines der Felder leer ist
+    if (!lastname || !firstname || !email || !password) {
+        
+        // Greift auf die Fehler-Benachrichtigung zu
+        var errorNotification = document.getElementById('error-notification');
+        
+        // Entfernt die Verstecken-Klasse, falls vorhanden
+        errorNotification.classList.remove('hide');
+        
+        // Fügt die CSS-Klasse "show" hinzu, um die Fehlermeldung anzuzeigen
+        errorNotification.classList.add('show');
+        
+        // Löscht den alten Timeout, falls vorhanden
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        // Startet einen Timer von 7 Sekunden
+        errorTimeoutId = setTimeout(function() {
+            
+            // Entfernt die Klasse "show"
+            errorNotification.classList.remove('show');
+            
+            // Fügt die Klasse "hide" hinzu, um die Fehlermeldung auszublenden
+            errorNotification.classList.add('hide');
+        
+        }, 4000); // 4000 Millisekunden = 4 Sekunden
+        
+        // Beendet die Funktion, damit keine Daten gesendet werden
+        return;
+    }
+    
+    // Prüfe Nachname (keine Zahlen)
+    if (!validateName(lastname)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Der Nachname darf keine Zahlen enthalten';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Nicht alle Felder wurden ausgefüllt!';
+        }, 4000);
+        return;
+    }
+
+    // Prüfe Vorname (keine Zahlen)
+    if (!validateName(firstname)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Der Vorname darf keine Zahlen enthalten';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+>>>>>>> sevbranch
+        
+        // Prüft, ob eines der Felder leer ist
+        if (!lastname || !firstname || !email || !password) {
+            showError('Not all fields were filled out!');
+            return;
+        }
+        
+<<<<<<< HEAD
+        // Prüfe Nachname (keine Zahlen)
+        if (!validateName(lastname)) {
+            showError('Last name may not contain numbers');
+            return;
+        }
+>>>>>>> ae4852d6a7dbb87c317e4c27a95167277d96a8c1
+
+      // Prüft, ob eines der Felder leer ist
+      if (!lastname || !firstname || !email || !password) {
+        showError("Nicht alle Felder wurden ausgefüllt!");
+        return;
+      }
+
+<<<<<<< HEAD
+      // Prüfe Nachname (keine Zahlen)
+      if (!validateName(lastname)) {
+        showError("Nachname darf keine Zahlen enthalten");
+        return;
+      }
+
+      // Prüfe Vorname (keine Zahlen)
+      if (!validateName(firstname)) {
+        showError("Vorname darf keine Zahlen enthalten");
+        return;
+      }
+
+      // Prüfe E-Mail (muss @ enthalten)
+      if (!validateEmail(email)) {
+        showError("E-Mail muss ein @ enthalten und gültig sein");
+        return;
+      }
+
+      // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
+      var errorNotification = document.getElementById("error-notification");
+      errorNotification.classList.remove("show");
+      errorNotification.classList.add("hide");
+
+      // Löscht den Timeout, falls vorhanden
+      if (errorTimeoutId !== null) {
+        clearTimeout(errorTimeoutId);
+      }
+
+      // Erstellt ein neues FormData-Objekt zum Versenden der Daten
+      var formData = new FormData();
+
+      formData.append("lastname", lastname); // Fügt den Nachnamen zu den Formulardaten hinzu
+      formData.append("firstname", firstname); // Fügt den Vornamen zu den Formulardaten hinzu
+      formData.append("email", email); // Fügt die E-Mail zu den Formulardaten hinzu
+      formData.append("password", password); // Fügt das Passwort zu den Formulardaten hinzu
+
+      // Sendet die Formulardaten per POST an die Server-Route "profil"
+      fetch('{{ url_for("profil") }}', {
+        method: "POST", // HTTP-Methode
+        body: formData, // Gesendete Daten
+      })
+        .then(function (response) {
+          if (response.ok) {
+            document.getElementById("lastname").value = ""; // Leert das Nachnamen-Feld
+            document.getElementById("firstname").value = ""; // Leert das Vornamen-Feld
+            document.getElementById("email").value = ""; // Leert das E-Mail-Feld
+            document.getElementById("password").value = ""; // Leert das Passwort-Feld
+
+            var notification = document.getElementById("notification");
+            notification.classList.add("show");
+
+            setTimeout(function () {
+              notification.classList.remove("show");
+              notification.classList.add("hide");
+              window.location.reload();
+            }, 4000);
+          } else {
+            showError(
+              "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
+            );
+          }
+        })
+        .catch(function () {
+          showError("Netzwerkfehler. Bitte prüfe deine Verbindung.");
+=======
+        // Prüfe E-Mail (muss @ enthalten)
+        if (!validateEmail(email)) {
+            showError('Email must contain an @ and be valid');
+            return;
+        }
+        
+        // Wenn alle Felder erfüllt sind, verstecke die Fehlermeldung
+=======
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Nicht alle Felder wurden ausgefüllt!';
+        }, 4000);
+        return;
+    }
+
+    // Prüfe E-Mail (muss @ enthalten)
+    if (!validateEmail(email)) {
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.textContent = 'Die E-Mail muss ein @ enthalten und gültig sein';
+        errorNotification.classList.remove('hide');
+        errorNotification.classList.add('show');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        errorTimeoutId = setTimeout(function () {
+            errorNotification.classList.remove('show');
+            errorNotification.classList.add('hide');
+            errorNotification.textContent = 'Nicht alle Felder wurden ausgefüllt!';
+        }, 4000);
+        return;
+    }
+    
+    // Löscht den Timeout, falls vorhanden
+    if (errorTimeoutId !== null) {
+        clearTimeout(errorTimeoutId);
+    }
+    
+    // Erstellt ein neues FormData-Objekt zum Versenden der Daten
+    var formData = new FormData();
+    
+    
+    formData.append('lastname', lastname);// Fügt den Nachnamen zu den Formulardaten hinzu
+    formData.append('firstname', firstname);// Fügt den Vornamen zu den Formulardaten hinzu
+    formData.append('email', email);// Fügt die E-Mail zu den Formulardaten hinzu
+    formData.append('password', password); // Fügt das Passwort zu den Formulardaten hinzu
+    
+    // Sendet die Formulardaten per POST an die Server-Route "profil"
+    fetch('{{ url_for("profil") }}', {
+        method: 'POST', // HTTP-Methode
+        body: formData  // Gesendete Daten
+    }).then(function(response) {
+        
+        // Versteckt die Fehler-Benachrichtigung
+>>>>>>> sevbranch
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+        
+        // Löscht den Timeout, falls vorhanden
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        // Erstellt ein neues FormData-Objekt zum Versenden der Daten
+        var formData = new FormData();
+        
+        formData.append('lastname', lastname);// Fügt den Nachnamen zu den Formulardaten hinzu
+        formData.append('firstname', firstname);// Fügt den Vornamen zu den Formulardaten hinzu
+        formData.append('email', email);// Fügt die E-Mail zu den Formulardaten hinzu
+        formData.append('password', password); // Fügt das Passwort zu den Formulardaten hinzu
+        
+        // Sendet die Formulardaten per POST an die Server-Route "profil"
+        fetch('{{ url_for("profil") }}', {
+            method: 'POST', // HTTP-Methode
+            body: formData  // Gesendete Daten
+        }).then(function(response) {
+            if (response.ok) {
+                document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
+                document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
+                document.getElementById('email').value = '';// Leert das E-Mail-Feld
+                document.getElementById('password').value = '';// Leert das Passwort-Feld
+                
+                var notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                    notification.classList.add('hide');
+                    window.location.reload();
+                }, 4000);
+            } else {
+                showError('An error occurred. Please try again later.');
+            }
+        }).catch(function () {
+            showError('Network error. Please check your connection.');
+>>>>>>> ae4852d6a7dbb87c317e4c27a95167277d96a8c1
+        });
+    });
+  }
+</script>
+
+{% endblock %}

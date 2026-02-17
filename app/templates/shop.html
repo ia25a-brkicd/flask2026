@@ -10,96 +10,69 @@
       <!-- Slide 1 -->
       <div class="carousel-slide active" data-slide="0">
         <div class="product-image">
-          <a href="{{ url_for('product_detail', product_id=1) }}">
-            <img
-              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-              alt="Lavender Premium Soap"
-            />
-          </a>
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Vanille.jpg') }}"
+            alt="Lavender Premium Soap"
+          />
         </div>
         <div class="product-info">
-          <h1>Lavender Dream Soap</h1>
+          <h1>Green Apple & Vanille</h1>
           <p>
-            Handcrafted with real lavender flowers and essential oils. Relax
-            your senses with every wash.
+            Handgefertigt mit echten Lavendelblüten und ätherischen Ölen.
+            Entspannen Sie Ihre Sinne bei jeder Wäsche.
           </p>
-          <div class="carousel-btns">
-            <button
-              class="buy-btn"
-              onclick="carouselBuyNow('Lavender Dream Soap', 12.99)"
-            >
-              Buy Now
-            </button>
-            <a
-              href="{{ url_for('product_detail', product_id=1) }}"
-              class="details-btn"
-              >Details</a
-            >
-          </div>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Green Apple & Vanille', 12.99)"
+          >
+            Jetzt kaufen
+          </button>
         </div>
       </div>
 
       <!-- Slide 2 -->
       <div class="carousel-slide" data-slide="1">
         <div class="product-image">
-          <a href="{{ url_for('product_detail', product_id=2) }}">
-            <img
-              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-              alt="Rose Premium Soap"
-            />
-          </a>
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Lemon & Vanille Mix.jpg') }}"
+            alt="Rose Premium Soap"
+          />
         </div>
         <div class="product-info">
-          <h1>Rose Garden Soap</h1>
+          <h1>Rosen Garten Seife</h1>
           <p>
-            Infused with rose petals and natural moisturizers. Experience luxury
-            skincare daily.
+            Mit Rosenblättern und natürlichen Feuchtigkeitsspendern infundiert.
+            Erleben Sie täglich Luxus-Hautpflege.
           </p>
-          <div class="carousel-btns">
-            <button
-              class="buy-btn"
-              onclick="carouselBuyNow('Rose Garden Soap', 13.99)"
-            >
-              Buy Now
-            </button>
-            <a
-              href="{{ url_for('product_detail', product_id=2) }}"
-              class="details-btn"
-              >Details</a
-            >
-          </div>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Rosen Garten Seife', 13.99)"
+          >
+            Jetzt kaufen
+          </button>
         </div>
       </div>
 
       <!-- Slide 3 -->
       <div class="carousel-slide" data-slide="2">
         <div class="product-image">
-          <a href="{{ url_for('product_detail', product_id=3) }}">
-            <img
-              src="{{ url_for('static', filename='styles/image/soaps.jpg') }}"
-              alt="Honey Premium Soap"
-            />
-          </a>
+          <img
+            src="{{ url_for('static', filename='images/SeifeFloravis.jpg') }}"
+            alt="Honey Premium Soap"
+          />
         </div>
         <div class="product-info">
-          <h1>Honey Glow Soap</h1>
+          <h1>Honig Glühende Seife</h1>
           <p>
-            Made with organic honey and oatmeal. Nourish and soften your skin
-            naturally.
+            Hergestellt mit organisches Honig und Haferflocken. Nähren und
+            erweichen Sie Ihre Haut auf natürliche Weise.
           </p>
-          <div class="carousel-btns">
-            <button
-              class="buy-btn"
-              onclick="carouselBuyNow('Honey Glow Soap', 12.49)"
-            >
-              Buy Now
-            </button>
-            <a
-              href="{{ url_for('product_detail', product_id=3) }}"
-              class="details-btn"
-              >Details</a
-            >
-          </div>
+          <button
+            class="buy-btn"
+            onclick="carouselBuyNow('Honig Glühende Seife', 12.49)"
+          >
+            Jetzt kaufen
+          </button>
         </div>
       </div>
     </div>
@@ -121,46 +94,35 @@
   </div>
 
   <section class="products-section">
-    <h2>Our Soaps</h2>
+    <h2>Unsere Seifen</h2>
 
     <!-- Category Filter -->
     <div class="category-filter">
       <a
         href="{{ url_for('shop') }}"
         class="filter-btn {% if not category %}active{% endif %}"
-        >All</a
+        >Alle</a
       >
       <a
         href="{{ url_for('shop', category='classic') }}"
         class="filter-btn {% if category == 'classic' %}active{% endif %}"
-        >Classic</a
+        >Klassisch</a
       >
       <a
         href="{{ url_for('shop', category='luxury') }}"
         class="filter-btn {% if category == 'luxury' %}active{% endif %}"
-        >Luxury</a
+        >Luxus</a
       >
     </div>
 
     <div class="products-grid">
-      {% for product in products %}
-      <div
-        class="product-card"
-        data-product-name="{{ product.name }}"
-        data-product-price="{{ product.price }}"
-      >
-        <a
-          href="{{ url_for('product_detail', product_id=product.id) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename=product.image) }}"
-            alt="{{ product.name }}"
-          />
-          <h3>{{ product.name }}</h3>
-          <p class="product-short">{{ product.short }}</p>
-        </a>
-        <p class="price">{{ "%.2f"|format(product.price) }} CHF</p>
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/Green Apple & Lemon mix.jpg') }}"
+          alt="Green Apple & Lemon"
+        />
+        <h3>Green Apple & Lemon mix</h3>
+        <p class="price">12.99 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
             <button class="pack-btn active" data-quantity="1" data-discount="0">
@@ -180,9 +142,153 @@
             </button>
           </div>
         </div>
-        <button class="add-to-cart-btn">Add to Cart</button>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
       </div>
-      {% endfor %}
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/Green Apple & Lemon & Vanille Mix.jpg') }}"
+          alt="Green Apple & Lemon & Vanille Mix"
+        />
+        <h3>Green Apple & Lemon & Vanille Mix</h3>
+        <p class="price">13.99 CHF</p>
+        <div class="pack-selector">
+          <div class="pack-btn-wrapper">
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
+          </div>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/Green Apple & Lemon with Stamp.jpg') }}"
+          alt="Green Apple & Lemon with Stamp"
+        />
+        <h3>Green Apple & Lemon with Stamp</h3>
+        <p class="price">14.99 CHF</p>
+        <div class="pack-selector">
+          <div class="pack-btn-wrapper">
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
+          </div>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/Green Apple & Lemon.jpg') }}"
+          alt="Green Apple & Lemon"
+        />
+        <h3>Green Apple & Lemon</h3>
+        <p class="price">11.99 CHF</p>
+        <div class="pack-selector">
+          <div class="pack-btn-wrapper">
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
+          </div>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/Green Apple & Vanille.jpg') }}"
+          alt="Green Apple & Vanille"
+        />
+        <h3>Green Apple & Vanille</h3>
+        <p class="price">12.49 CHF</p>
+        <div class="pack-selector">
+          <div class="pack-btn-wrapper">
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
+          </div>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
+
+      <div class="product-card">
+        <img
+          src="{{ url_for('static', filename='images/GreenAppleVanille.jpg') }}"
+          alt="Green Apple & Vanille"
+        />
+        <h3>Green Apple & Vanille</h3>
+        <p class="price">13.49 CHF</p>
+        <div class="pack-selector">
+          <div class="pack-btn-wrapper">
+            <button class="pack-btn active" data-quantity="1" data-discount="0">
+              1
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-10%</span>
+            <button class="pack-btn" data-quantity="2" data-discount="10">
+              2
+            </button>
+          </div>
+          <div class="pack-btn-wrapper">
+            <span class="discount-badge">-20%</span>
+            <button class="pack-btn" data-quantity="3" data-discount="20">
+              3
+            </button>
+          </div>
+        </div>
+        <button class="add-to-cart-btn">In den Warenkorb</button>
+      </div>
     </div>
   </section>
 </div>
@@ -295,7 +401,15 @@
 
   // Handle carousel buy now buttons
   function carouselBuyNow(productName, price) {
-    addToCart(productName, 1, price);
+    addToCart(productName, 1, price); // In der add-to-cart-btn Event Listener Funktion
+    document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const productCard = this.closest(".product-card");
+        const productName = productCard.querySelector("h3").textContent;
+
+        addToCart(productName, quantity, basePrice);
+      });
+    });
   }
 </script>
 
