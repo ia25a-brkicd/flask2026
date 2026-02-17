@@ -7,6 +7,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+<style>
+    .profile-action-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .profile-action-grid .submit-btn {
+        width: 100%;
+        min-height: 64px;
+        white-space: nowrap;
+        justify-content: center;
+    }
+
+    .profile-address {
+        margin-top: 10px;
+    }
+
+    .profile-address-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #2f221c;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .profile-address-list {
+        color: #7a6259;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -80,14 +115,14 @@
         </div>
         {% else %}
         <div class="form-section">
-            <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="profile-action-grid">
                 <button type="button" class="submit-btn" data-href="{{ url_for('settings') }}">
-                    <span>Zu den Einstellungen</span>
+                    <span>Einstellungen</span>
                     <i class="fa fa-cog"></i>
                 </button>
 
                 <button type="button" class="submit-btn" data-href="{{ url_for('orders') }}">
-                    <span>Zu den Bestellungen</span>
+                    <span>Bestellungen</span>
                     <i class="fa fa-receipt"></i>
                 </button>
 
@@ -100,6 +135,70 @@
                     <span>Abmelden</span>
                     <i class="fa fa-sign-out"></i>
                 </button>
+            </div>
+
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="profil-firstname">
+                        <i class="fa fa-user"></i>
+                        Vorname
+                    </label>
+                    <input type="text" id="profil-firstname" value="{{ user_profile.firstname }}" readonly>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="profil-lastname">
+                        <i class="fa fa-user"></i>
+                        Nachname
+                    </label>
+                    <input type="text" id="profil-lastname" value="{{ user_profile.lastname }}" readonly>
+                    <span class="input-border"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="profil-email">
+                    <i class="fa fa-envelope"></i>
+                    E-Mail-Adresse
+                </label>
+                <input type="text" id="profil-email" value="{{ user_profile.email }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="profil-password">
+                    <i class="fa fa-lock"></i>
+                    Passwort (verschlüsselt)
+                </label>
+                <input type="text" id="profil-password" value="{{ user_profile.password }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <div class="profile-address">
+                <div class="profile-address-title">
+                    <i class="fa fa-home"></i>
+                    Adresse
+                </div>
+                <div class="profile-address-list">
+                    <div>{{ user_profile.strasse }}</div>
+                    <div>{{ user_profile.plz }}</div>
+                    <div>{{ user_profile.stadt }}</div>
+                    <div>{{ user_profile.land }}</div>
+                </div>
+            </div>
+
+            <div class="profile-address">
+                <div class="profile-address-title">
+                    <i class="fa fa-truck"></i>
+                    Versandadresse
+                </div>
+                <div class="profile-address-list">
+                    <div>{{ user_profile.versand_strasse }}</div>
+                    <div>{{ user_profile.versand_plz }}</div>
+                    <div>{{ user_profile.versand_stadt }}</div>
+                    <div>{{ user_profile.versand_land }}</div>
+                </div>
             </div>
         </div>
         {% endif %}
