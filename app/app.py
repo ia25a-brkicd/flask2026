@@ -2,7 +2,7 @@ import db
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
-
+from mail import send_simple_message, send_order_confirmation
 from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -300,40 +300,40 @@ def search() -> str:
 
     pages = [
         {
-            "title": "Startseite",
+            "title": "Home",
             "url": url_for("home"),
-            "hint": "Startseite und Highlights",
-            "keywords": ["home", "start", "floravis", "startseite"],
+            "hint": "Homepage and Highlights",
+            "keywords": ["home", "start", "floravis"],
         },
         {
             "title": "Shop",
             "url": url_for("shop"),
-            "hint": "Seifen und Sets",
-            "keywords": ["produkte", "seifen", "sets", "shop"],
+            "hint": "Soaps and Sets",
+            "keywords": ["products", "soaps", "sets"],
         },
         {
-            "title": "\u00dcber uns",
+            "title": "About us",
             "url": url_for("about_us"),
-            "hint": "Unsere Geschichte",
-            "keywords": ["\u00fcber", "marke", "geschichte", "about"],
+            "hint": "Our Story",
+            "keywords": ["about", "brand", "story"],
         },
         {
-            "title": "Kontakt",
+            "title": "Contact",
             "url": url_for("contact"),
-            "hint": "Kontaktiere uns",
-            "keywords": ["kontakt", "hilfe", "support"],
+            "hint": "Contact Us",
+            "keywords": ["kontakt", "help", "support"],
         },
         {
-            "title": "Profil",
+            "title": "Profile",
             "url": url_for("profil"),
-            "hint": "Anmeldung und Profil",
-            "keywords": ["login", "profil", "konto", "anmelden"],
+            "hint": "Login and Profile",
+            "keywords": ["login", "profile", "account"],
         },
         {
-            "title": "Einstellungen",
+            "title": "Settings",
             "url": url_for("settings"),
-            "hint": "Einstellungen",
-            "keywords": ["einstellungen", "settings"],
+            "hint": "Settings",
+            "keywords": ["settings", "preferences"],
         },
     ]
 

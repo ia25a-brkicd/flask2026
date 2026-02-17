@@ -85,6 +85,11 @@ function validateEmail(email) {
     return regex.test(email);
 }
 
+var serverErrorMessage = {{ error_message|default('')|tojson }};
+if (serverErrorMessage) {
+    showError(serverErrorMessage);
+}
+
 var loginForm = document.querySelector('form[action="{{ url_for('login') }}"]');
 if (loginForm) {
     loginForm.addEventListener('submit', function (e) {

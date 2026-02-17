@@ -47,20 +47,53 @@ block head %}
             <span class="input-border"></span>
           </div>
 
-          <div class="input-group">
-            <label for="firstname">
-              <i class="fa fa-user"></i>
-              Vorname
-            </label>
-            <input
-              type="text"
-              id="firstname"
-              name="firstname"
-              placeholder="Dein Vorname"
-              required
-            />
-            <span class="input-border"></span>
-          </div>
+                    <div class="input-group">
+                        <label for="firstname">
+                            <i class="fa fa-user"></i>
+                            Vorname
+                        </label>
+                        <input type="text" id="firstname" name="firstname" placeholder="Dein Vorname" required>
+                        <span class="input-border"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">
+                        <i class="fa fa-envelope"></i>
+                        E-Mail-Adresse
+                    </label>
+                    <input type="email" id="email" name="email" placeholder="deine.email@beispiel.com" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">
+                        <i class="fa fa-lock"></i>
+                        Passwort
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Passwort erstellen" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password_repeat">
+                        <i class="fa fa-lock"></i>
+                        Passwort wiederholen
+                    </label>
+                    <input type="password" id="password_repeat" name="password_repeat" placeholder="Wiederhole dein Passwort" required>
+                    <span class="input-border"></span>
+                </div>
+
+                <button type="button" id="registrieren-btn" class="submit-btn">
+                    <span>Registrieren</span>
+                    <i class="fa fa-user-plus"></i>
+                </button>
+
+                <button type="button" class="submit-btn login-btn" onclick="window.location.href='{{ url_for('login') }}'">
+                    <span>Anmelden</span>
+                    <i class="fa fa-sign-in"></i>
+                </button>
+            </form>
         </div>
 
         <div class="input-group">
@@ -221,72 +254,76 @@ block head %}
     registerButton.addEventListener("click", function (e) {
       e.preventDefault();
 
-      var lastname = document.getElementById("lastname").value;
-      var firstname = document.getElementById("firstname").value;
-      var email = document.getElementById("email").value;
-      var password = document.getElementById("password").value;
+        var lastname = document.getElementById('lastname').value; // Liest den Wert aus dem Eingabefeld "lastname" (Nachname)
+        var firstname = document.getElementById('firstname').value; // Liest den Wert aus dem Eingabefeld "firstname" (Vorname)
+        var email = document.getElementById('email').value; // Liest den Wert aus dem Eingabefeld "email"
+        var password = document.getElementById('password').value;// Liest den Wert aus dem Eingabefeld "password"
+        var passwordRepeat = document.getElementById('password_repeat').value; // Liest den Wert aus dem Eingabefeld "password_repeat"
+        
+        // Prüft, ob eines der Felder leer ist
+        if (!lastname || !firstname || !email || !password || !passwordRepeat) {
+            showError('Not all fields were filled out!');
+            return;
+        }
+                if (password !== passwordRepeat) {
+                    showError('Passwords do not match');
+                    return;
+                }
+
+        
+        if (!validateName(lastname)) {
+            showError('Nachname darf keine Zahlen enthalten');
+            return;
+        }
 
       if (!lastname || !firstname || !email || !password) {
         showError("Nicht alle Felder wurden ausgefüllt!");
         return;
       }
 
-      if (!validateName(lastname)) {
-        showError("Nachname darf keine Zahlen enthalten");
-        return;
-      }
-
-      if (!validateName(firstname)) {
-        showError("Vorname darf keine Zahlen enthalten");
-        return;
-      }
-
-      if (!validateEmail(email)) {
-        showError("E-Mail muss ein @ enthalten und gültig sein");
-        return;
-      }
-
-      var errorNotification = document.getElementById("error-notification");
-      errorNotification.classList.remove("show");
-      errorNotification.classList.add("hide");
-
-      if (errorTimeoutId !== null) {
-        clearTimeout(errorTimeoutId);
-      }
-
-      var formData = new FormData();
-      formData.append("lastname", lastname);
-      formData.append("firstname", firstname);
-      formData.append("email", email);
-      formData.append("password", password);
-
-      fetch('{{ url_for("profil") }}', {
-        method: "POST",
-        body: formData,
-      })
-        .then(function (response) {
-          if (response.ok) {
-            document.getElementById("lastname").value = "";
-            document.getElementById("firstname").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
-
-            var notification = document.getElementById("notification");
-            notification.classList.add("show");
-
-            setTimeout(function () {
-              notification.classList.remove("show");
-              notification.classList.add("hide");
-              window.location.reload();
-            }, 4000);
-          } else {
-            showError(
-              "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
-            );
-          }
-        })
-        .catch(function () {
-          showError("Netzwerkfehler. Bitte prüfe deine Verbindung.");
+        if (!validateEmail(email)) {
+            showError('E-Mail muss ein @ enthalten und gültig sein');
+            return;
+        }
+        
+        var errorNotification = document.getElementById('error-notification');
+        errorNotification.classList.remove('show');
+        errorNotification.classList.add('hide');
+        
+        if (errorTimeoutId !== null) {
+            clearTimeout(errorTimeoutId);
+        }
+        
+        var formData = new FormData();
+        formData.append('lastname', lastname);
+        formData.append('firstname', firstname);
+        formData.append('email', email);
+        formData.append('password', password);
+        
+        fetch('{{ url_for("profil") }}', {
+            method: 'POST',
+            body: formData
+        }).then(function(response) {
+            if (response.ok) {
+                document.getElementById('lastname').value = ''; // Leert das Nachnamen-Feld
+                document.getElementById('firstname').value = '';// Leert das Vornamen-Feld
+                document.getElementById('email').value = '';// Leert das E-Mail-Feld
+                document.getElementById('password').value = '';// Leert das Passwort-Feld
+                document.getElementById('password_repeat').value = '';// Leert das Wiederholungsfeld
+                
+                var notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                    notification.classList.add('hide');
+                    window.location.reload();
+                }, 4000);
+            } else {
+                showError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.');
+            }
+        }).catch(function () {
+            showError('Netzwerkfehler. Bitte prüfe deine Verbindung.');
         });
     });
   }
