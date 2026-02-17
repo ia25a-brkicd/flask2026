@@ -72,7 +72,7 @@
                     <i class="fa fa-user-plus"></i>
                 </button>
 
-                <button type="button" class="submit-btn login-btn" onclick="window.location.href='{{ url_for('login') }}'">
+                <button type="button" class="submit-btn login-btn" data-href="{{ url_for('login') }}">
                     <span>Anmelden</span>
                     <i class="fa fa-sign-in"></i>
                 </button>
@@ -80,18 +80,23 @@
         </div>
         {% else %}
         <div class="form-section">
-            <div class="form-grid">
-                <button type="button" class="submit-btn" onclick="window.location.href='{{ url_for('settings') }}'">
+            <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <button type="button" class="submit-btn" data-href="{{ url_for('settings') }}">
                     <span>Zu den Einstellungen</span>
                     <i class="fa fa-cog"></i>
                 </button>
 
-                <button type="button" class="submit-btn" onclick="window.location.href='{{ url_for('orders') }}'">
+                <button type="button" class="submit-btn" data-href="{{ url_for('orders') }}">
                     <span>Zu den Bestellungen</span>
                     <i class="fa fa-receipt"></i>
                 </button>
 
-                <button type="button" class="submit-btn" onclick="window.location.href='{{ url_for('logout') }}'">
+                <button type="button" class="submit-btn" data-href="{{ url_for('settings') }}#konto-profil">
+                    <span>Profil anpassen</span>
+                    <i class="fa fa-user-edit"></i>
+                </button>
+
+                <button type="button" class="submit-btn" data-href="{{ url_for('logout') }}">
                     <span>Abmelden</span>
                     <i class="fa fa-sign-out"></i>
                 </button>
@@ -237,6 +242,17 @@ if (registerButton) {
         });
     });
 }
+
+// Handle navigation buttons with data-href
+var navButtons = document.querySelectorAll('button[data-href]');
+navButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        var href = this.getAttribute('data-href');
+        if (href) {
+            window.location.href = href;
+        }
+    });
+});
 </script>
 
 {% endblock %}

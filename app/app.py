@@ -194,8 +194,55 @@ def login():
 def orders():
     return render_template("orders.html")
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 def settings():
+    if request.method == "POST":
+        app.logger.info("Settings form submitted")
+        
+        # Adresse Daten
+        strasse = request.form.get("strasse")
+        plz = request.form.get("plz")
+        stadt = request.form.get("stadt")
+        land = request.form.get("land")
+        
+        # Versandadresse Daten
+        versand_strasse = request.form.get("versand_strasse")
+        versand_plz = request.form.get("versand_plz")
+        versand_stadt = request.form.get("versand_stadt")
+        versand_land = request.form.get("versand_land")
+        
+        # Speichere in Session (oder DB wenn gewünscht)
+        if strasse and plz and stadt and land:
+            session['adresse'] = {
+                'strasse': strasse,
+                'plz': plz,
+                'stadt': stadt,
+                'land': land
+            }
+            print("=== Adresse gespeichert ===")
+            print(f"Straße: {strasse}")
+            print(f"PLZ: {plz}")
+            print(f"Stadt: {stadt}")
+            print(f"Land: {land}")
+            print("===========================")
+        
+        if versand_strasse and versand_plz and versand_stadt and versand_land:
+            session['versandadresse'] = {
+                'strasse': versand_strasse,
+                'plz': versand_plz,
+                'stadt': versand_stadt,
+                'land': versand_land
+            }
+            print("=== Versandadresse gespeichert ===")
+            print(f"Straße: {versand_strasse}")
+            print(f"PLZ: {versand_plz}")
+            print(f"Stadt: {versand_stadt}")
+            print(f"Land: {versand_land}")
+            print("===================================")
+        
+        # Redirect zurück zu settings mit konto-profil anchor
+        return redirect(url_for("settings") + "#konto-profil")
+    
     return render_template("settings.html")
 
 @app.route("/logout")
