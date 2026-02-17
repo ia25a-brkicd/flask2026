@@ -64,7 +64,8 @@ languages = [
 def home():
     print(math_service.add(1.0, 2.0))
     app.logger.info("Rendering home page")
-    return render_template("home.html")
+    products = db_repo.get_all_products_local()[:6]  # Get first 6 products for carousel
+    return render_template("home.html", products=products)
 
 @app.route('/result/', defaults={'name': 'Guest'})
 @app.route('/result/<name>')
@@ -409,6 +410,18 @@ def add_product():
     price = request.form["price"]
     db_repo.add_product(name, price)
     return redirect(url_for("home"))
+
+@app.route("/faq")
+def faq():
+    return render_template("faq.html")
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+@app.route("/shipping")
+def shipping():
+    return render_template("shipping.html")
 
 
 if __name__ == '__main__':
