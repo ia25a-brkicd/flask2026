@@ -29,27 +29,36 @@ block head %}
   </div>
 
   <!-- Product Showcase Carousel -->
-  <div class="productShowcase">
+  <div class="productShowcase" role="region" aria-label="Produktkarussel">
     <div class="showcase-container">
-      <div class="showcase-carousel">
-        <div class="showcase-slides">
+      <div class="showcase-carousel" aria-live="polite" aria-atomic="true">
+        <div class="showcase-slides" role="list">
           {% for product in products %}
-          <div class="showcase-slide">
+          <div
+            class="showcase-slide"
+            role="listitem"
+            aria-hidden="{% if not loop.first %}true{% else %}false{% endif %}"
+          >
             <div class="showcase-image">
               <img
                 src="{{ url_for('static', filename=product['image']) }}"
-                alt="{{ product['name'] }}"
+                alt="{{ product['name'] }} - Produktbild"
+                loading="lazy"
               />
             </div>
             <div class="showcase-content">
               <h2 class="showcase-title">{{ product['name'] }}</h2>
               <p class="showcase-description">{{ product['short'] }}</p>
-              <p class="showcase-price">
+              <p
+                class="showcase-price"
+                aria-label="Preis: {{ product['price'] }} Euro"
+              >
                 {{ "%.2f"|format(product['price']) }} €
               </p>
               <a
                 href="{{ url_for('product_detail', product_id=product['id']) }}"
                 class="showcase-btn"
+                aria-label="Produkt {{product['name']}} - Jetzt kaufen"
                 >Jetzt kaufen</a
               >
             </div>
@@ -58,21 +67,35 @@ block head %}
         </div>
 
         <!-- Navigation Arrows -->
-        <button class="showcase-prev" onclick="previousSlide()">
-          <i class="fa fa-chevron-left"></i>
+        <button
+          class="showcase-prev"
+          onclick="previousSlide()"
+          aria-label="Vorheriges Produkt"
+          title="Vorheriges Produkt (Pfeiltaste Links)"
+        >
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </button>
-        <button class="showcase-next" onclick="nextSlide()">
-          <i class="fa fa-chevron-right"></i>
+        <button
+          class="showcase-next"
+          onclick="nextSlide()"
+          aria-label="Nächstes Produkt"
+          title="Nächstes Produkt (Pfeiltaste Rechts)"
+        >
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </button>
       </div>
 
       <!-- Dots/Indicators -->
-      <div class="showcase-dots">
+      <div class="showcase-dots" role="tablist" aria-label="Produktauswahl">
         {% for product in products %}
-        <span
+        <button
           class="dot {% if loop.first %}active{% endif %}"
           onclick="currentSlide({{ loop.index0 }})"
-        ></span>
+          role="tab"
+          aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
+          aria-label="Produkt {{ loop.index }} von {{ products|length }}: {{ product['name'] }}"
+          aria-current="{% if loop.first %}true{% else %}false{% endif %}"
+        ></button>
         {% endfor %}
       </div>
     </div>
@@ -84,16 +107,28 @@ block head %}
       <p class="footerTagline">Eine Revolution in der Seifenbranche</p>
 
       <div class="socialMedia">
-        <a href="https://www.tiktok.com/@official.flor.avis" target="_blank">
+        <a
+          href="https://www.tiktok.com/@official.flor.avis"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Besuche uns auf TikTok"
+        >
           <img
             src="{{ url_for('static', filename='styles/image/tiktokLogo.webp') }}"
-            alt="TikTok"
+            alt="TikTok Logo"
+            loading="lazy"
           />
         </a>
-        <a href="https://www.instagram.com/official.flor.avis/" target="_blank">
+        <a
+          href="https://www.instagram.com/official.flor.avis/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Besuche uns auf Instagram"
+        >
           <img
             src="{{ url_for('static', filename='styles/image/instaLogo.png') }}"
-            alt="Instagram"
+            alt="Instagram Logo"
+            loading="lazy"
           />
         </a>
       </div>
@@ -144,38 +179,149 @@ block head %}
 
 <script>
   let currentSlideIndex = 0;
+  let autoplayInterval = null;
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  // Initialize carousel
+  function initCarousel() {
+    try {
+      const carousel = document.querySelector(".showcase-carousel");
+      if (!carousel) {
+        console.warn("Carousel element not found");
+        return;
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", handleCarouselKeydown);
+
+      // Touch/swipe support
+      carousel.addEventListener("touchstart", handleTouchStart, false);
+      carousel.addEventListener("touchend", handleTouchEnd, false);
+
+      // Auto-advance slides
+      startAutoplay();
+
+      // Pause autoplay on hover
+      carousel.addEventListener("mouseenter", stopAutoplay);
+      carousel.addEventListener("mouseleave", startAutoplay);
+
+      // Set ARIA attributes
+      updateAriaAttributes();
+    } catch (error) {
+      console.error("Carousel initialization error:", error);
+    }
+  }
+
+  function handleCarouselKeydown(event) {
+    if (event.key === "ArrowLeft") {
+      previousSlide();
+    } else if (event.key === "ArrowRight") {
+      nextSlide();
+    }
+  }
+
+  function handleTouchStart(event) {
+    touchStartX = event.changedTouches[0].screenX;
+  }
+
+  function handleTouchEnd(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipe();
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        previousSlide();
+      }
+    }
+  }
+
+  function startAutoplay() {
+    if (autoplayInterval) clearInterval(autoplayInterval);
+    autoplayInterval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+  }
+
+  function stopAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+    }
+  }
 
   function nextSlide() {
     const slides = document.querySelectorAll(".showcase-slide");
+    if (slides.length === 0) return;
     currentSlideIndex = (currentSlideIndex + 1) % slides.length;
     updateSlide();
   }
 
   function previousSlide() {
     const slides = document.querySelectorAll(".showcase-slide");
+    if (slides.length === 0) return;
     currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
     updateSlide();
   }
 
   function currentSlide(index) {
-    currentSlideIndex = index;
-    updateSlide();
+    const slides = document.querySelectorAll(".showcase-slide");
+    if (index >= 0 && index < slides.length) {
+      currentSlideIndex = index;
+      updateSlide();
+    }
   }
 
   function updateSlide() {
+    try {
+      const slides = document.querySelectorAll(".showcase-slide");
+      const dots = document.querySelectorAll(".dot");
+      const slidesContainer = document.querySelector(".showcase-slides");
+
+      if (!slidesContainer || slides.length === 0) return;
+
+      const offset = currentSlideIndex * -100;
+      slidesContainer.style.transform = `translateX(${offset}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentSlideIndex);
+        dot.setAttribute(
+          "aria-current",
+          index === currentSlideIndex ? "true" : "false",
+        );
+      });
+
+      updateAriaAttributes();
+    } catch (error) {
+      console.error("Slide update error:", error);
+    }
+  }
+
+  function updateAriaAttributes() {
     const slides = document.querySelectorAll(".showcase-slide");
-    const dots = document.querySelectorAll(".dot");
-    const slidesContainer = document.querySelector(".showcase-slides");
-
-    // Update slides visibility (slide effect)
-    const offset = currentSlideIndex * -100;
-    slidesContainer.style.transform = `translateX(${offset}%)`;
-
-    // Update dots
-    dots.forEach((dot, index) => {
-      dot.classList.toggle("active", index === currentSlideIndex);
+    slides.forEach((slide, index) => {
+      slide.setAttribute(
+        "aria-hidden",
+        index !== currentSlideIndex ? "true" : "false",
+      );
     });
   }
+
+  // Initialize when DOM is loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCarousel);
+  } else {
+    initCarousel();
+  }
+
+  // Cleanup on page unload
+  window.addEventListener("unload", stopAutoplay);
 </script>
 
 {% endblock %}

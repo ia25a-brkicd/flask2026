@@ -2,38 +2,74 @@
 {% block content %}
 <h1 class="title">Warenkorb</h1>
 <hr class="section-line" />
-<div class="shoppingcart-header">
+<div
+  class="shoppingcart-header"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+>
   <div class="title-shoppingcart">Warenkorb</div>
   <div class="title-shoppingcart-description">
-    Du hast <span id="item-count">0</span> Artikel in deinem Warenkorb
+    Du hast <span id="item-count" aria-label="Anzahl Artikel">0</span> Artikel
+    in deinem Warenkorb
   </div>
 </div>
-<div class="shoppingcart" id="shoppingcart">
+<div
+  class="shoppingcart"
+  id="shoppingcart"
+  role="list"
+  aria-label="Warenkorbinhalte"
+>
   <!-- Items werden dynamisch aus localStorage geladen -->
 </div>
 
 <hr class="section-line" />
 
-<div class="cart-summary" id="cart-summary">
-  <div class="cart-total">
+<div
+  class="cart-summary"
+  id="cart-summary"
+  role="region"
+  aria-label="Warenkorb Zusammenfassung"
+>
+  <div class="cart-total" aria-live="assertive">
     <span class="cart-total-label">Gesamt:</span>
-    <span class="cart-total-price">CHF <span id="total-price">0.00</span></span>
+    <span class="cart-total-price"
+      >CHF <span id="total-price" aria-label="Gesamtpreis">0.00</span></span
+    >
   </div>
-  <a href="{{ url_for('checkout') }}" class="continue-button">
+  <a
+    href="{{ url_for('checkout') }}"
+    class="continue-button"
+    role="button"
+    aria-label="Zur Bezahlung fortfahren"
+  >
     Zur Bezahlung fortfahren
-    <span class="arrow">→</span>
+    <span class="arrow" aria-hidden="true">→</span>
   </a>
 </div>
 
 <!-- Leerer Warenkorb Nachricht (versteckt) -->
-<div class="empty-cart" id="empty-cart" style="display: none">
+<div
+  class="empty-cart"
+  id="empty-cart"
+  style="display: none"
+  role="status"
+  aria-live="polite"
+>
   <div class="empty-cart-message">
-    <span class="empty-cart-icon"><i class="fa fa-shopping-cart"></i></span>
+    <span class="empty-cart-icon" aria-hidden="true"
+      ><i class="fa fa-shopping-cart"></i
+    ></span>
     <h2>Ihr Warenkorb ist leer</h2>
     <p>Fügen Sie Produkte hinzu, um fortzufahren.</p>
-    <a href="{{ url_for('shop') }}" class="continue-button">
+    <a
+      href="{{ url_for('shop') }}"
+      class="continue-button"
+      role="button"
+      aria-label="Zum Shop gehen"
+    >
       Zum Shop gehen
-      <span class="arrow">→</span>
+      <span class="arrow" aria-hidden="true">→</span>
     </a>
   </div>
 </div>
@@ -74,27 +110,28 @@
     div.className = "item";
     div.setAttribute("data-price", item.price);
     div.setAttribute("data-name", item.name);
+    div.setAttribute("role", "listitem");
 
     var itemTotal = calculateDiscountedPrice(item.price, item.quantity);
 
     var itemName = item.name + ".jpg";
 
     div.innerHTML = `
-                <img class="image" src="../../static/images/${itemName}" alt="${itemName}">
+                <img class="image" src="../../static/images/${itemName}" alt="${itemName} Produktbild" loading="lazy">
                 <div class="shoppingcart-Itemname">${item.name}</div>
-                <div class="count">${item.quantity}</div>
-                <div class="count-button">
-                    <button type="button" class="count-button-button" onclick="increaseQuantity(this)">
-                        <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="Plus">
+                <div class="count" aria-label="Menge">${item.quantity}</div>
+                <div class="count-button" role="group" aria-label="Mengenänderung für ${item.name}">
+                    <button type="button" class="count-button-button" onclick="increaseQuantity(this)" aria-label="Menge erhöhen" title="Menge erhöhen">
+                        <img class="picture-up" src="../static/styles/images/count-dreieck.png" alt="">
                     </button>
-                    <button type="button" class="count-button-down" onclick="decreaseQuantity(this)">
-                        <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="Minus">
+                    <button type="button" class="count-button-down" onclick="decreaseQuantity(this)" aria-label="Menge senken" title="Menge senken">
+                        <img class="picture-down" src="../static/styles/images/count-dreieck.png" alt="">
                     </button>
                 </div>
-                <div class="price">CHF <span class="item-price">${itemTotal.toFixed(2)}</span></div>
+                <div class="price" aria-label="Gesamtpreis für diesen artikel: CHF ${itemTotal.toFixed(2)}">CHF <span class="item-price">${itemTotal.toFixed(2)}</span></div>
                 <div class="delete-buttons">
-                    <button type="button" class="delete-button-button" onclick="deleteItem(this)">
-                        <img class="delete-img" src="../static/styles/images/Bild2.png" alt="Löschen">
+                    <button type="button" class="delete-button-button" onclick="deleteItem(this)" aria-label="Artikel aus Warenkorb entfernen" title="Artikel remove">
+                        <img class="delete-img" src="../static/styles/images/Bild2.png" alt="">
                     </button>
                 </div>
             `;

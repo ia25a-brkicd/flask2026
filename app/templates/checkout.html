@@ -179,8 +179,17 @@
                 <div class="txt">Zwischensumme</div>
                 <div class="txt">Versand</div>
                 <div class="txt">Gesamt (Steuern inbegriffen)</div>
-                <button type="button" class="checkout-button" onclick="handleCheckout()">
-                    Kasse
+                <button 
+                    type="button" 
+                    class="checkout-button" 
+                    id="checkout-btn"
+                    onclick="handleCheckout()"
+                    aria-label="Bestellung abschließen und bezahlen"
+                >
+                    <span id="btn-text">Kasse</span>
+                    <span id="btn-spinner" class="loading-spinner" style="display: none;" aria-hidden="true">
+                        <i class="fa fa-spinner"></i>
+                    </span>
                 </button>
             </div>
 
@@ -188,10 +197,10 @@
     </form>
 
     <!-- Toast Notification Container -->
-    <div id="toast-container"></div>
+    <div id="toast-container" role="region" aria-live="assertive" aria-atomic="true"></div>
 
     <!-- Thank You Screen -->
-    <div class="thank-you-screen" id="thank-you-screen">
+    <div class="thank-you-screen" id="thank-you-screen" role="status" aria-live="polite">
         <div class="thank-you-content">
             <div class="thank-you-icon">✓</div>
             <h1>Vielen Dank!</h1>
@@ -377,6 +386,9 @@
 
         function handleCheckout() {
             var form = document.getElementById('checkout-form');
+            var checkoutBtn = document.getElementById('checkout-btn');
+            var btnText = document.getElementById('btn-text');
+            var btnSpinner = document.getElementById('btn-spinner');
 
             if (!form) {
                 showToast('Formular nicht gefunden!', 'error');
@@ -485,6 +497,12 @@
                 return false;
             }
 
+            // Zeige Loading-State
+            checkoutBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnSpinner.style.display = 'inline';
+            checkoutBtn.setAttribute('aria-busy', 'true');
+
             // Alle Felder sind gültig - sende an Server
             var formData = new FormData(form);
 
@@ -522,10 +540,17 @@
                     setTimeout(function() {
                         window.location.href = '{{ url_for("shop") }}';
                     }, 5000);
+                } else {
+                    throw new Error('Checkout failed');
                 }
             })
             .catch(function(error) {
-                showToast('Ein Fehler ist aufgetreten: ' + error, 'error');
+                showToast('Ein Fehler ist aufgetreten: ' + error.message, 'error');
+                // Reset Loading-State
+                checkoutBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnSpinner.style.display = 'none';
+                checkoutBtn.setAttribute('aria-busy', 'false');
             });
 
             return false;
