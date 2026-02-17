@@ -313,12 +313,12 @@
             <span class="input-border"></span>
           </div>
 
-          <button type="submit" class="submit-btn">
+          <button type="submit" class="submit-btn" id="save-adresse-btn">
             <span>Adresse speichern</span>
             <i class="fa fa-save"></i>
           </button>
 
-          <button type="button" class="submit-btn cancel-btn" data-href="{{ url_for('settings') }}#konto-profil" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%);">
+          <button type="button" class="submit-btn cancel-btn" id="cancel-adresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
             <span>Abbrechen</span>
             <i class="fa fa-times"></i>
           </button>
@@ -393,12 +393,12 @@
             <span class="input-border"></span>
           </div>
 
-          <button type="submit" class="submit-btn">
+          <button type="submit" class="submit-btn" id="save-versandadresse-btn">
             <span>Versandadresse speichern</span>
             <i class="fa fa-save"></i>
           </button>
 
-          <button type="button" class="submit-btn cancel-btn" data-href="{{ url_for('settings') }}#konto-profil" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%);">
+          <button type="button" class="submit-btn cancel-btn" id="cancel-versandadresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
             <span>Abbrechen</span>
             <i class="fa fa-times"></i>
           </button>
@@ -507,16 +507,24 @@ clickableItems.forEach(item => {
   });
 });
 
-// Cancel buttons mit data-href
-const cancelButtons = document.querySelectorAll('.cancel-btn[data-href]');
-cancelButtons.forEach(button => {
-  button.addEventListener('click', function() {
-    const href = this.getAttribute('data-href');
-    if (href) {
-      window.location.href = href;
-    }
+// Cancel buttons - specific IDs
+const cancelAdresseBtn = document.getElementById('cancel-adresse-btn');
+if (cancelAdresseBtn) {
+  cancelAdresseBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "{{ url_for('settings') }}#konto-profil";
   });
-});
+}
+
+const cancelVersandadresseBtn = document.getElementById('cancel-versandadresse-btn');
+if (cancelVersandadresseBtn) {
+  cancelVersandadresseBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = "{{ url_for('settings') }}#konto-profil";
+  });
+}
 
 // Input Focus Effekte
 const inputs = document.querySelectorAll('input:not([type="checkbox"]), textarea');
