@@ -225,3 +225,92 @@ def get_orders_by_email(email):
     login_id = login_data[0]
     return get_orders_by_login_id(login_id)
 
+
+# ========================================
+# USER ADRESSE FUNKTIONEN
+# ========================================
+
+def save_user_address(login_id, strasse, plz, stadt, land, is_shipping=False):
+    """
+    Speichert oder aktualisiert die Adresse eines Users.
+
+    Parameters:
+    - login_id: ID des Users
+    - strasse, plz, stadt, land: Adressdaten
+    - is_shipping: True für Versandadresse, False für Hauptadresse
+    """
+    conn = get_db()
+    cur = conn.cursor()
+    address_type = 'shipping' if is_shipping else 'billing'
+
+    try:
+        # Prüfe ob bereits eine Adresse existiert
+        cur.execute("""
+            SELECT id FROM user_addresses 
+            WHERE login_id = %s AND address_type = %s
+        """, (login_id, address_type))
+
+        existing = cur.fetchone()
+
+        if existing:
+            # Update existierende Adresse
+            cur.execute("""
+                UPDATE user_addresses 
+                SET strasse = %s, plz = %s, stadt = %s, land = %s, updated_at = CURRENT_TIMESTAMP
+                WHERE login_id = %s AND address_type = %s
+            """, (strasse, plz, stadt, land, login_id, address_type))
+        else:
+            # Neue Adresse einfügen
+            cur.execute("""
+                INSERT INTO user_addresses (login_id, address_type, strasse, plz, stadt, land)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (login_id, address_type, strasse, plz, stadt, land))
+
+        conn.commit()
+        print(f"✅ Adresse ({address_type}) für User {login_id} gespeichert")
+        return True
+
+    except Exception as e:
+        print(f"Database error beim Speichern der Adresse: {e}")
+        conn.rollback()
+        return False
+    finally:
+        cur.close()
+
+
+def get_user_address(login_id, is_shipping=False):
+    """
+    Lädt die Adresse eines Users aus der Datenbank.
+
+    Returns:
+    - Dictionary mit Adressdaten oder leeres Dict
+    """
+    conn = get_db()
+    cur = conn.cursor()
+    address_type = 'shipping' if is_shipping else 'billing'
+
+    try:
+        cur.execute("""
+            SELECT strasse, plz, stadt, land 
+            FROM user_addresses 
+            WHERE login_id = %s AND address_type = %s
+        """, (login_id, address_type))
+
+        row = cur.fetchone()
+
+        if row:
+            return {
+                'strasse': row[0] or '',
+                'plz': row[1] or '',
+                'stadt': row[2] or '',
+                'land': row[3] or ''
+            }
+        return {}
+
+    except Exception as e:
+        print(f"Database error beim Laden der Adresse: {e}")
+        return {}
+    finally:
+        cur.close()
+
+
