@@ -1,4 +1,4 @@
-﻿{% extends 'base.html' %} {% block title %}Profil | Flor'Avis{% endblock %} {%
+{% extends 'base.html' %} {% block title %}Profil | Flor'Avis{% endblock %} {%
 block head %}
 <link
   href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -109,7 +109,7 @@ block head %}
             required
           />
           <span class="input-border"></span>
-
+        {% else %}
         <div class="form-section">
             <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
                 <button type="button" class="submit-btn" data-href="{{ url_for('settings') }}">
@@ -179,7 +179,7 @@ block head %}
         </button>
       </form>
     </div>
-
+    {% else %}
     <div class="form-section">
       <div class="form-grid">
         <button

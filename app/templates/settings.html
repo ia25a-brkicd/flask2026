@@ -13,115 +13,6 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='styles/settings.css') }}"
 />
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='styles/contact.css') }}"
-/>
-<style>
-.arrow {
-    font-size: 24px;
-    color: #999;
-    font-weight: 300;
-}
-.setting-item.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
-/* Custom Notification Styles */
-.notification {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    width: 500px;
-    max-width: 90%;
-    background: white;
-    border-radius: 12px;
-    padding: 20px 25px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    font-family: 'Inter', sans-serif;
-    z-index: 10000;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-.notification.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.notification.hide {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-100px);
-}
-
-.notification .icon-circle {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.error-notification {
-    border-left: 4px solid #d9534f;
-}
-
-.error-notification .icon-circle {
-    background-color: #d9534f;
-}
-
-.error-notification .icon-circle i {
-    color: white;
-    font-size: 24px;
-}
-
-.success-notification {
-    border-left: 4px solid #28a745;
-}
-
-.success-notification .icon-circle {
-    background-color: #28a745;
-}
-
-.success-notification .icon-circle i {
-    color: white;
-    font-size: 24px;
-}
-
-.notification-content {
-    flex: 1;
-}
-
-.notification-content h4 {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 0 0 5px 0;
-    letter-spacing: 0.3px;
-}
-
-.error-notification .notification-content h4 {
-    color: #d9534f;
-}
-
-.success-notification .notification-content h4 {
-    color: #28a745;
-}
-
-.notification-content p {
-    font-size: 15px;
-    margin: 0;
-    color: #333;
-    line-height: 1.4;
-}
-</style>
 {% endblock %} {% block content %}
 <div class="settings">
   <h1 id="title">Einstellungen</h1>
@@ -250,7 +141,8 @@
     <!-- Adresse Eingabe Formular -->
     <div class="contact-container">
       <div class="form-section">
-        <form action="{{ url_for('settings') }}" method="post">
+        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="adresse" />
           <div class="input-group">
             <label for="strasse">
               <i class="fa fa-home"></i>
@@ -260,6 +152,7 @@
               type="text"
               id="strasse"
               name="strasse"
+              value="{{ adresse.get('strasse', '') }}"
               placeholder="Geben Sie Ihre Straße und Hausnummer ein"
               required
             />
@@ -276,7 +169,12 @@
                 type="text"
                 id="plz"
                 name="plz"
+                value="{{ adresse.get('plz', '') }}"
                 placeholder="Geben Sie Ihre Postleitzahl ein"
+                inputmode="numeric"
+                maxlength="4"
+                pattern="\d{4}"
+                title="Bitte genau 4 Ziffern eingeben"
                 required
               />
               <span class="input-border"></span>
@@ -291,7 +189,10 @@
                 type="text"
                 id="stadt"
                 name="stadt"
+                value="{{ adresse.get('stadt', '') }}"
                 placeholder="Geben Sie Ihre Stadt ein"
+                pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+                title="Bitte nur Buchstaben eingeben"
                 required
               />
               <span class="input-border"></span>
@@ -307,7 +208,10 @@
               type="text"
               id="land"
               name="land"
+              value="{{ adresse.get('land', '') }}"
               placeholder="Geben Sie Ihr Land ein"
+              pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+              title="Bitte nur Buchstaben eingeben"
               required
             />
             <span class="input-border"></span>
@@ -318,10 +222,14 @@
             <i class="fa fa-save"></i>
           </button>
 
-          <button type="button" class="submit-btn cancel-btn" id="cancel-adresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
+          <a
+            href="{{ url_for('settings') }}#konto-profil"
+            class="submit-btn cancel-btn"
+            id="cancel-adresse-btn"
+          >
             <span>Abbrechen</span>
             <i class="fa fa-times"></i>
-          </button>
+          </a>
         </form>
       </div>
     </div>
@@ -330,7 +238,8 @@
     <!-- Versandadresse Eingabe Formular -->
     <div class="contact-container">
       <div class="form-section">
-        <form action="{{ url_for('settings') }}" method="post">
+        <form id="versandadresse-form" action="{{ url_for('settings') }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="versandadresse" />
           <div class="input-group">
             <label for="versand_strasse">
               <i class="fa fa-home"></i>
@@ -340,6 +249,7 @@
               type="text"
               id="versand_strasse"
               name="versand_strasse"
+              value="{{ versandadresse.get('strasse', '') }}"
               placeholder="Geben Sie Ihre Straße und Hausnummer ein"
               required
             />
@@ -356,7 +266,12 @@
                 type="text"
                 id="versand_plz"
                 name="versand_plz"
+                value="{{ versandadresse.get('plz', '') }}"
                 placeholder="Geben Sie Ihre Postleitzahl ein"
+                inputmode="numeric"
+                maxlength="4"
+                pattern="\d{4}"
+                title="Bitte genau 4 Ziffern eingeben"
                 required
               />
               <span class="input-border"></span>
@@ -371,7 +286,10 @@
                 type="text"
                 id="versand_stadt"
                 name="versand_stadt"
+                value="{{ versandadresse.get('stadt', '') }}"
                 placeholder="Geben Sie Ihre Stadt ein"
+                pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+                title="Bitte nur Buchstaben eingeben"
                 required
               />
               <span class="input-border"></span>
@@ -387,7 +305,10 @@
               type="text"
               id="versand_land"
               name="versand_land"
+              value="{{ versandadresse.get('land', '') }}"
               placeholder="Geben Sie Ihr Land ein"
+              pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+              title="Bitte nur Buchstaben eingeben"
               required
             />
             <span class="input-border"></span>
@@ -398,10 +319,14 @@
             <i class="fa fa-save"></i>
           </button>
 
-          <button type="button" class="submit-btn cancel-btn" id="cancel-versandadresse-btn" style="margin-top: 10px; background: linear-gradient(135deg, #999 0%, #777 100%); cursor: pointer;">
+          <a
+            href="{{ url_for('settings') }}#konto-profil"
+            class="submit-btn cancel-btn"
+            id="cancel-versandadresse-btn"
+          >
             <span>Abbrechen</span>
             <i class="fa fa-times"></i>
-          </button>
+          </a>
         </form>
       </div>
     </div>
@@ -426,15 +351,24 @@
         <label>Versandadresse</label>
         <p class="setting-description">Versandadresse ist dieselbe, wie Adresse</p>
       </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="versandadresse-toggle" />
-        <span class="slider"></span>
-      </label>
+      <form action="{{ url_for('settings') }}" method="post">
+        <input type="hidden" name="form_type" value="versandadresse_toggle" />
+        <label class="toggle-switch">
+          <input
+            type="checkbox"
+            id="versandadresse-toggle"
+            name="versandadresse_same"
+            value="1"
+            {% if versandadresse_same %}checked{% endif %}
+          />
+          <span class="slider"></span>
+        </label>
+      </form>
     </div>
 
     <div
       id="versandadresse-item"
-      class="setting-item clickable"
+      class="setting-item clickable{% if versandadresse_same %} disabled{% endif %}"
       data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"
     >
       <div class="setting-info">
@@ -460,23 +394,33 @@
   </div>
 
   <!-- Notifications -->
-  <div id="notification" class="notification success-notification">
-    <div class="icon-circle">
-      <i class="fa fa-check"></i>
-    </div>
+  <div id="notification" class="notification success-notification {% if request.args.get('saved') == '1' %}show{% endif %}">
+    <i class="fa fa-check-circle"></i>
     <div class="notification-content">
       <h4>Erfolg</h4>
-      <p id="success-text">Die Daten wurden erfolgreich gespeichert!</p>
+      <p id="success-text">
+        {% if request.args.get('saved') == '1' %}
+          Deine Daten wurden erfolgreich gespeichert!
+        {% else %}
+          Die Daten wurden erfolgreich gespeichert!
+        {% endif %}
+      </p>
     </div>
   </div>
 
-  <div id="error-notification" class="notification error-notification">
-    <div class="icon-circle">
-      <i class="fa fa-exclamation"></i>
-    </div>
+  <div id="error-notification" class="notification error-notification {% if request.args.get('saved') == '0' %}show{% endif %}">
+    <i class="fa fa-exclamation-circle"></i>
     <div class="notification-content">
       <h4>Fehler</h4>
-      <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
+      <p id="error-text">
+        {% if request.args.get('error') == 'format' %}
+          Ungültige Eingabe: PLZ muss genau 4 Ziffern haben, Stadt und Land dürfen nur Buchstaben enthalten.
+        {% elif request.args.get('saved') == '0' %}
+          Speichern fehlgeschlagen. Bitte alle Pflichtfelder ausfüllen.
+        {% else %}
+          Nicht alle Felder wurden ausgefüllt!
+        {% endif %}
+      </p>
     </div>
   </div>
 </div>
@@ -487,11 +431,16 @@ const versandadresseToggle = document.getElementById('versandadresse-toggle');
 const versandadresseItem = document.getElementById('versandadresse-item');
 
 if (versandadresseToggle && versandadresseItem) {
+  function syncShippingUi() {
+    versandadresseItem.classList.toggle('disabled', versandadresseToggle.checked);
+  }
+
+  syncShippingUi();
+
   versandadresseToggle.addEventListener('change', function() {
-    if (this.checked) {
-      versandadresseItem.classList.add('disabled');
-    } else {
-      versandadresseItem.classList.remove('disabled');
+    syncShippingUi();
+    if (this.form) {
+      this.form.submit();
     }
   });
 }
@@ -507,65 +456,80 @@ clickableItems.forEach(item => {
   });
 });
 
-// Cancel buttons - specific IDs
-const cancelAdresseBtn = document.getElementById('cancel-adresse-btn');
-if (cancelAdresseBtn) {
-  cancelAdresseBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.location.href = "{{ url_for('settings') }}#konto-profil";
-  });
-}
+document.addEventListener('DOMContentLoaded', function () {
+  const successNotification = document.getElementById('notification');
+  const errorNotification = document.getElementById('error-notification');
+  const errorText = document.getElementById('error-text');
+  const adresseForm = document.getElementById('adresse-form');
+  const versandadresseForm = document.getElementById('versandadresse-form');
+  let errorTimeoutId = null;
 
-const cancelVersandadresseBtn = document.getElementById('cancel-versandadresse-btn');
-if (cancelVersandadresseBtn) {
-  cancelVersandadresseBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.location.href = "{{ url_for('settings') }}#konto-profil";
-  });
-}
+  function showError(message) {
+    if (!errorNotification || !errorText) {
+      return;
+    }
 
-// Input Focus Effekte
-const inputs = document.querySelectorAll('input:not([type="checkbox"]), textarea');
-inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-        this.parentElement.classList.add('focused');
-    });
-    
-    input.addEventListener('blur', function() {
-        if (!this.value) {
-            this.parentElement.classList.remove('focused');
-        }
-    });
-});
-
-// Fehlermeldungen anzeigen
-function showError(message) {
-    const errorNotification = document.getElementById('error-notification');
-    const errorText = document.getElementById('error-text');
     errorText.textContent = message;
     errorNotification.classList.remove('hide');
     errorNotification.classList.add('show');
-    
-    setTimeout(function () {
-        errorNotification.classList.remove('show');
-        errorNotification.classList.add('hide');
-    }, 4000);
-}
 
-// Erfolgsmeldungen anzeigen
-function showSuccess(message) {
-    const successNotification = document.getElementById('notification');
-    const successText = document.getElementById('success-text');
-    successText.textContent = message;
-    successNotification.classList.remove('hide');
-    successNotification.classList.add('show');
-    
-    setTimeout(function () {
-        successNotification.classList.remove('show');
-        successNotification.classList.add('hide');
+    if (errorTimeoutId !== null) {
+      clearTimeout(errorTimeoutId);
+    }
+
+    errorTimeoutId = setTimeout(function () {
+      errorNotification.classList.remove('show');
+      errorNotification.classList.add('hide');
     }, 4000);
-}
+  }
+
+  function getValidationMessage(field) {
+    if (field.validity.valueMissing) {
+      return 'Bitte alle Pflichtfelder ausfüllen.';
+    }
+
+    if (field.name === 'plz' || field.name === 'versand_plz') {
+      return 'PLZ muss genau 4 Ziffern enthalten.';
+    }
+
+    if (field.name === 'stadt' || field.name === 'land' || field.name === 'versand_stadt' || field.name === 'versand_land') {
+      return 'Stadt und Land dürfen nur Buchstaben enthalten.';
+    }
+
+    return 'Bitte Eingabe prüfen.';
+  }
+
+  function bindFormValidation(form) {
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener('submit', function (event) {
+      const invalidField = form.querySelector(':invalid');
+      if (invalidField) {
+        event.preventDefault();
+        showError(getValidationMessage(invalidField));
+        invalidField.focus();
+      }
+    });
+  }
+
+  bindFormValidation(adresseForm);
+  bindFormValidation(versandadresseForm);
+
+  if (successNotification && successNotification.classList.contains('show')) {
+    setTimeout(function () {
+      successNotification.classList.remove('show');
+      successNotification.classList.add('hide');
+    }, 4000);
+  }
+
+  if (errorNotification && errorNotification.classList.contains('show')) {
+    setTimeout(function () {
+      errorNotification.classList.remove('show');
+      errorNotification.classList.add('hide');
+    }, 4000);
+  }
+});
 </script>
 {% endblock %}

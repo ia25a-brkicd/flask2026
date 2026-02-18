@@ -10,7 +10,12 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/warenkorb.css') }}"
     />
-    <link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/BL-512x512.png') }}"
+      sizes="512x512"
+      type="image/x-icon"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -48,11 +53,17 @@
                 <i class="fa fa-th-large"></i>
                 Alle Produkte
               </a>
-              <a href="{{ url_for('shop', category='classic') }}" class="dropdown-item">
+              <a
+                href="{{ url_for('shop', category='classic') }}"
+                class="dropdown-item"
+              >
                 <i class="fa fa-soap"></i>
                 Klassische Seifen
               </a>
-              <a href="{{ url_for('shop', category='luxury') }}" class="dropdown-item">
+              <a
+                href="{{ url_for('shop', category='luxury') }}"
+                class="dropdown-item"
+              >
                 <i class="fa fa-gem"></i>
                 Luxus-Seifen
               </a>
@@ -63,8 +74,8 @@
             class="nav-link nav-link-with-icon {% if request.endpoint == 'about_us' %}active{% endif %}"
           >
             <i class="fa fa-info-circle"></i>
-              Über uns
-            </a>
+            Über uns
+          </a>
           <a
             href="{{ url_for('contact') }}"
             class="nav-link nav-link-with-icon {% if request.endpoint == 'contact' %}active{% endif %}"
@@ -98,9 +109,8 @@
             </span>
           </a>
           <div class="nav-item-with-dropdown">
-            <a
-          {% if session.get('user_id') %}
-    <!-- Eingeloggt: Profil-Link -->
+            {% if session.get('user_id') %}
+            <!-- Eingeloggt: Profil-Link -->
             <a
               href="{{ url_for('profil') }}"
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
@@ -108,8 +118,8 @@
               <i class="fa fa-user"></i>
               Profil
             </a>
-          {% else %}
-          <!-- Nicht eingeloggt: Login-Link -->
+            {% else %}
+            <!-- Nicht eingeloggt: Login-Link -->
             <a
               href="{{ url_for('profil') }}"
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
@@ -117,7 +127,7 @@
               <i class="fa fa-sign-in-alt"></i>
               Anmelden
             </a>
-          {% endif %}
+            {% endif %}
 
             <div class="dropdown-menu dropdown-menu-right">
               <a href="{{ url_for('profil') }}" class="dropdown-item">
@@ -248,8 +258,10 @@
       // Mobile dropdown toggle
       function setupMobileDropdown() {
         const isMobile = window.innerWidth <= 720;
-        const dropdownTriggers = document.querySelectorAll(".nav-item-with-dropdown");
-        
+        const dropdownTriggers = document.querySelectorAll(
+          ".nav-item-with-dropdown",
+        );
+
         dropdownTriggers.forEach((trigger) => {
           if (isMobile) {
             const navLink = trigger.querySelector(".nav-link-with-icon");
