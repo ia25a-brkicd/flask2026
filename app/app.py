@@ -4,7 +4,16 @@ import re
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from mail import send_simple_message, send_order_confirmation
-from repository.customer_repo import add_customer_addres, add_customer_payment, add_login, get_login_by_email, verify_login
+from repository.customer_repo import (
+    add_customer_addres,
+    add_customer_payment,
+    add_login,
+    verify_login,
+    get_login_by_email,
+    create_order,
+    get_orders_by_login_id,
+    get_orders_by_email
+)
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
@@ -139,18 +148,14 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
 
-        existing_login = get_login_by_email(email)
-        if existing_login:
-            return jsonify({"error": "Du hast bereits ein Konto mit dieser E-Mail."}), 409
-
-        add_login(email, firstname, lastname, password)
-
         # HIER: "einloggen"
-        session['user_id'] = email
-        session['user_name'] = firstname
+        session['user_id'] = email          # oder irgendeine ID
+        session['user_name'] = firstname    # optional
         session['user_lastname'] = lastname
 
-        return jsonify({"success": True}), 200
+        add_login(email,firstname, lastname,password)# optional
+
+        return redirect(url_for("home"))    # zurück zur Startseite
 
     adresse = session.get("adresse", {})
     versandadresse_same = session.get("versandadresse_same", False)
@@ -170,15 +175,12 @@ def profil():
         "versand_land": versandadresse.get("land", "-"),
     }
 
-    error_message = None
-    if request.args.get("error") == "no_account":
-        error_message = "Du hast noch kein Konto. Bitte registriere dich zuerst."
-
-    return render_template("profil.html", user_profile=user_profile, error_message=error_message)
+    return render_template("profil.html", user_profile=user_profile)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    error_message = None
     if request.method == "POST":
         app.logger.info("Login submitted")
         email = request.form.get("email")
@@ -189,25 +191,40 @@ def login():
         print(f"Passwort: {password}")
         print("=======================")
 
-        is_valid_login, row = verify_login(email, password)
-        if not row:
-            return redirect(url_for("profil", error="no_account"))
+        # Überprüfe Login in der Datenbank
+        is_valid, user_data = verify_login(email, password)
 
-        if not is_valid_login:
-            return render_template("login.html", error_message="E-Mail oder Passwort ist falsch.")
+        if is_valid and user_data:
+            # Login erfolgreich - user_data: (login_id, email, first_name, last_name, password)
+            session['login_id'] = user_data[0]
+            session['user_id'] = user_data[1]  # email
+            session['user_name'] = user_data[2]  # first_name
+            session['user_lastname'] = user_data[3]  # last_name
 
-        session['user_id'] = row[1]
-        session['user_name'] = row[2]
-        session['user_lastname'] = row[3]
+            print(f"✅ Login erfolgreich für: {user_data[2]} {user_data[3]}")
+            return redirect(url_for("profil"))
+        else:
+            # Login fehlgeschlagen
+            print("❌ Login fehlgeschlagen - E-Mail oder Passwort falsch")
+            error_message = "E-Mail oder Passwort falsch"
 
-        return redirect(url_for("profil"))
-
-    return render_template("login.html")
+    return render_template("login.html", error_message=error_message)
 
 
 @app.route("/orders")
 def orders():
-    return render_template("orders.html")
+    # Prüfe ob User eingeloggt ist
+    login_id = session.get('login_id')
+    user_orders = []
+
+    if login_id:
+        # Lade Bestellungen aus der Datenbank
+        user_orders = get_orders_by_login_id(login_id)
+        print(f"📦 {len(user_orders)} Bestellungen geladen für User {login_id}")
+    else:
+        print("⚠️ User nicht eingeloggt - keine Bestellungen aus DB")
+
+    return render_template("orders.html", orders=user_orders)
 
 @app.route("/settings", methods=["GET", "POST"])
 def settings():
@@ -363,13 +380,42 @@ def checkout():
         print(f"CVV: {cvv}")
         print("==========================")
 
-        add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
-        add_customer_payment(payment,card_name,card_number,expiration,cvv)
+        # Adresse und Zahlung in DB speichern und IDs zurückbekommen
+        customer_addres_id = add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
+        customer_payment_id = add_customer_payment(payment,card_name,card_number,expiration,cvv)
 
+        # Warenkorb-Items aus Session holen
+        cart_items = session.get('cart', [])
 
+        # Falls keine Cart-Items in Session, erstelle Standard-Item
+        if not cart_items:
+            cart_items = [{'name': 'Floravis Seife', 'quantity': 1, 'price': 11.99}]
+
+        # Total berechnen
+        order_total = sum(item.get('quantity', 1) * item.get('price', 11.99) for item in cart_items)
+
+        # Login-ID holen (falls User eingeloggt ist)
+        login_id = session.get('login_id')
+
+        # ========================================
+        # BESTELLUNG IN DATENBANK SPEICHERN
+        # ========================================
+        order_id = create_order(
+            login_id=login_id,
+            customer_addres_id=customer_addres_id,
+            customer_payment_id=customer_payment_id,
+            total=order_total,
+            items=cart_items
+        )
+
+        if order_id:
+            print(f"✅ Bestellung {order_id} in Datenbank gespeichert!")
+        else:
+            print("⚠️ Bestellung konnte nicht in DB gespeichert werden")
 
         # Session-Daten löschen nach erfolgreichem Checkout
         session.pop('checkout_data', None)
+        session.pop('cart', None)  # Warenkorb leeren
 
         return "OK", 200
 
