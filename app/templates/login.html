@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('') }}">
+    <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('', true) }}">
         <div class="icon-circle">
             <i class="fa fa-exclamation"></i>
         </div>

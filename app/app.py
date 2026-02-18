@@ -4,7 +4,7 @@ import re
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from mail import send_simple_message, send_order_confirmation
-from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
+from repository.customer_repo import add_customer_addres, add_customer_payment, add_login, get_login_by_email, verify_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from flask_mail import Mail, Message
@@ -139,14 +139,18 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
 
+        existing_login = get_login_by_email(email)
+        if existing_login:
+            return jsonify({"error": "Du hast bereits ein Konto mit dieser E-Mail."}), 409
+
+        add_login(email, firstname, lastname, password)
+
         # HIER: "einloggen"
-        session['user_id'] = email          # oder irgendeine ID
-        session['user_name'] = firstname    # optional
+        session['user_id'] = email
+        session['user_name'] = firstname
         session['user_lastname'] = lastname
 
-        add_login(email,firstname, lastname,password)# optional
-
-        return redirect(url_for("home"))    # zurück zur Startseite
+        return jsonify({"success": True}), 200
 
     adresse = session.get("adresse", {})
     versandadresse_same = session.get("versandadresse_same", False)
@@ -166,7 +170,11 @@ def profil():
         "versand_land": versandadresse.get("land", "-"),
     }
 
-    return render_template("profil.html", user_profile=user_profile)
+    error_message = None
+    if request.args.get("error") == "no_account":
+        error_message = "Du hast noch kein Konto. Bitte registriere dich zuerst."
+
+    return render_template("profil.html", user_profile=user_profile, error_message=error_message)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -181,10 +189,16 @@ def login():
         print(f"Passwort: {password}")
         print("=======================")
 
-        # HIER: "einloggen"
-        session['user_id'] = email
-        session['user_name'] = (email or "").split("@")[0]
-        session['user_lastname'] = session.get('user_lastname', '')
+        is_valid_login, row = verify_login(email, password)
+        if not row:
+            return redirect(url_for("profil", error="no_account"))
+
+        if not is_valid_login:
+            return render_template("login.html", error_message="E-Mail oder Passwort ist falsch.")
+
+        session['user_id'] = row[1]
+        session['user_name'] = row[2]
+        session['user_lastname'] = row[3]
 
         return redirect(url_for("profil"))
 

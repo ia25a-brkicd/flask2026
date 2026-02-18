@@ -179,7 +179,7 @@
     </div>
   </div>
 
-  <div id="error-notification" class="notification error-notification">
+  <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('', true) }}">
     <i class="fa fa-exclamation-circle"></i>
     <div class="notification-content">
       <h4>Fehler</h4>
@@ -230,6 +230,18 @@
   }
 
   var errorTimeoutId = null;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var errorNotification = document.getElementById('error-notification');
+    if (!errorNotification) {
+      return;
+    }
+
+    var serverErrorMessage = errorNotification.getAttribute('data-server-error');
+    if (serverErrorMessage) {
+      showError(serverErrorMessage);
+    }
+  });
 
   var registerButton = document.getElementById("registrieren-btn");
   if (registerButton) {
@@ -292,9 +304,19 @@
             notification.classList.add('hide');
             window.location.reload(); 
           }, 4000);
-        } else {
-          showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.');
+          return null;
         }
+
+        return response.json().catch(function () {
+          return null;
+        }).then(function (data) {
+          if (data && data.error) {
+            showError(data.error);
+          } else {
+            showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.');
+          }
+          return null;
+        });
       }).catch(function () {
         showError('Netzwerkfehler. Bitte pruefe deine Verbindung.');
       });
