@@ -351,15 +351,24 @@
         <label>Versandadresse</label>
         <p class="setting-description">Versandadresse ist dieselbe, wie Adresse</p>
       </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="versandadresse-toggle" />
-        <span class="slider"></span>
-      </label>
+      <form action="{{ url_for('settings') }}" method="post">
+        <input type="hidden" name="form_type" value="versandadresse_toggle" />
+        <label class="toggle-switch">
+          <input
+            type="checkbox"
+            id="versandadresse-toggle"
+            name="versandadresse_same"
+            value="1"
+            {% if versandadresse_same %}checked{% endif %}
+          />
+          <span class="slider"></span>
+        </label>
+      </form>
     </div>
 
     <div
       id="versandadresse-item"
-      class="setting-item clickable"
+      class="setting-item clickable{% if versandadresse_same %} disabled{% endif %}"
       data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"
     >
       <div class="setting-info">
@@ -422,11 +431,16 @@ const versandadresseToggle = document.getElementById('versandadresse-toggle');
 const versandadresseItem = document.getElementById('versandadresse-item');
 
 if (versandadresseToggle && versandadresseItem) {
+  function syncShippingUi() {
+    versandadresseItem.classList.toggle('disabled', versandadresseToggle.checked);
+  }
+
+  syncShippingUi();
+
   versandadresseToggle.addEventListener('change', function() {
-    if (this.checked) {
-      versandadresseItem.classList.add('disabled');
-    } else {
-      versandadresseItem.classList.remove('disabled');
+    syncShippingUi();
+    if (this.form) {
+      this.form.submit();
     }
   });
 }
