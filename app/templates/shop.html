@@ -117,11 +117,13 @@
 
     <div class="products-grid">
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/Green Apple & Lemon mix.jpg') }}"
-          alt="Green Apple & Lemon"
-        />
-        <h3>Green Apple & Lemon mix</h3>
+        <a href="{{ url_for('product_detail', product_id=1) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Lemon mix.jpg') }}"
+            alt="Green Apple & Lemon"
+          />
+          <h3>Green Apple & Lemon mix</h3>
+        </a>
         <p class="price">12.99 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -146,11 +148,13 @@
       </div>
 
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/Green Apple & Lemon & Vanille Mix.jpg') }}"
-          alt="Green Apple & Lemon & Vanille Mix"
-        />
-        <h3>Green Apple & Lemon & Vanille Mix</h3>
+        <a href="{{ url_for('product_detail', product_id=2) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Lemon & Vanille Mix.jpg') }}"
+            alt="Green Apple & Lemon & Vanille Mix"
+          />
+          <h3>Green Apple & Lemon & Vanille Mix</h3>
+        </a>
         <p class="price">13.99 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -175,11 +179,13 @@
       </div>
 
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/Green Apple & Lemon with Stamp.jpg') }}"
-          alt="Green Apple & Lemon with Stamp"
-        />
-        <h3>Green Apple & Lemon with Stamp</h3>
+        <a href="{{ url_for('product_detail', product_id=3) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Lemon with Stamp.jpg') }}"
+            alt="Green Apple & Lemon with Stamp"
+          />
+          <h3>Green Apple & Lemon with Stamp</h3>
+        </a>
         <p class="price">14.99 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -204,11 +210,13 @@
       </div>
 
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/Green Apple & Lemon.jpg') }}"
-          alt="Green Apple & Lemon"
-        />
-        <h3>Green Apple & Lemon</h3>
+        <a href="{{ url_for('product_detail', product_id=4) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Lemon.jpg') }}"
+            alt="Green Apple & Lemon"
+          />
+          <h3>Green Apple & Lemon</h3>
+        </a>
         <p class="price">11.99 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -233,11 +241,13 @@
       </div>
 
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/Green Apple & Vanille.jpg') }}"
-          alt="Green Apple & Vanille"
-        />
-        <h3>Green Apple & Vanille</h3>
+        <a href="{{ url_for('product_detail', product_id=5) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/Green Apple & Vanille.jpg') }}"
+            alt="Green Apple & Vanille"
+          />
+          <h3>Green Apple & Vanille</h3>
+        </a>
         <p class="price">12.49 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -262,11 +272,13 @@
       </div>
 
       <div class="product-card">
-        <img
-          src="{{ url_for('static', filename='images/GreenAppleVanille.jpg') }}"
-          alt="Green Apple & Vanille"
-        />
-        <h3>Green Apple & Vanille</h3>
+        <a href="{{ url_for('product_detail', product_id=6) }}" class="product-card-link">
+          <img
+            src="{{ url_for('static', filename='images/GreenAppleVanille.jpg') }}"
+            alt="Green Apple & Vanille"
+          />
+          <h3>Green Apple & Vanille</h3>
+        </a>
         <p class="price">13.49 CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
@@ -359,6 +371,10 @@
         newPrice = newPrice * 0.8; // 20% discount
       }
 
+<<<<<<< HEAD
+      
+=======
+>>>>>>> f0e41f9c48e66c04071d370e861e09c89ab1837b
       // Round to .99
       newPrice = Math.floor(newPrice) + 0.99;
 

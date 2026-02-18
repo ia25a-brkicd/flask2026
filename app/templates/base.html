@@ -10,7 +10,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles/warenkorb.css') }}"
     />
-    <link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
+<<<<<<< HEAD
+    <link rel="icon" href="{{ url_for('static', filename='images/BL-512x512.png') }}" type="image/x-icon">
+=======
+    <link rel="icon" href="{{ url_for('static', filename='images/BL-512x512.png') }}" sizes="512x512" type="image/x-icon">
+>>>>>>> bf127ead69e535d228a7d6e9e9aaf52964e1d4f5
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -98,7 +102,6 @@
             </span>
           </a>
           <div class="nav-item-with-dropdown">
-            <a
           {% if session.get('user_id') %}
     <!-- Eingeloggt: Profil-Link -->
             <a

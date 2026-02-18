@@ -1,0 +1,148 @@
+{% extends 'base.html' %} {% block title %}Geschäftsbedingungen | Flor'Avis{%
+endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/base.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<div class="terms-container">
+  <h1>Geschäftsbedingungen</h1>
+
+  <div class="terms-content">
+    <section class="terms-section">
+      <h2>1. Geltungsbereich</h2>
+      <p>
+        Diese Geschäftsbedingungen gelten für alle Verkäufe von Produkten über
+        die Website flor'avis.com. Mit dem Kauf eines Produktes akzeptieren Sie
+        diese Bedingungen vollständig.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>2. Vertragsabschluss</h2>
+      <p>
+        Der Vertrag kommt zustande, wenn Sie eine Bestellung aufgeben und diese
+        von Flor'Avis bestätigt wird. Sie erhalten eine Bestellbestätigung per
+        E-Mail.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>3. Preise und Zahlung</h2>
+      <p>
+        Alle Preise sind in Euro angegeben und enthalten die German VAT (MwSt.).
+        Zahlung ist per Kreditkarte oder anderen angebotenen Methoden möglich.
+        Die Ware geht in Ihr Eigentum über, sobald der Kaufpreis vollständig
+        bezahlt ist.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>4. Widerrufsrecht</h2>
+      <p>
+        Sie haben das Recht, Ihre Bestellung innerhalb von 14 Tagen ohne Angabe
+        von Gründen zu widerrufen. Die Ware muss in neuwertigem Zustand
+        zurückgeschickt werden.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>5. Lieferung</h2>
+      <p>
+        Die Lieferung erfolgt nach Bestätigung der Bestellung. Die
+        voraussichtliche Lieferzeit finden Sie auf der Produktseite. Weitere
+        Details siehe
+        <a href="{{ url_for('shipping') }}">Versandrichtlinien</a>.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>6. Produkthaftung</h2>
+      <p>
+        Unsere Produkte sind sorgfältig hergestellt aus natürlichen
+        Inhaltsstoffen. Bitte führen Sie einen Allergietest durch, wenn Sie
+        empfindliche Haut haben. Flor'Avis übernimmt keine Haftung für
+        allergische Reaktionen.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>7. Datenschutz</h2>
+      <p>
+        Ihre persönlichen Daten werden gemäß der DSGVO geschützt und nicht an
+        Dritte weitergegeben. Kontaktieren Sie uns bei Datenschutzfragen.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>8. Kontakt</h2>
+      <p>
+        Bei Fragen oder Beschwerden kontaktieren Sie uns bitte unter
+        <a href="{{ url_for('contact') }}">Kontakt</a>.
+      </p>
+    </section>
+  </div>
+
+  <div class="terms-footer">
+    <p>Zuletzt aktualisiert: Februar 2026</p>
+  </div>
+</div>
+
+<style>
+  .terms-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+    font-family: "Source Sans 3", sans-serif;
+  }
+
+  .terms-container h1 {
+    text-align: center;
+    font-family: "Playfair Display", serif;
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    color: #333;
+  }
+
+  .terms-content {
+    line-height: 1.8;
+    color: #555;
+  }
+
+  .terms-section {
+    margin-bottom: 40px;
+  }
+
+  .terms-section h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .terms-section p {
+    font-size: 1em;
+    text-align: justify;
+  }
+
+  .terms-section a {
+    color: #c59a72;
+    text-decoration: none;
+  }
+
+  .terms-section a:hover {
+    text-decoration: underline;
+  }
+
+  .terms-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #e0e0e0;
+    color: #999;
+    font-size: 0.9em;
+  }
+</style>
+
+{% endblock %}

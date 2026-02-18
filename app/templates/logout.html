@@ -5,50 +5,63 @@
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
-
+<link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/logout.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="logout">
-    <h1 id="title">Abmelden</h1>
-
-     <!-- logout Section -->
-    <div class="logout-section">
-        <div class="section-header">
-            <span class="section-icon"><i class="fa fa-user"></i></span>
-            <h2>Profil</h2>
-        </div>
-        
-        <div class="logout-item">
-            <div class="logout-info">
-                <label>Nachname</label>
-                <p class="logout-description">{{ user.lastname }}</p>
-            </div>
-        </div>
-
-        <div class="logout-item">
-            <div class="logout-info">
-                <label>Vorname</label>
-                <p class="logout-description">{{ user.firstname }}</p>
-            </div>
-        </div>
-
-        <div class="logout-item">
-            <div class="logout-info">
-                <label>E-Mail</label>
-                <p class="logout-description">{{ user.email }}</p>
-            </div>
-        </div>
-
-        <div class="logout-item">
-            <div class="logout-info">
-                <label>Passwort</label>
-                <p class="logout-description">{{ user.password }}</p>
-            </div>
-        </div>
-
-       <a href="{{ url_for('do_logout') }}"><button>Abmelden</button></a>
+<div class="contact-wrapper">
+    <div class="contact-hero">
+        <h1>Abmelden</h1>
+        <p class="hero-subtitle">Willkommen {{ user.firstname }} {{ user.lastname }}</p>
     </div>
+
+    <div class="contact-container">
+        <div class="form-section">
+            <div class="input-group">
+                <label>
+                    <i class="fa fa-user"></i>
+                    Nachname
+                </label>
+                <input type="text" value="{{ user.lastname }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    <i class="fa fa-user"></i>
+                    Vorname
+                </label>
+                <input type="text" value="{{ user.firstname }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    <i class="fa fa-envelope"></i>
+                    E-Mail
+                </label>
+                <input type="email" value="{{ user.email }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    <i class="fa fa-lock"></i>
+                    Passwort
+                </label>
+                <input type="password" value="{{ user.password }}" readonly>
+                <span class="input-border"></span>
+            </div>
+
+            <a href="{{ url_for('do_logout') }}" style="text-decoration: none;">
+                <button type="button" class="submit-btn">
+                    <span>Abmelden</span>
+                    <i class="fa fa-sign-out"></i>
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

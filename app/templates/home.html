@@ -28,22 +28,107 @@ block head %}
     </div>
   </div>
 
+  <!-- Product Showcase Carousel -->
+  <div class="productShowcase" role="region" aria-label="Produktkarussel">
+    <div class="showcase-container">
+      <div class="showcase-carousel" aria-live="polite" aria-atomic="true">
+        <div class="showcase-slides" role="list">
+          {% for product in products %}
+          <div
+            class="showcase-slide"
+            role="listitem"
+            aria-hidden="{% if not loop.first %}true{% else %}false{% endif %}"
+          >
+            <div class="showcase-image">
+              <img
+                src="{{ url_for('static', filename=product['image']) }}"
+                alt="{{ product['name'] }} - Produktbild"
+                loading="lazy"
+              />
+            </div>
+            <div class="showcase-content">
+              <h2 class="showcase-title">{{ product['name'] }}</h2>
+              <p class="showcase-description">{{ product['short'] }}</p>
+              <p
+                class="showcase-price"
+                aria-label="Preis: {{ product['price'] }} Euro"
+              >
+                {{ "%.2f"|format(product['price']) }} €
+              </p>
+              <a
+                href="{{ url_for('product_detail', product_id=product['id']) }}"
+                class="showcase-btn"
+                aria-label="Produkt {{product['name']}} - Jetzt kaufen"
+                >Jetzt kaufen</a
+              >
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button
+          class="showcase-prev"
+          onclick="previousSlide()"
+          aria-label="Vorheriges Produkt"
+          title="Vorheriges Produkt (Pfeiltaste Links)"
+        >
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button
+          class="showcase-next"
+          onclick="nextSlide()"
+          aria-label="Nächstes Produkt"
+          title="Nächstes Produkt (Pfeiltaste Rechts)"
+        >
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Dots/Indicators -->
+      <div class="showcase-dots" role="tablist" aria-label="Produktauswahl">
+        {% for product in products %}
+        <button
+          class="dot {% if loop.first %}active{% endif %}"
+          onclick="currentSlide({{ loop.index0 }})"
+          role="tab"
+          aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
+          aria-label="Produkt {{ loop.index }} von {{ products|length }}: {{ product['name'] }}"
+          aria-current="{% if loop.first %}true{% else %}false{% endif %}"
+        ></button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   <footer class="homeFooter">
     <div class="homeFooterRight">
       <p class="footerBrand">Flor’avis</p>
       <p class="footerTagline">Eine Revolution in der Seifenbranche</p>
 
       <div class="socialMedia">
-        <a href="https://www.tiktok.com/@official.flor.avis" target="_blank">
+        <a
+          href="https://www.tiktok.com/@official.flor.avis"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Besuche uns auf TikTok"
+        >
           <img
             src="{{ url_for('static', filename='styles/image/tiktokLogo.webp') }}"
-            alt="TikTok"
+            alt="TikTok Logo"
+            loading="lazy"
           />
         </a>
-        <a href="https://www.instagram.com/official.flor.avis/" target="_blank">
+        <a
+          href="https://www.instagram.com/official.flor.avis/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Besuche uns auf Instagram"
+        >
           <img
             src="{{ url_for('static', filename='styles/image/instaLogo.png') }}"
-            alt="Instagram"
+            alt="Instagram Logo"
+            loading="lazy"
           />
         </a>
       </div>
@@ -53,32 +138,190 @@ block head %}
       <div class="footerColumn">
         <h4>Marke</h4>
         <ul class="footerList">
-          <li>Warum Naturprodukte?</li>
-          <li>Der Flor'avis Unterschied</li>
-          <li>Keine schädlichen Inhaltsstoffe</li>
+          <li><a href="{{ url_for('about_us') }}">Warum Naturprodukte?</a></li>
+          <li>
+            <a href="{{ url_for('about_us') }}">Der Flor'avis Unterschied</a>
+          </li>
+          <li>
+            <a href="{{ url_for('about_us') }}"
+              >Keine schädlichen Inhaltsstoffe</a
+            >
+          </li>
         </ul>
       </div>
 
       <div class="footerColumn">
         <h4>Shop</h4>
         <ul class="footerList">
-          <li>Blockseife</li>
-          <li>Bestseller</li>
-          <li>Bundles</li>
-          <li>Ankündigungen</li>
+          <li>
+            <a href="{{ url_for('shop', category='classic') }}">Blockseife</a>
+          </li>
+          <li><a href="{{ url_for('shop') }}">Bestseller</a></li>
+          <li>
+            <a href="{{ url_for('shop', category='luxury') }}">Bundles</a>
+          </li>
+          <li><a href="{{ url_for('shop') }}">Ankündigungen</a></li>
         </ul>
       </div>
 
       <div class="footerColumn">
         <h4>Support</h4>
         <ul class="footerList">
-          <li>FAQ</li>
-          <li>Kontakt</li>
-          <li>Geschäftsbedingungen</li>
-          <li>Versandrichtlinien</li>
+          <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+          <li><a href="{{ url_for('contact') }}">Kontakt</a></li>
+          <li><a href="{{ url_for('terms') }}">Geschäftsbedingungen</a></li>
+          <li><a href="{{ url_for('shipping') }}">Versandrichtlinien</a></li>
         </ul>
       </div>
     </div>
   </footer>
 </div>
+
+<script>
+  let currentSlideIndex = 0;
+  let autoplayInterval = null;
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  // Initialize carousel
+  function initCarousel() {
+    try {
+      const carousel = document.querySelector(".showcase-carousel");
+      if (!carousel) {
+        console.warn("Carousel element not found");
+        return;
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", handleCarouselKeydown);
+
+      // Touch/swipe support
+      carousel.addEventListener("touchstart", handleTouchStart, false);
+      carousel.addEventListener("touchend", handleTouchEnd, false);
+
+      // Auto-advance slides
+      startAutoplay();
+
+      // Pause autoplay on hover
+      carousel.addEventListener("mouseenter", stopAutoplay);
+      carousel.addEventListener("mouseleave", startAutoplay);
+
+      // Set ARIA attributes
+      updateAriaAttributes();
+    } catch (error) {
+      console.error("Carousel initialization error:", error);
+    }
+  }
+
+  function handleCarouselKeydown(event) {
+    if (event.key === "ArrowLeft") {
+      previousSlide();
+    } else if (event.key === "ArrowRight") {
+      nextSlide();
+    }
+  }
+
+  function handleTouchStart(event) {
+    touchStartX = event.changedTouches[0].screenX;
+  }
+
+  function handleTouchEnd(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipe();
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        previousSlide();
+      }
+    }
+  }
+
+  function startAutoplay() {
+    if (autoplayInterval) clearInterval(autoplayInterval);
+    autoplayInterval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+  }
+
+  function stopAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+    }
+  }
+
+  function nextSlide() {
+    const slides = document.querySelectorAll(".showcase-slide");
+    if (slides.length === 0) return;
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    updateSlide();
+  }
+
+  function previousSlide() {
+    const slides = document.querySelectorAll(".showcase-slide");
+    if (slides.length === 0) return;
+    currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+    updateSlide();
+  }
+
+  function currentSlide(index) {
+    const slides = document.querySelectorAll(".showcase-slide");
+    if (index >= 0 && index < slides.length) {
+      currentSlideIndex = index;
+      updateSlide();
+    }
+  }
+
+  function updateSlide() {
+    try {
+      const slides = document.querySelectorAll(".showcase-slide");
+      const dots = document.querySelectorAll(".dot");
+      const slidesContainer = document.querySelector(".showcase-slides");
+
+      if (!slidesContainer || slides.length === 0) return;
+
+      const offset = currentSlideIndex * -100;
+      slidesContainer.style.transform = `translateX(${offset}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentSlideIndex);
+        dot.setAttribute(
+          "aria-current",
+          index === currentSlideIndex ? "true" : "false",
+        );
+      });
+
+      updateAriaAttributes();
+    } catch (error) {
+      console.error("Slide update error:", error);
+    }
+  }
+
+  function updateAriaAttributes() {
+    const slides = document.querySelectorAll(".showcase-slide");
+    slides.forEach((slide, index) => {
+      slide.setAttribute(
+        "aria-hidden",
+        index !== currentSlideIndex ? "true" : "false",
+      );
+    });
+  }
+
+  // Initialize when DOM is loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCarousel);
+  } else {
+    initCarousel();
+  }
+
+  // Cleanup on page unload
+  window.addEventListener("unload", stopAutoplay);
+</script>
+
 {% endblock %}

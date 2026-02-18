@@ -131,39 +131,244 @@
   </div>
 
   <!-- Account / Profile Section -->
-  <div class="settings-section">
+  <div class="settings-section" id="konto-profil">
     <div class="section-header">
       <span class="section-icon">👤</span>
       <h2>Konto / Profil</h2>
     </div>
 
-    <div class="setting-item clickable" onclick="alert('Profilbild ändern')">
-      <div class="setting-info">
-        <label>Profilbild ändern</label>
-        <p class="setting-description">Laden Sie ein neues Profilbild hoch</p>
+    {% if request.args.get('edit') == 'adresse' %}
+    <!-- Adresse Eingabe Formular -->
+    <div class="contact-container">
+      <div class="form-section">
+        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="adresse" />
+          <div class="input-group">
+            <label for="strasse">
+              <i class="fa fa-home"></i>
+              Straße und Hausnummer
+            </label>
+            <input
+              type="text"
+              id="strasse"
+              name="strasse"
+              value="{{ adresse.get('strasse', '') }}"
+              placeholder="Geben Sie Ihre Straße und Hausnummer ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="plz">
+                <i class="fa fa-map-pin"></i>
+                Postleitzahl
+              </label>
+              <input
+                type="text"
+                id="plz"
+                name="plz"
+                value="{{ adresse.get('plz', '') }}"
+                placeholder="Geben Sie Ihre Postleitzahl ein"
+                inputmode="numeric"
+                maxlength="4"
+                pattern="\d{4}"
+                title="Bitte genau 4 Ziffern eingeben"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+              <label for="stadt">
+                <i class="fa fa-city"></i>
+                Stadt
+              </label>
+              <input
+                type="text"
+                id="stadt"
+                name="stadt"
+                value="{{ adresse.get('stadt', '') }}"
+                placeholder="Geben Sie Ihre Stadt ein"
+                pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+                title="Bitte nur Buchstaben eingeben"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="land">
+              <i class="fa fa-flag"></i>
+              Land
+            </label>
+            <input
+              type="text"
+              id="land"
+              name="land"
+              value="{{ adresse.get('land', '') }}"
+              placeholder="Geben Sie Ihr Land ein"
+              pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+              title="Bitte nur Buchstaben eingeben"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <button type="submit" class="submit-btn" id="save-adresse-btn">
+            <span>Adresse speichern</span>
+            <i class="fa fa-save"></i>
+          </button>
+
+          <a
+            href="{{ url_for('settings') }}#konto-profil"
+            class="submit-btn cancel-btn"
+            id="cancel-adresse-btn"
+          >
+            <span>Abbrechen</span>
+            <i class="fa fa-times"></i>
+          </a>
+        </form>
       </div>
     </div>
 
+    {% elif request.args.get('edit') == 'versandadresse' %}
+    <!-- Versandadresse Eingabe Formular -->
+    <div class="contact-container">
+      <div class="form-section">
+        <form id="versandadresse-form" action="{{ url_for('settings') }}" method="post" novalidate>
+          <input type="hidden" name="form_type" value="versandadresse" />
+          <div class="input-group">
+            <label for="versand_strasse">
+              <i class="fa fa-home"></i>
+              Straße und Hausnummer
+            </label>
+            <input
+              type="text"
+              id="versand_strasse"
+              name="versand_strasse"
+              value="{{ versandadresse.get('strasse', '') }}"
+              placeholder="Geben Sie Ihre Straße und Hausnummer ein"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="versand_plz">
+                <i class="fa fa-map-pin"></i>
+                Postleitzahl
+              </label>
+              <input
+                type="text"
+                id="versand_plz"
+                name="versand_plz"
+                value="{{ versandadresse.get('plz', '') }}"
+                placeholder="Geben Sie Ihre Postleitzahl ein"
+                inputmode="numeric"
+                maxlength="4"
+                pattern="\d{4}"
+                title="Bitte genau 4 Ziffern eingeben"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+
+            <div class="input-group">
+              <label for="versand_stadt">
+                <i class="fa fa-city"></i>
+                Stadt
+              </label>
+              <input
+                type="text"
+                id="versand_stadt"
+                name="versand_stadt"
+                value="{{ versandadresse.get('stadt', '') }}"
+                placeholder="Geben Sie Ihre Stadt ein"
+                pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+                title="Bitte nur Buchstaben eingeben"
+                required
+              />
+              <span class="input-border"></span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="versand_land">
+              <i class="fa fa-flag"></i>
+              Land
+            </label>
+            <input
+              type="text"
+              id="versand_land"
+              name="versand_land"
+              value="{{ versandadresse.get('land', '') }}"
+              placeholder="Geben Sie Ihr Land ein"
+              pattern="[A-Za-zÄÖÜäöüß\s\-]+"
+              title="Bitte nur Buchstaben eingeben"
+              required
+            />
+            <span class="input-border"></span>
+          </div>
+
+          <button type="submit" class="submit-btn" id="save-versandadresse-btn">
+            <span>Versandadresse speichern</span>
+            <i class="fa fa-save"></i>
+          </button>
+
+          <a
+            href="{{ url_for('settings') }}#konto-profil"
+            class="submit-btn cancel-btn"
+            id="cancel-versandadresse-btn"
+          >
+            <span>Abbrechen</span>
+            <i class="fa fa-times"></i>
+          </a>
+        </form>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- Normale Ansicht -->
     <div
       class="setting-item clickable"
-      onclick="alert('Name / E-Mail bearbeiten')"
+      data-href="{{ url_for('settings') }}?edit=adresse#konto-profil"
     >
       <div class="setting-info">
-        <label>Name / E-Mail bearbeiten</label>
+        <label>Adresse</label>
         <p class="setting-description">
-          Bearbeiten Sie Ihre persönlichen Informationen
+          Geben Sie ihre Adresse ein
         </p>
       </div>
+      <span class="arrow">›</span>
+    </div>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <label>Versandadresse</label>
+        <p class="setting-description">Versandadresse ist dieselbe, wie Adresse</p>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="versandadresse-toggle" />
+        <span class="slider"></span>
+      </label>
     </div>
 
     <div
+      id="versandadresse-item"
       class="setting-item clickable"
-      onclick="alert('Passwort zurücksetzen')"
+      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"
     >
       <div class="setting-info">
-        <label>Passwort zurücksetzen</label>
-        <p class="setting-description">Neues Passwort festlegen</p>
+        <label>Versandadresse</label>
+        <p class="setting-description">
+          Geben Sie ihre Versandadresse ein
+        </p>
       </div>
+      <span class="arrow">›</span>
     </div>
 
     <div
@@ -176,6 +381,141 @@
       </div>
       <span class="arrow">›</span>
     </div>
+    {% endif %}
+  </div>
+
+  <!-- Notifications -->
+  <div id="notification" class="notification success-notification {% if request.args.get('saved') == '1' %}show{% endif %}">
+    <i class="fa fa-check-circle"></i>
+    <div class="notification-content">
+      <h4>Erfolg</h4>
+      <p id="success-text">
+        {% if request.args.get('saved') == '1' %}
+          Deine Daten wurden erfolgreich gespeichert!
+        {% else %}
+          Die Daten wurden erfolgreich gespeichert!
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div id="error-notification" class="notification error-notification {% if request.args.get('saved') == '0' %}show{% endif %}">
+    <i class="fa fa-exclamation-circle"></i>
+    <div class="notification-content">
+      <h4>Fehler</h4>
+      <p id="error-text">
+        {% if request.args.get('error') == 'format' %}
+          Ungültige Eingabe: PLZ muss genau 4 Ziffern haben, Stadt und Land dürfen nur Buchstaben enthalten.
+        {% elif request.args.get('saved') == '0' %}
+          Speichern fehlgeschlagen. Bitte alle Pflichtfelder ausfüllen.
+        {% else %}
+          Nicht alle Felder wurden ausgefüllt!
+        {% endif %}
+      </p>
+    </div>
   </div>
 </div>
+
+<script>
+// Toggle Funktionalität für Versandadresse
+const versandadresseToggle = document.getElementById('versandadresse-toggle');
+const versandadresseItem = document.getElementById('versandadresse-item');
+
+if (versandadresseToggle && versandadresseItem) {
+  versandadresseToggle.addEventListener('change', function() {
+    if (this.checked) {
+      versandadresseItem.classList.add('disabled');
+    } else {
+      versandadresseItem.classList.remove('disabled');
+    }
+  });
+}
+
+// Clickable items mit data-href
+const clickableItems = document.querySelectorAll('.setting-item.clickable[data-href]');
+clickableItems.forEach(item => {
+  item.addEventListener('click', function() {
+    const href = this.getAttribute('data-href');
+    if (href) {
+      window.location.href = href;
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const successNotification = document.getElementById('notification');
+  const errorNotification = document.getElementById('error-notification');
+  const errorText = document.getElementById('error-text');
+  const adresseForm = document.getElementById('adresse-form');
+  const versandadresseForm = document.getElementById('versandadresse-form');
+  let errorTimeoutId = null;
+
+  function showError(message) {
+    if (!errorNotification || !errorText) {
+      return;
+    }
+
+    errorText.textContent = message;
+    errorNotification.classList.remove('hide');
+    errorNotification.classList.add('show');
+
+    if (errorTimeoutId !== null) {
+      clearTimeout(errorTimeoutId);
+    }
+
+    errorTimeoutId = setTimeout(function () {
+      errorNotification.classList.remove('show');
+      errorNotification.classList.add('hide');
+    }, 4000);
+  }
+
+  function getValidationMessage(field) {
+    if (field.validity.valueMissing) {
+      return 'Bitte alle Pflichtfelder ausfüllen.';
+    }
+
+    if (field.name === 'plz' || field.name === 'versand_plz') {
+      return 'PLZ muss genau 4 Ziffern enthalten.';
+    }
+
+    if (field.name === 'stadt' || field.name === 'land' || field.name === 'versand_stadt' || field.name === 'versand_land') {
+      return 'Stadt und Land dürfen nur Buchstaben enthalten.';
+    }
+
+    return 'Bitte Eingabe prüfen.';
+  }
+
+  function bindFormValidation(form) {
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener('submit', function (event) {
+      const invalidField = form.querySelector(':invalid');
+      if (invalidField) {
+        event.preventDefault();
+        showError(getValidationMessage(invalidField));
+        invalidField.focus();
+      }
+    });
+  }
+
+  bindFormValidation(adresseForm);
+  bindFormValidation(versandadresseForm);
+
+  if (successNotification && successNotification.classList.contains('show')) {
+    setTimeout(function () {
+      successNotification.classList.remove('show');
+      successNotification.classList.add('hide');
+    }, 4000);
+  }
+
+  if (errorNotification && errorNotification.classList.contains('show')) {
+    setTimeout(function () {
+      errorNotification.classList.remove('show');
+      errorNotification.classList.add('hide');
+    }, 4000);
+  }
+});
+</script>
 {% endblock %}
