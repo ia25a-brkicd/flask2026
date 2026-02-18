@@ -1,3 +1,28 @@
+    /* ===== Zurück-Pfeil ===== */
+    .back-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        margin: 30px 0 16px 40px;
+        color: #8b4a3a;
+        text-decoration: none;
+        border-radius: 50%;
+        background-color: rgba(139, 74, 58, 0.08);
+        transition: all 0.2s ease;
+    }
+
+    .back-arrow:hover {
+        background-color: rgba(139, 74, 58, 0.18);
+        transform: translateX(-3px);
+    }
+
+    .back-arrow svg {
+        width: 22px;
+        height: 22px;
+    }
+
 @keyframes fadeIn {
         from {
             opacity: 0;
@@ -161,6 +186,122 @@
         .thank-you-icon {
             font-size: 48px;
             margin-bottom: 12px;
+        }
+    }
+
+    /* ===== Order Summary (Beträge) ===== */
+    .order-summary {
+        margin-top: 25px;
+        padding: 15px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #ffffff;
+    }
+
+    .summary-label {
+        font-weight: 400;
+    }
+
+    .summary-value {
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .summary-total {
+        margin-top: 8px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .summary-total .summary-label {
+        font-weight: 700;
+    }
+
+    .summary-tax-note {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: right;
+        margin-top: -5px;
+        margin-bottom: 15px;
+    }
+
+    /* ===== Action Buttons ===== */
+    .checkout-button {
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 24px;
+        background-color: #e8a68e;
+        color: #8b4a3a;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .checkout-button:hover {
+        background-color: #f0b89e;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .checkout-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* ===== Responsive Design for Order Summary ===== */
+    @media (max-width: 768px) {
+        .back-arrow {
+            font-size: 15px;
+            padding: 10px 14px;
+            
+        }
+
+        .back-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .order-summary {
+            margin-top: 20px;
+            padding: 12px 0;
+        }
+
+        .summary-row {
+            font-size: 13px;
+        }
+
+        .summary-total {
+            font-size: 15px;
+        }
+
+        .checkout-button {
+            padding: 14px 20px;
+            font-size: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .checkout-button {
+            width: 100%;
         }
     }
 
