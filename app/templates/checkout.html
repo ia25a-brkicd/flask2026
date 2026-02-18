@@ -10,6 +10,12 @@
     />
 </head>
 
+    <a href="{{ url_for('warenkorb') }}" class="back-arrow" aria-label="Zurück zum Warenkorb">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+
     <form id="checkout-form" onsubmit="return false;">
         <div class="addres-card-container">
 
@@ -176,9 +182,22 @@
                 </div>
                 </div>
 
-                <div class="txt">Zwischensumme</div>
-                <div class="txt">Versand</div>
-                <div class="txt">Gesamt (Steuern inbegriffen)</div>
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Zwischensumme</span>
+                        <span class="summary-value" id="subtotal-value">CHF 0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Versand</span>
+                        <span class="summary-value" id="shipping-value">CHF 0.00</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span class="summary-label">Gesamt</span>
+                        <span class="summary-value" id="total-value">CHF 0.00</span>
+                    </div>
+                    <div class="summary-tax-note">(Steuern inbegriffen)</div>
+                </div>
+
                 <button 
                     type="button" 
                     class="checkout-button" 
@@ -186,7 +205,7 @@
                     onclick="handleCheckout()"
                     aria-label="Bestellung abschließen und bezahlen"
                 >
-                    <span id="btn-text">Kasse</span>
+                    <span id="btn-text">Zahlen</span>
                     <span id="btn-spinner" class="loading-spinner" style="display: none;" aria-hidden="true">
                         <i class="fa fa-spinner"></i>
                     </span>
@@ -216,6 +235,42 @@
 
     <script>
         var lastSelectedPayment = null;
+
+        // Warenkorb-Funktionen
+        function getCart() {
+            var cart = localStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function clearCart() {
+            localStorage.removeItem('cart');
+        }
+
+        function calculateTotals() {
+            var cart = getCart();
+            var subtotal = 0;
+            
+            cart.forEach(function(item) {
+                subtotal += item.price * item.quantity;
+            });
+            
+            var shipping = subtotal > 0 ? 5.00 : 0; // CHF 5 Versandkosten, falls Warenkorb nicht leer
+            var total = subtotal + shipping;
+            
+            return {
+                subtotal: subtotal,
+                shipping: shipping,
+                total: total
+            };
+        }
+
+        function updateOrderSummary() {
+            var totals = calculateTotals();
+            
+            document.getElementById('subtotal-value').textContent = 'CHF ' + totals.subtotal.toFixed(2);
+            document.getElementById('shipping-value').textContent = 'CHF ' + totals.shipping.toFixed(2);
+            document.getElementById('total-value').textContent = 'CHF ' + totals.total.toFixed(2);
+        }
 
         // Toggle Card Details visibility with deselect on re-click
         function toggleCardDetails(clickedValue) {
@@ -268,13 +323,36 @@
             });
         }
 
+        // Automatische Formatierung des Ablaufdatums (MM/YY)
+        function formatExpiration(input) {
+            var value = input.value.replace(/\D/g, ''); // Entferne alle Nicht-Zahlen
+            
+            if (value.length >= 3) {
+                // Wenn 3 oder mehr Zahlen, füge "/" nach den ersten 2 Zahlen hinzu
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            input.value = value;
+        }
+
         // Event Listener für alle Input-Felder hinzufügen
         document.addEventListener('DOMContentLoaded', function() {
+            // Beträge beim Laden aktualisieren
+            updateOrderSummary();
+            
             var inputs = document.querySelectorAll('#checkout-form input');
             inputs.forEach(function(input) {
                 input.addEventListener('change', saveFormData);
                 input.addEventListener('input', saveFormData);
             });
+            
+            // Automatische Formatierung für Ablaufdatum
+            var expirationInput = document.querySelector('input[name="expiration"]');
+            if (expirationInput) {
+                expirationInput.addEventListener('input', function() {
+                    formatExpiration(this);
+                });
+            }
             
             // Initialisiere die Sichtbarkeit der Kartendaten
             var paymentChecked = document.querySelector('input[name="payment"]:checked');
