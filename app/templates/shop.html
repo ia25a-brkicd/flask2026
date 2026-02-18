@@ -116,18 +116,19 @@
     </div>
 
     <div class="products-grid">
+      {% for product in products %}
       <div class="product-card">
         <a
-          href="{{ url_for('product_detail', product_id=1) }}"
+          href="{{ url_for('product_detail', product_id=product.id) }}"
           class="product-card-link"
         >
           <img
-            src="{{ url_for('static', filename='images/Green Apple & Lemon mix.jpg') }}"
-            alt="Green Apple & Lemon"
+            src="{{ url_for('static', filename=product.image) }}"
+            alt="{{ product.name }}"
           />
-          <h3>Green Apple & Lemon mix</h3>
+          <h3>{{ product.name }}</h3>
         </a>
-        <p class="price">12.99 CHF</p>
+        <p class="price">{{ "%.2f"|format(product.price|int + 0.99) }} CHF</p>
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
             <button class="pack-btn active" data-quantity="1" data-discount="0">
@@ -149,176 +150,7 @@
         </div>
         <button class="add-to-cart-btn">In den Warenkorb</button>
       </div>
-
-      <div class="product-card">
-        <a
-          href="{{ url_for('product_detail', product_id=2) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename='images/Green Apple & Lemon & Vanille Mix.jpg') }}"
-            alt="Green Apple & Lemon & Vanille Mix"
-          />
-          <h3>Green Apple & Lemon & Vanille Mix</h3>
-        </a>
-        <p class="price">13.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
-              1
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
-              2
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
-              3
-            </button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <a
-          href="{{ url_for('product_detail', product_id=3) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename='images/Green Apple & Lemon with Stamp.jpg') }}"
-            alt="Green Apple & Lemon with Stamp"
-          />
-          <h3>Green Apple & Lemon with Stamp</h3>
-        </a>
-        <p class="price">14.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
-              1
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
-              2
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
-              3
-            </button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <a
-          href="{{ url_for('product_detail', product_id=4) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename='images/Green Apple & Lemon.jpg') }}"
-            alt="Green Apple & Lemon"
-          />
-          <h3>Green Apple & Lemon</h3>
-        </a>
-        <p class="price">11.99 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
-              1
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
-              2
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
-              3
-            </button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <a
-          href="{{ url_for('product_detail', product_id=5) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename='images/Green Apple & Vanille.jpg') }}"
-            alt="Green Apple & Vanille"
-          />
-          <h3>Green Apple & Vanille</h3>
-        </a>
-        <p class="price">12.49 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
-              1
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
-              2
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
-              3
-            </button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
-
-      <div class="product-card">
-        <a
-          href="{{ url_for('product_detail', product_id=6) }}"
-          class="product-card-link"
-        >
-          <img
-            src="{{ url_for('static', filename='images/GreenAppleVanille.jpg') }}"
-            alt="Green Apple & Vanille"
-          />
-          <h3>Green Apple & Vanille</h3>
-        </a>
-        <p class="price">13.49 CHF</p>
-        <div class="pack-selector">
-          <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
-              1
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
-              2
-            </button>
-          </div>
-          <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
-              3
-            </button>
-          </div>
-        </div>
-        <button class="add-to-cart-btn">In den Warenkorb</button>
-      </div>
+      {% endfor %}
     </div>
   </section>
 </div>
