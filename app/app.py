@@ -149,7 +149,8 @@ def profil():
         return redirect(url_for("home"))    # zurück zur Startseite
 
     adresse = session.get("adresse", {})
-    versandadresse = session.get("versandadresse", {})
+    versandadresse_same = session.get("versandadresse_same", False)
+    versandadresse = adresse if versandadresse_same else session.get("versandadresse", {})
     user_profile = {
         "firstname": session.get("user_name", "-"),
         "lastname": session.get("user_lastname", "-"),
@@ -201,6 +202,19 @@ def settings():
         has_saved_data = False
         form_type = request.form.get("form_type")
 
+        if form_type == "versandadresse_toggle":
+            versandadresse_same = request.form.get("versandadresse_same") == "1"
+            session["versandadresse_same"] = versandadresse_same
+
+            if versandadresse_same and session.get("adresse"):
+                session["versandadresse"] = dict(session.get("adresse", {}))
+            elif not versandadresse_same:
+                aktuelle_versandadresse = session.get("versandadresse", {})
+                if aktuelle_versandadresse == session.get("adresse", {}):
+                    session.pop("versandadresse", None)
+
+            return redirect(url_for("settings") + "#konto-profil")
+
         def is_valid_plz(value):
             return bool(re.fullmatch(r"\d{4}", value.strip()))
 
@@ -228,6 +242,8 @@ def settings():
                     'stadt': stadt,
                     'land': land
                 }
+                if session.get("versandadresse_same"):
+                    session["versandadresse"] = dict(session["adresse"])
                 has_saved_data = True
                 print("=== Adresse gespeichert ===")
                 print(f"Straße: {strasse}")
@@ -267,6 +283,7 @@ def settings():
         "settings.html",
         adresse=session.get("adresse", {}),
         versandadresse=session.get("versandadresse", {}),
+        versandadresse_same=session.get("versandadresse_same", False),
     )
 
 @app.route("/logout")
