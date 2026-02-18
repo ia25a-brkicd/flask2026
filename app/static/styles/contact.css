@@ -230,8 +230,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    box-shadow: 0 10px 25px rgba(201, 154, 138, 0.4);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 6px 16px rgba(201, 154, 138, 0.35);
+    transition: none;
     position: relative;
     overflow: hidden;
 }
@@ -241,37 +241,29 @@ body {
 }
 
 .submit-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
+    content: none;
 }
 
 .submit-btn:hover::before {
-    left: 100%;
+    left: auto;
 }
 
 .submit-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(201, 154, 138, 0.5);
+    transform: none;
+    box-shadow: 0 6px 16px rgba(201, 154, 138, 0.35);
 }
 
 .submit-btn:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: none;
 }
 
 .submit-btn i {
     font-size: 20px;
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .submit-btn:hover i {
-    transform: translateX(5px);
+    transform: none;
 }
 
 /* FAQ Section */
@@ -421,6 +413,7 @@ body {
 }
 
 .profile-action-grid .submit-btn {
+    
     width: 100%;
     min-height: 64px;
     white-space: nowrap;
