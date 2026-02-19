@@ -124,12 +124,6 @@
                         </span>
                     </label>
 
-                    <label class="payment-method">
-                        <input type="radio" name="payment" value="paypal" {% if checkout_data.get('payment') == 'paypal' %}checked{% endif %} onchange="toggleCardDetails()">
-                        <span class="payment-methods-button">
-                            <img class="payment-methods-img" src="../static/styles/images/paypal_floravis.png" alt="Paypal">
-                        </span>
-                    </label>
                 </div>
 
 
@@ -258,7 +252,7 @@
         // Hier die URL eintragen, auf die der QR-Code zeigen soll
         // (z.B. dein TWINT-Zahlungslink oder deine Webseite)
         // ============================================================
-        var TWINT_PAYMENT_URL = 'https://floravis.onrender.com';
+        var TWINT_BASE_URL = window.location.origin + '/twint-pay';
 
         var lastSelectedPayment = null;
         var twintQrGenerated = false;
@@ -335,19 +329,20 @@
             var modal = document.getElementById('twint-modal');
             var qrContainer = document.getElementById('twint-qr-code');
 
-            // QR-Code nur einmal generieren
-            if (!twintQrGenerated) {
-                qrContainer.innerHTML = '';
-                new QRCode(qrContainer, {
-                    text: TWINT_PAYMENT_URL,
-                    width: 200,
-                    height: 200,
-                    colorDark: '#000000',
-                    colorLight: '#ffffff',
-                    correctLevel: QRCode.CorrectLevel.H
-                });
-                twintQrGenerated = true;
-            }
+            // Aktuellen Betrag berechnen und URL generieren
+            var totals = calculateTotals();
+            var twintUrl = TWINT_BASE_URL + '?total=' + totals.total.toFixed(2);
+
+            // QR-Code immer neu generieren (damit Betrag stimmt)
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: twintUrl,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
 
             modal.style.display = 'flex';
         }

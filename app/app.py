@@ -483,6 +483,17 @@ def checkout():
     # GET: Lade gespeicherte Daten aus Session
     checkout_data = session.get('checkout_data', {})
     return render_template("checkout.html", checkout_data=checkout_data)
+
+@app.route("/twint-pay")
+def twint_pay():
+    try:
+        total = float(request.args.get('total', 0))
+    except ValueError:
+        total = 0.0
+    shipping = 5.00 if total > 0 else 0.0
+    subtotal = total - shipping
+    return render_template("twint_pay.html", total=total, subtotal=subtotal, shipping=shipping)
+
 # Route zum Speichern der Checkout-Daten in der Session
 @app.route("/save_checkout_data", methods=["POST"])
 def save_checkout_data():
