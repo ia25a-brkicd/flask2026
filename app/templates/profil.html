@@ -200,7 +200,7 @@
         this.parentElement.classList.remove("focused");
       }
     });
-  });
+  }); //fokus bei eingabefeld
 
   function validateName(name) {
     var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
@@ -285,7 +285,7 @@
       formData.append('email', email);
       formData.append('password', password);
 
-      fetch('{{ url_for("profil") }}', {
+      fetch('{{ url_for("profil") }}', { //sendet an pflask route profil
         method: 'POST',
         body: formData
       }).then(function(response) {
@@ -295,6 +295,7 @@
           document.getElementById('email').value = '';
           document.getElementById('password').value = '';
           document.getElementById('password_repeat').value = '';
+          //wenn ok geleert und success notification
 
           var notification = document.getElementById('notification');
           notification.classList.add('show');
@@ -313,12 +314,12 @@
           if (data && data.error) {
             showError(data.error);
           } else {
-            showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.');
+            showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.'); //liest json und gibt fehlertext
           }
           return null;
         });
       }).catch(function () {
-        showError('Netzwerkfehler. Bitte pruefe deine Verbindung.');
+        showError('Netzwerkfehler. Bitte pruefe deine Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
       });
     });
   }

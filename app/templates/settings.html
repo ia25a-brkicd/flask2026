@@ -8,6 +8,7 @@
   href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap"
   rel="stylesheet"
 />
+//schriftarten von google fonts
 
 <link
   rel="stylesheet"
@@ -72,7 +73,7 @@
     <!-- Adresse Eingabe Formular -->
     <div class="contact-container">
       <div class="form-section">
-        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate>
+        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate> //daten an flask route settings, browser standart ausgeschaltet wegen fehlermedlung
           <input type="hidden" name="form_type" value="adresse" />
           <div class="input-group">
             <label for="strasse">
@@ -83,7 +84,7 @@
               type="text"
               id="strasse"
               name="strasse"
-              value="{{ adresse.get('strasse', '') }}"
+              value="{{ adresse.get('strasse', '') }}" //dictionary adresse und eintrag strasse
               placeholder="Geben Sie Ihre Straße und Hausnummer ein"
               required
             />
@@ -291,6 +292,7 @@
             name="versandadresse_same"
             value="1"
             {% if versandadresse_same %}checked{% endif %}
+            //check von toggel
           />
           <span class="slider"></span>
         </label>
@@ -300,7 +302,7 @@
     <div
       id="versandadresse-item"
       class="setting-item clickable{% if versandadresse_same %} disabled{% endif %}"
-      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"
+      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil" //liest und leitet weiter
     >
       <div class="setting-info">
         <label>Versandadresse</label>
@@ -347,7 +349,7 @@
 
 <script>
 // Toggle Funktionalität für Versandadresse
-const versandadresseToggle = document.getElementById('versandadresse-toggle');
+const versandadresseToggle = document.getElementById('versandadresse-toggle'); //eintrag aus html
 const versandadresseItem = document.getElementById('versandadresse-item');
 
 if (versandadresseToggle && versandadresseItem) {
@@ -355,7 +357,7 @@ if (versandadresseToggle && versandadresseItem) {
     versandadresseItem.classList.toggle('disabled', versandadresseToggle.checked);
   }
 
-  syncShippingUi();
+  syncShippingUi(); //jenachdem ob toggle an oder aus
 
   versandadresseToggle.addEventListener('change', function() {
     syncShippingUi();
@@ -363,10 +365,10 @@ if (versandadresseToggle && versandadresseItem) {
       this.form.submit();
     }
   });
-}
+} //jenachdem ob toggel an oder aus wird formular angezeigt
 
 // Clickable items mit data-href
-const clickableItems = document.querySelectorAll('.setting-item.clickable[data-href]');
+const clickableItems = document.querySelectorAll('.setting-item.clickable[data-href]'); //klickbare elemente
 clickableItems.forEach(item => {
   item.addEventListener('click', function() {
     const href = this.getAttribute('data-href');
@@ -390,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     errorText.textContent = message;
-    errorNotification.classList.remove('hide');
-    errorNotification.classList.add('show');
+    errorNotification.classList.remove('hide'); //fehlerbox hide
+    errorNotification.classList.add('show'); //fehlerbox show
 
     if (errorTimeoutId !== null) {
       clearTimeout(errorTimeoutId);
@@ -431,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
         showError(getValidationMessage(invalidField));
         invalidField.focus();
       }
-    });
+    });//ungültige feld gesucht und absenden stoppen, fehlermeldung suchen
   }
 
   bindFormValidation(adresseForm);
