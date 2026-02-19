@@ -394,8 +394,6 @@ def checkout():
         tel = request.form.get("tel")
         email = request.form.get("email")
 
-
-
         # Card Details
         payment = request.form.get("payment")
         card_name = request.form.get("card_name")
@@ -403,21 +401,7 @@ def checkout():
         expiration = request.form.get("expiration")
         cvv = request.form.get("cvv")
 
-        print("=== Checkout Form Data ===")
-        print(f"Anrede: {salutation}")
-        print(f"Name: {name}")
-        print(f"Vorname: {surname}")
-        print(f"Adresse: {address}")
-        print(f"PLZ: {plz}")
-        print(f"Ort: {city}")
-        print(f"Telefon: {tel}")
-        print(f"E-Mail: {email}")
-        print(f"Zahlungsart: {payment}")
-        print(f"Kartenname: {card_name}")
-        print(f"Kartennummer: {card_number}")
-        print(f"Ablaufdatum: {expiration}")
-        print(f"CVV: {cvv}")
-        print("==========================")
+        # ... (Print-Statements bleiben) ...
 
         # Adresse und Zahlung in DB speichern und IDs zurückbekommen
         customer_addres_id = add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
@@ -460,6 +444,33 @@ def checkout():
         else:
             print("⚠️ Bestellung konnte nicht in DB gespeichert werden")
 
+        # ═══════════════════════════════════════════════════════════════
+        # HIER FEHLT DEINE E-MAIL-LOGIK! 👇
+        # ═══════════════════════════════════════════════════════════════
+        # Order-Daten für E-Mail zusammenstellen
+        order_data = {
+            'salutation': salutation,
+            'name': name,
+            'surname': surname,
+            'address': address,
+            'plz': plz,
+            'city': city,
+            'tel': tel,
+            'payment': payment,
+            'items': cart_items,
+            'total': order_total
+        }
+
+        # Bestätigungs-E-Mail senden
+        recipient_name = f"{surname} {name}"
+        if email:
+            try:
+                send_order_confirmation(email, recipient_name, order_data)
+                print(f"📧 Bestätigungs-E-Mail an {email} gesendet!")
+            except Exception as e:
+                print(f"⚠️ E-Mail konnte nicht gesendet werden: {e}")
+        # ═══════════════════════════════════════════════════════════════
+
         # Session-Daten löschen nach erfolgreichem Checkout
         session.pop('checkout_data', None)
         session.pop('cart', None)  # Warenkorb leeren
@@ -469,7 +480,6 @@ def checkout():
     # GET: Lade gespeicherte Daten aus Session
     checkout_data = session.get('checkout_data', {})
     return render_template("checkout.html", checkout_data=checkout_data)
-
 # Route zum Speichern der Checkout-Daten in der Session
 @app.route("/save_checkout_data", methods=["POST"])
 def save_checkout_data():
