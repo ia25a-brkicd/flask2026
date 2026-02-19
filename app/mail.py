@@ -26,10 +26,13 @@ import requests
 # RECIPIENT=floravis05@gmail.com
 # ============================================================
 
-# Standard-Werte (BITTE IN .env DATEI ANPASSEN!)
-MAILGUN_API_KEY = os.getenv('API_KEY', 'DEIN_API_KEY_HIER')  # <-- AUSFÜLLEN!
-MAILGUN_DOMAIN = os.getenv('DOMAIN', 'sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
-MAILGUN_SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'postmaster@sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
+MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
+MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN')
+MAILGUN_SENDER_EMAIL = os.getenv('MAILGUN_SENDER_EMAIL')
+
+if not all([MAILGUN_API_KEY, MAILGUN_DOMAIN, MAILGUN_SENDER_EMAIL]):
+    raise RuntimeError("Missing Mailgun env vars: MAILGUN_API_KEY / MAILGUN_DOMAIN / MAILGUN_SENDER_EMAIL")
+
 
 def send_order_confirmation(recipient_email, recipient_name, order_data):
     """
