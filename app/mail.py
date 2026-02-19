@@ -4,40 +4,32 @@ import requests
 # ============================================================
 # MAILGUN KONFIGURATION - BITTE AUSFÜLLEN:
 # ============================================================
-# 1. MAILGUN_API_KEY: Dein Mailgun API Key
+# 1. API_KEY: Dein Mailgun API Key
 #    - Findest du unter: https://app.mailgun.com/app/account/security/api_keys
 #    - Beispiel: "key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 #
-# 2. MAILGUN_DOMAIN: Deine Mailgun Domain
+# 2. DOMAIN: Deine Mailgun Domain
 #    - Sandbox Domain: "sandboxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.mailgun.org"
 #    - Oder deine verifizierte Domain: "mail.deinedomain.com"
 #
-# 3. MAILGUN_SENDER_EMAIL: Absender E-Mail
+# 3. SENDER_EMAIL: Absender E-Mail
 #    - Bei Sandbox: "postmaster@sandboxXXXX.mailgun.org"
 #    - Bei eigener Domain: "noreply@deinedomain.com"
 #
+# 4. RECIPIENT: Empfänger E-Mail für Kontaktformular
+#    - z.B.: "floravis05@gmail.com"
+#
 # Diese Werte kannst du in der .env Datei setzen:
-# MAILGUN_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-# MAILGUN_DOMAIN=sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org
-# MAILGUN_SENDER_EMAIL=postmaster@sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org
+# API_KEY=key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# DOMAIN=sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org
+# SENDER_EMAIL=postmaster@sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org
+# RECIPIENT=floravis05@gmail.com
 # ============================================================
 
 # Standard-Werte (BITTE IN .env DATEI ANPASSEN!)
-MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY', 'DEIN_API_KEY_HIER')  # <-- AUSFÜLLEN!
-MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN', 'sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
-MAILGUN_SENDER_EMAIL = os.getenv('MAILGUN_SENDER_EMAIL', 'postmaster@sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
-
-
-def send_simple_message():
-    """Ursprüngliche Test-Funktion"""
-    return requests.post(
-        f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
-        auth=("api", MAILGUN_API_KEY),
-        data={"from": f"Mailgun Sandbox <{MAILGUN_SENDER_EMAIL}>",
-              "to": "Dario Brkic <brkicd@bzz.ch>",
-              "subject": "Hello Dario Brkic",
-              "text": "Congratulations Dario Brkic, you just sent an email with Mailgun! You are truly awesome!"})
-
+MAILGUN_API_KEY = os.getenv('API_KEY', 'DEIN_API_KEY_HIER')  # <-- AUSFÜLLEN!
+MAILGUN_DOMAIN = os.getenv('DOMAIN', 'sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
+MAILGUN_SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'postmaster@sandboxaac2dec4f1b445bf9c922b43c85e6d22.mailgun.org')  # <-- AUSFÜLLEN!
 
 def send_order_confirmation(recipient_email, recipient_name, order_data):
     """
@@ -204,6 +196,129 @@ www.floravis.ch
 
         if response.status_code == 200:
             print(f"✅ Bestätigungs-E-Mail erfolgreich an {recipient_email} gesendet!")
+        else:
+            print(f"❌ Fehler beim Senden der E-Mail: {response.status_code} - {response.text}")
+
+        return response
+
+    except Exception as e:
+        print(f"❌ Mailgun Fehler: {e}")
+        return None
+
+
+def send_contact_message(firstname, lastname, email, message):
+    """
+    Sendet eine Kontaktformular-Nachricht per E-Mail via Mailgun.
+
+    Parameter:
+    - firstname: Vorname des Absenders
+    - lastname: Nachname des Absenders
+    - email: E-Mail-Adresse des Absenders
+    - message: Nachricht vom Absender
+
+    Returns:
+    - Response-Objekt von Mailgun API
+    """
+    
+    recipient_email = os.getenv('RECIPIENT', 'floravis05@gmail.com')
+    
+    # E-Mail Betreff
+    subject = f"Neue Kontaktanfrage von {firstname} {lastname}"
+
+    # E-Mail Text erstellen
+    email_text = f"""
+Neue Kontaktanfrage von der FlorAvis Webseite:
+
+═══════════════════════════════════════════
+KONTAKTDATEN
+═══════════════════════════════════════════
+Name: {firstname} {lastname}
+Email: {email}
+
+═══════════════════════════════════════════
+NACHRICHT
+═══════════════════════════════════════════
+{message}
+
+───────────────────────────────────────────
+Diese Nachricht wurde über das Kontaktformular gesendet.
+Antworten Sie direkt an: {email}
+───────────────────────────────────────────
+"""
+
+    # HTML Version
+    email_html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+        .header {{ background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }}
+        .header h1 {{ margin: 0; font-size: 28px; }}
+        .content {{ background: #f9f9f9; padding: 30px; border: 1px solid #ddd; }}
+        .info-box {{ background: white; border-left: 4px solid #4a7c23; padding: 15px; margin: 20px 0; }}
+        .message-box {{ background: white; border: 2px solid #2d5016; border-radius: 10px; padding: 20px; margin: 20px 0; }}
+        .footer {{ background: #2d5016; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; }}
+        .label {{ font-weight: bold; color: #2d5016; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 Floravis</h1>
+            <p>Neue Kontaktanfrage</p>
+        </div>
+        <div class="content">
+            <p><strong>Eine neue Nachricht wurde über das Kontaktformular gesendet:</strong></p>
+            
+            <div class="info-box">
+                <p style="margin: 5px 0;"><span class="label">👤 Name:</span> {firstname} {lastname}</p>
+                <p style="margin: 5px 0;"><span class="label">📧 Email:</span> <a href="mailto:{email}">{email}</a></p>
+            </div>
+            
+            <div class="message-box">
+                <h3 style="margin-top: 0; color: #2d5016;">💬 Nachricht</h3>
+                <p style="white-space: pre-wrap;">{message}</p>
+            </div>
+            
+            <p style="color: #666; font-size: 14px;">
+                <em>💡 Tipp: Sie können direkt auf diese E-Mail antworten, um dem Kunden zu schreiben.</em>
+            </p>
+        </div>
+        <div class="footer">
+            <p>🌿 Floravis Kontaktformular</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+    try:
+        print(f"📧 Versuche Kontakt-Email zu senden...")
+        print(f"   Domain: {MAILGUN_DOMAIN}")
+        print(f"   Von: {MAILGUN_SENDER_EMAIL}")
+        print(f"   An: {recipient_email}")
+
+        response = requests.post(
+            f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
+            auth=("api", MAILGUN_API_KEY),
+            data={
+                "from": f"Floravis Kontaktformular <{MAILGUN_SENDER_EMAIL}>",
+                "to": recipient_email,
+                "subject": subject,
+                "text": email_text,
+                "html": email_html,
+                "h:Reply-To": email
+            }
+        )
+
+        print(f"📧 Mailgun Response Status: {response.status_code}")
+        print(f"📧 Mailgun Response: {response.text}")
+
+        if response.status_code == 200:
+            print(f"✅ Kontakt-E-Mail erfolgreich an {recipient_email} gesendet!")
         else:
             print(f"❌ Fehler beim Senden der E-Mail: {response.status_code} - {response.text}")
 
