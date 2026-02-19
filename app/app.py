@@ -1,6 +1,7 @@
 import db
 import os
 import re
+import json
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from mail import send_simple_message, send_order_confirmation
@@ -203,14 +204,17 @@ def login():
             session['user_name'] = user_data[2]  # first_name
             session['user_lastname'] = user_data[3]  # last_name
 
-            # Lade Adressen aus der Datenbank
-            billing_address = get_user_address(user_data[0], is_shipping=False)
-            shipping_address = get_user_address(user_data[0], is_shipping=True)
+            # Lade Adressen aus der Datenbank (falls Tabelle existiert)
+            try:
+                billing_address = get_user_address(user_data[0], is_shipping=False)
+                shipping_address = get_user_address(user_data[0], is_shipping=True)
 
-            if billing_address:
-                session['adresse'] = billing_address
-            if shipping_address:
-                session['versandadresse'] = shipping_address
+                if billing_address:
+                    session['adresse'] = billing_address
+                if shipping_address:
+                    session['versandadresse'] = shipping_address
+            except Exception as e:
+                print(f"⚠️ Konnte Adressen nicht laden: {e}")
 
             print(f"✅ Login erfolgreich für: {user_data[2]} {user_data[3]}")
             return redirect(url_for("profil"))
@@ -408,10 +412,18 @@ def checkout():
         customer_addres_id = add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
         customer_payment_id = add_customer_payment(payment,card_name,card_number,expiration,cvv)
 
-        # Warenkorb-Items aus Session holen
-        cart_items = session.get('cart', [])
+        # Warenkorb-Items aus dem Formular holen (vom Frontend gesendet)
+        cart_data_str = request.form.get('cart_data', '[]')
+        try:
+            cart_items = json.loads(cart_data_str)
+            print(f"📦 Warenkorb vom Frontend empfangen: {len(cart_items)} Items")
+            for item in cart_items:
+                print(f"   - {item.get('name', 'Unbekannt')}: {item.get('quantity', 1)}x CHF {item.get('price', 0)}")
+        except json.JSONDecodeError:
+            cart_items = []
+            print("⚠️ Konnte Warenkorb-Daten nicht parsen")
 
-        # Falls keine Cart-Items in Session, erstelle Standard-Item
+        # Falls keine Cart-Items, erstelle Standard-Item
         if not cart_items:
             cart_items = [{'name': 'Floravis Seife', 'quantity': 1, 'price': 11.99}]
 

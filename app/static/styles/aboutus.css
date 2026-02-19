@@ -30,9 +30,11 @@ body {
 /* Block 1 - Hero Section */
 .block1 {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .aboutUsBild {
