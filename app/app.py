@@ -1,10 +1,22 @@
 import db
 import os
 import re
+import json
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from dotenv import load_dotenv # Lädt .env Dateien und macht die Variablen verfügbar
-from mail import send_order_confirmation, send_contact_message
-from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
+from dotenv import load_dotenv # Lädt .env Datei
+from mail import send_simple_message, send_order_confirmation
+from repository.customer_repo import (
+    add_customer_addres,
+    add_customer_payment,
+    add_login,
+    verify_login,
+    get_login_by_email,
+    create_order,
+    get_orders_by_login_id,
+    get_orders_by_email,
+    save_user_address,
+    get_user_address
+)
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
 from repository import product_repo as db_repo
@@ -160,7 +172,8 @@ def profil():
         return redirect(url_for("home"))    # zurück zur Startseite
 
     adresse = session.get("adresse", {})
-    versandadresse = session.get("versandadresse", {})
+    versandadresse_same = session.get("versandadresse_same", False)
+    versandadresse = adresse if versandadresse_same else session.get("versandadresse", {})
     user_profile = {
         "firstname": session.get("user_name", "-"),
         "lastname": session.get("user_lastname", "-"),
@@ -181,6 +194,7 @@ def profil():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    error_message = None
     if request.method == "POST":
         app.logger.info("Login submitted")
         email = request.form.get("email")
@@ -191,19 +205,52 @@ def login():
         print(f"Passwort: {password}")
         print("=======================")
 
-        # HIER: "einloggen"
-        session['user_id'] = email
-        session['user_name'] = (email or "").split("@")[0]
-        session['user_lastname'] = session.get('user_lastname', '')
+        # Überprüfe Login in der Datenbank
+        is_valid, user_data = verify_login(email, password)
 
-        return redirect(url_for("profil"))
+        if is_valid and user_data:
+            # Login erfolgreich - user_data: (login_id, email, first_name, last_name, password)
+            session['login_id'] = user_data[0]
+            session['user_id'] = user_data[1]  # email
+            session['user_name'] = user_data[2]  # first_name
+            session['user_lastname'] = user_data[3]  # last_name
 
-    return render_template("login.html")
+            # Lade Adressen aus der Datenbank (falls Tabelle existiert)
+            try:
+                billing_address = get_user_address(user_data[0], is_shipping=False)
+                shipping_address = get_user_address(user_data[0], is_shipping=True)
+
+                if billing_address:
+                    session['adresse'] = billing_address
+                if shipping_address:
+                    session['versandadresse'] = shipping_address
+            except Exception as e:
+                print(f"⚠️ Konnte Adressen nicht laden: {e}")
+
+            print(f"✅ Login erfolgreich für: {user_data[2]} {user_data[3]}")
+            return redirect(url_for("profil"))
+        else:
+            # Login fehlgeschlagen
+            print("❌ Login fehlgeschlagen - E-Mail oder Passwort falsch")
+            error_message = "E-Mail oder Passwort falsch"
+
+    return render_template("login.html", error_message=error_message)
 
 
 @app.route("/orders")
 def orders():
-    return render_template("orders.html")
+    # Prüfe ob User eingeloggt ist
+    login_id = session.get('login_id')
+    user_orders = []
+
+    if login_id:
+        # Lade Bestellungen aus der Datenbank
+        user_orders = get_orders_by_login_id(login_id)
+        print(f"📦 {len(user_orders)} Bestellungen geladen für User {login_id}")
+    else:
+        print("⚠️ User nicht eingeloggt - keine Bestellungen aus DB")
+
+    return render_template("orders.html", orders=user_orders)
 
 @app.route("/settings", methods=["GET", "POST"])
 def settings():
@@ -211,6 +258,19 @@ def settings():
         app.logger.info("Settings form submitted")
         has_saved_data = False
         form_type = request.form.get("form_type")
+
+        if form_type == "versandadresse_toggle":
+            versandadresse_same = request.form.get("versandadresse_same") == "1"
+            session["versandadresse_same"] = versandadresse_same
+
+            if versandadresse_same and session.get("adresse"):
+                session["versandadresse"] = dict(session.get("adresse", {}))
+            elif not versandadresse_same:
+                aktuelle_versandadresse = session.get("versandadresse", {})
+                if aktuelle_versandadresse == session.get("adresse", {}):
+                    session.pop("versandadresse", None)
+
+            return redirect(url_for("settings") + "#konto-profil")
 
         def is_valid_plz(value):
             return bool(re.fullmatch(r"\d{4}", value.strip()))
@@ -239,6 +299,16 @@ def settings():
                     'stadt': stadt,
                     'land': land
                 }
+                if session.get("versandadresse_same"):
+                    session["versandadresse"] = dict(session["adresse"])
+
+                # Speichere auch in Datenbank wenn User eingeloggt ist
+                login_id = session.get('login_id')
+                if login_id:
+                    save_user_address(login_id, strasse, plz, stadt, land, is_shipping=False)
+                    if session.get("versandadresse_same"):
+                        save_user_address(login_id, strasse, plz, stadt, land, is_shipping=True)
+
                 has_saved_data = True
                 print("=== Adresse gespeichert ===")
                 print(f"Straße: {strasse}")
@@ -257,6 +327,12 @@ def settings():
                     'stadt': versand_stadt,
                     'land': versand_land
                 }
+
+                # Speichere auch in Datenbank wenn User eingeloggt ist
+                login_id = session.get('login_id')
+                if login_id:
+                    save_user_address(login_id, versand_strasse, versand_plz, versand_stadt, versand_land, is_shipping=True)
+
                 has_saved_data = True
                 print("=== Versandadresse gespeichert ===")
                 print(f"Straße: {versand_strasse}")
@@ -278,19 +354,19 @@ def settings():
         "settings.html",
         adresse=session.get("adresse", {}),
         versandadresse=session.get("versandadresse", {}),
+        versandadresse_same=session.get("versandadresse_same", False),
     )
 
 @app.route("/logout")
 def logout():
-    # Session-Daten bleiben erhalten beim Reload
-    # Sie werden nur gelöscht, wenn der Browser geschlossen wird
-    user_data = {
-        'lastname': session.get('user_lastname', '-'),
-        'firstname': session.get('user_name', '-'),
-        'email': session.get('user_id', '-'),
-        'password': '********' if session.get('user_id') else '-'
-    }
-    return render_template("logout.html", user=user_data)
+    # Prüfe ob User überhaupt eingeloggt ist
+    if not session.get('user_id'):
+        # Nicht eingeloggt - zur Home-Seite weiterleiten
+        return redirect(url_for("home"))
+
+    # Session löschen beim Ausloggen
+    session.clear()
+    return render_template("logout.html")
 
 @app.route("/do_logout")
 def do_logout():
@@ -343,13 +419,50 @@ def checkout():
         print(f"CVV: {cvv}")
         print("==========================")
 
-        add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
-        add_customer_payment(payment,card_name,card_number,expiration,cvv)
+        # Adresse und Zahlung in DB speichern und IDs zurückbekommen
+        customer_addres_id = add_customer_addres(salutation,name,surname,address,plz,city,tel,email)
+        customer_payment_id = add_customer_payment(payment,card_name,card_number,expiration,cvv)
 
+        # Warenkorb-Items aus dem Formular holen (vom Frontend gesendet)
+        cart_data_str = request.form.get('cart_data', '[]')
+        try:
+            cart_items = json.loads(cart_data_str)
+            print(f"📦 Warenkorb vom Frontend empfangen: {len(cart_items)} Items")
+            for item in cart_items:
+                print(f"   - {item.get('name', 'Unbekannt')}: {item.get('quantity', 1)}x CHF {item.get('price', 0)}")
+        except json.JSONDecodeError:
+            cart_items = []
+            print("⚠️ Konnte Warenkorb-Daten nicht parsen")
 
+        # Falls keine Cart-Items, erstelle Standard-Item
+        if not cart_items:
+            cart_items = [{'name': 'Floravis Seife', 'quantity': 1, 'price': 11.99}]
+
+        # Total berechnen
+        order_total = sum(item.get('quantity', 1) * item.get('price', 11.99) for item in cart_items)
+
+        # Login-ID holen (falls User eingeloggt ist)
+        login_id = session.get('login_id')
+
+        # ========================================
+        # BESTELLUNG IN DATENBANK SPEICHERN
+        # ========================================
+        order_id = create_order(
+            login_id=login_id,
+            customer_addres_id=customer_addres_id,
+            customer_payment_id=customer_payment_id,
+            total=order_total,
+            items=cart_items
+        )
+
+        if order_id:
+            print(f"✅ Bestellung {order_id} in Datenbank gespeichert!")
+        else:
+            print("⚠️ Bestellung konnte nicht in DB gespeichert werden")
 
         # Session-Daten löschen nach erfolgreichem Checkout
         session.pop('checkout_data', None)
+        session.pop('cart', None)  # Warenkorb leeren
 
         return "OK", 200
 

@@ -584,6 +584,10 @@
             // Alle Felder sind gültig - sende an Server
             var formData = new FormData(form);
 
+            // WICHTIG: Warenkorb-Daten zum FormData hinzufügen
+            var cart = getCart();
+            formData.append('cart_data', JSON.stringify(cart));
+
             fetch('/checkout', {
                 method: 'POST',
                 body: formData

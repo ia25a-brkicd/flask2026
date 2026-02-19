@@ -239,43 +239,50 @@ def save_user_address(login_id, strasse, plz, stadt, land, is_shipping=False):
     - strasse, plz, stadt, land: Adressdaten
     - is_shipping: True für Versandadresse, False für Hauptadresse
     """
-    conn = get_db()
-    cur = conn.cursor()
-    address_type = 'shipping' if is_shipping else 'billing'
+    if not login_id:
+        return False
 
     try:
-        # Prüfe ob bereits eine Adresse existiert
-        cur.execute("""
-            SELECT id FROM user_addresses 
-            WHERE login_id = %s AND address_type = %s
-        """, (login_id, address_type))
+        conn = get_db()
+        cur = conn.cursor()
+        address_type = 'shipping' if is_shipping else 'billing'
 
-        existing = cur.fetchone()
-
-        if existing:
-            # Update existierende Adresse
+        try:
+            # Prüfe ob bereits eine Adresse existiert
             cur.execute("""
-                UPDATE user_addresses 
-                SET strasse = %s, plz = %s, stadt = %s, land = %s, updated_at = CURRENT_TIMESTAMP
+                SELECT id FROM user_addresses 
                 WHERE login_id = %s AND address_type = %s
-            """, (strasse, plz, stadt, land, login_id, address_type))
-        else:
-            # Neue Adresse einfügen
-            cur.execute("""
-                INSERT INTO user_addresses (login_id, address_type, strasse, plz, stadt, land)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (login_id, address_type, strasse, plz, stadt, land))
+            """, (login_id, address_type))
 
-        conn.commit()
-        print(f"✅ Adresse ({address_type}) für User {login_id} gespeichert")
-        return True
+            existing = cur.fetchone()
 
+            if existing:
+                # Update existierende Adresse
+                cur.execute("""
+                    UPDATE user_addresses 
+                    SET strasse = %s, plz = %s, stadt = %s, land = %s, updated_at = CURRENT_TIMESTAMP
+                    WHERE login_id = %s AND address_type = %s
+                """, (strasse, plz, stadt, land, login_id, address_type))
+            else:
+                # Neue Adresse einfügen
+                cur.execute("""
+                    INSERT INTO user_addresses (login_id, address_type, strasse, plz, stadt, land)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, (login_id, address_type, strasse, plz, stadt, land))
+
+            conn.commit()
+            print(f"✅ Adresse ({address_type}) für User {login_id} gespeichert")
+            return True
+
+        except Exception as e:
+            print(f"Database error beim Speichern der Adresse: {e}")
+            conn.rollback()
+            return False
+        finally:
+            cur.close()
     except Exception as e:
-        print(f"Database error beim Speichern der Adresse: {e}")
-        conn.rollback()
+        print(f"Konnte keine DB-Verbindung herstellen: {e}")
         return False
-    finally:
-        cur.close()
 
 
 def get_user_address(login_id, is_shipping=False):
@@ -285,32 +292,39 @@ def get_user_address(login_id, is_shipping=False):
     Returns:
     - Dictionary mit Adressdaten oder leeres Dict
     """
-    conn = get_db()
-    cur = conn.cursor()
-    address_type = 'shipping' if is_shipping else 'billing'
+    if not login_id:
+        return {}
 
     try:
-        cur.execute("""
-            SELECT strasse, plz, stadt, land 
-            FROM user_addresses 
-            WHERE login_id = %s AND address_type = %s
-        """, (login_id, address_type))
+        conn = get_db()
+        cur = conn.cursor()
+        address_type = 'shipping' if is_shipping else 'billing'
 
-        row = cur.fetchone()
+        try:
+            cur.execute("""
+                SELECT strasse, plz, stadt, land 
+                FROM user_addresses 
+                WHERE login_id = %s AND address_type = %s
+            """, (login_id, address_type))
 
-        if row:
-            return {
-                'strasse': row[0] or '',
-                'plz': row[1] or '',
-                'stadt': row[2] or '',
-                'land': row[3] or ''
-            }
-        return {}
+            row = cur.fetchone()
 
+            if row:
+                return {
+                    'strasse': row[0] or '',
+                    'plz': row[1] or '',
+                    'stadt': row[2] or '',
+                    'land': row[3] or ''
+                }
+            return {}
+
+        except Exception as e:
+            print(f"Database error beim Laden der Adresse: {e}")
+            return {}
+        finally:
+            cur.close()
     except Exception as e:
-        print(f"Database error beim Laden der Adresse: {e}")
+        print(f"Konnte keine DB-Verbindung herstellen: {e}")
         return {}
-    finally:
-        cur.close()
 
 
