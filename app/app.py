@@ -12,7 +12,9 @@ from repository.customer_repo import (
     get_login_by_email,
     create_order,
     get_orders_by_login_id,
-    get_orders_by_email
+    get_orders_by_email,
+    save_user_address,
+    get_user_address
 )
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
@@ -201,6 +203,15 @@ def login():
             session['user_name'] = user_data[2]  # first_name
             session['user_lastname'] = user_data[3]  # last_name
 
+            # Lade Adressen aus der Datenbank
+            billing_address = get_user_address(user_data[0], is_shipping=False)
+            shipping_address = get_user_address(user_data[0], is_shipping=True)
+
+            if billing_address:
+                session['adresse'] = billing_address
+            if shipping_address:
+                session['versandadresse'] = shipping_address
+
             print(f"✅ Login erfolgreich für: {user_data[2]} {user_data[3]}")
             return redirect(url_for("profil"))
         else:
@@ -275,6 +286,14 @@ def settings():
                 }
                 if session.get("versandadresse_same"):
                     session["versandadresse"] = dict(session["adresse"])
+
+                # Speichere auch in Datenbank wenn User eingeloggt ist
+                login_id = session.get('login_id')
+                if login_id:
+                    save_user_address(login_id, strasse, plz, stadt, land, is_shipping=False)
+                    if session.get("versandadresse_same"):
+                        save_user_address(login_id, strasse, plz, stadt, land, is_shipping=True)
+
                 has_saved_data = True
                 print("=== Adresse gespeichert ===")
                 print(f"Straße: {strasse}")
@@ -293,6 +312,12 @@ def settings():
                     'stadt': versand_stadt,
                     'land': versand_land
                 }
+
+                # Speichere auch in Datenbank wenn User eingeloggt ist
+                login_id = session.get('login_id')
+                if login_id:
+                    save_user_address(login_id, versand_strasse, versand_plz, versand_stadt, versand_land, is_shipping=True)
+
                 has_saved_data = True
                 print("=== Versandadresse gespeichert ===")
                 print(f"Straße: {versand_strasse}")
@@ -319,15 +344,14 @@ def settings():
 
 @app.route("/logout")
 def logout():
-    # Session-Daten bleiben erhalten beim Reload
-    # Sie werden nur gelöscht, wenn der Browser geschlossen wird
-    user_data = {
-        'lastname': session.get('user_lastname', '-'),
-        'firstname': session.get('user_name', '-'),
-        'email': session.get('user_id', '-'),
-        'password': '********' if session.get('user_id') else '-'
-    }
-    return render_template("logout.html", user=user_data)
+    # Prüfe ob User überhaupt eingeloggt ist
+    if not session.get('user_id'):
+        # Nicht eingeloggt - zur Home-Seite weiterleiten
+        return redirect(url_for("home"))
+
+    # Session löschen beim Ausloggen
+    session.clear()
+    return render_template("logout.html")
 
 @app.route("/do_logout")
 def do_logout():

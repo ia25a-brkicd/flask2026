@@ -676,6 +676,51 @@ body {
     transform: translateX(4px);
 }
 
+/* ===== Weitershoppen ===== */
+.keep-shopping {
+    margin: 0 100px 20px 100px;
+}
+
+.keep-shopping-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8b4a3a;
+    margin-bottom: 14px;
+}
+
+.keep-shopping-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.keep-shopping-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #e8d5cf;
+    color: #8b4a3a;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.keep-shopping-btn:hover {
+    background-color: #d4847a;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.keep-shopping-btn i {
+    font-size: 16px;
+}
+
 /* ===== Empty Cart ===== */
 .empty-cart {
     display: flex;

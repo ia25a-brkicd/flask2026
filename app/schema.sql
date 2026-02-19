@@ -83,3 +83,17 @@ CREATE TABLE IF NOT EXISTS customer (
     customer_payment_id INT REFERENCES customer_payment(customer_payment_id)
 );
 
+-- Tabelle für User-Adressen (Profil-Einstellungen)
+CREATE TABLE IF NOT EXISTS user_addresses (
+    id SERIAL PRIMARY KEY,
+    login_id INT NOT NULL REFERENCES login(login_id) ON DELETE CASCADE,
+    address_type VARCHAR(20) NOT NULL DEFAULT 'billing', -- 'billing' oder 'shipping'
+    strasse VARCHAR(100),
+    plz VARCHAR(10),
+    stadt VARCHAR(50),
+    land VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(login_id, address_type)
+);
+
