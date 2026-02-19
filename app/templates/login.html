@@ -81,7 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+    //nach seite neu laden wird button klickbar und fehlermeldung automatisch angezeigt!
+
     // Server-Fehlermeldung anzeigen falls vorhanden
     var errorNotification = document.getElementById('error-notification');
     var serverErrorMessage = errorNotification.getAttribute('data-server-error');
@@ -115,7 +116,7 @@ function showError(message) {
         errorNotification.classList.remove('show');
         errorNotification.classList.add('hide');
         registerBtn.style.display = 'none';
-    }, 6000); // Länger anzeigen wenn Button sichtbar ist
+    }, 6000); 
 }
 
 function validateEmail(email) {
