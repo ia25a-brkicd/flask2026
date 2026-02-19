@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
+load_dotenv()
 from mail import send_order_confirmation
 from repository.customer_repo import (
     add_customer_addres,
