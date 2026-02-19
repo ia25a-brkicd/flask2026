@@ -68,12 +68,13 @@
       <span class="section-icon">👤</span>
       <h2>Konto / Profil</h2>
     </div>
+    
 
     {% if request.args.get('edit') == 'adresse' %}
     <!-- Adresse Eingabe Formular -->
     <div class="contact-container">
       <div class="form-section">
-        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate> //daten an flask route settings, browser standart ausgeschaltet wegen fehlermedlung
+        <form id="adresse-form" action="{{ url_for('settings') }}" method="post" novalidate> <!--/daten an flask route settings, browser standart ausgeschaltet wegen fehlermedlung-->
           <input type="hidden" name="form_type" value="adresse" />
           <div class="input-group">
             <label for="strasse">
@@ -84,12 +85,13 @@
               type="text"
               id="strasse"
               name="strasse"
-              value="{{ adresse.get('strasse', '') }}" //dictionary adresse und eintrag strasse
+              value="{{ adresse.get('strasse', '') }}" 
               placeholder="Geben Sie Ihre Straße und Hausnummer ein"
               required
-            />
+            /> <!--//dictionary adresse und eintrag strasse-->
             <span class="input-border"></span>
           </div>
+          
 
           <div class="form-grid">
             <div class="input-group">
@@ -292,18 +294,20 @@
             name="versandadresse_same"
             value="1"
             {% if versandadresse_same %}checked{% endif %}
-            //check von toggel
-          />
+          /> <!--//check von toggel-->
           <span class="slider"></span>
         </label>
       </form>
     </div>
+    
 
+    
     <div
       id="versandadresse-item"
       class="setting-item clickable{% if versandadresse_same %} disabled{% endif %}"
-      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil" //liest und leitet weiter
-    >
+      data-href="{{ url_for('settings') }}?edit=versandadresse#konto-profil"       
+    > <!--//liest und leitet weiter-->
+    
       <div class="setting-info">
         <label>Versandadresse</label>
         <p class="setting-description">
