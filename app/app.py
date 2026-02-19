@@ -4,7 +4,7 @@ import re
 import json
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
-from mail import send_simple_message, send_order_confirmation
+from mail import send_order_confirmation
 from repository.customer_repo import (
     add_customer_addres,
     add_customer_payment,
