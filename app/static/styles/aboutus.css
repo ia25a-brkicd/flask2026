@@ -145,6 +145,18 @@ img {
     box-shadow: 0 10px 35px rgba(0,0,0,0.15);
 }
 
+.naturprodukte-title {
+    margin-top: 60px;
+}
+
+#warum-naturprodukte {
+    scroll-margin-top: 150px;
+}
+
+#keine-schaedlichen-inhaltsstoffe {
+    scroll-margin-top: 150px;
+}
+
 /* Block 3 - Location Section */
 .unserStandortMitMap {
     display: flex;
