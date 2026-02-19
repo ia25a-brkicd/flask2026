@@ -81,17 +81,17 @@ PRODUCTS = [
     },
     {
         "id": 6,
-        "name": "Green Apple & Vanille",
+        "name": "Vanille & Lemon Mix",
         "price": 13.49,
         "category": "luxury",
-        "image": "images/GreenAppleVanille.jpg",
-        "short": "Premium Apfel-Vanille Seife mit extra Pflege.",
+        "image": "images/Green Apple & Lemon & Vanille Mix.jpg",
+        "short": "Premium Vanille-Zitronen Seife mit extra Pflege.",
         "description": (
-            "Unsere Luxus-Variante der Green Apple & Vanille Seife bietet intensive Pflege. "
+            "Unsere Luxus-Variante der Vanille & Lemon Mix Seife bietet intensive Pflege. "
             "Mit reichhaltigen Ölen und Butter verwöhnt sie die Haut und hinterlässt sie seidig weich. "
             "Der exotische Duft bringt Urlaubsgefühle in jede Dusche."
         ),
-        "ingredients": "Kokosöl, Kokosmilch, Sheabutter, Kakaobutter, Apfelextrakt, Vanilleextrakt, Vitamin E",
+        "ingredients": "Kokosöl, Kokosmilch, Sheabutter, Kakaobutter, Zitronenöl, Vanilleextrakt, Vitamin E",
         "weight": "125g",
     },
 ]

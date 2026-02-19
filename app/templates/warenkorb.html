@@ -139,7 +139,13 @@
 
     var itemTotal = calculateDiscountedPrice(item.price, item.quantity);
 
-    var itemName = item.name + ".jpg";
+    var cartImageByProductName = {
+      "Vanille & Lemon Mix": "Green Apple & Lemon & Vanille Mix.jpg",
+      "Rosen Garten Seife": "Green Apple & Lemon & Vanille Mix.jpg",
+      "Honig Glühende Seife": "Green Apple & Lemon with Stamp.jpg"
+    };
+
+    var itemName = cartImageByProductName[item.name] || (item.name + ".jpg");
 
     div.innerHTML = `
                 <img class="image" src="../../static/images/${itemName}" alt="${itemName} Produktbild" loading="lazy">

@@ -2,6 +2,8 @@ import db
 import os
 import re
 import json
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from dotenv import load_dotenv # Lädt .env Datei
 from mail import send_order_confirmation
