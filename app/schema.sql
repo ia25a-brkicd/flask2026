@@ -1,7 +1,11 @@
 -- Drop existing tables to recreate with correct structure
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS customer_payment CASCADE;
 DROP TABLE IF EXISTS customer_payment_data CASCADE;
 DROP TABLE IF EXISTS customer_addres CASCADE;
+DROP TABLE IF EXISTS customer CASCADE;
+DROP TABLE IF EXISTS login CASCADE;
 
 
 
@@ -33,11 +37,30 @@ CREATE TABLE IF NOT EXISTS customer_payment (
     cvv VARCHAR(4) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS login (
+    login_id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS orders (
     order_id SERIAL PRIMARY KEY,
-    customer_addres_id INT NOT NULL REFERENCES customer_addres(customer_addres_id),
-    customer_payment_id INT NOT NULL REFERENCES customer_payment(customer_payment_id),
+    login_id INT REFERENCES login(login_id),
+    customer_addres_id INT REFERENCES customer_addres(customer_addres_id),
+    customer_payment_id INT REFERENCES customer_payment(customer_payment_id),
+    total DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'Bestätigt',
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    order_item_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    product_name VARCHAR(100) NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS products (
@@ -52,19 +75,25 @@ CREATE TABLE IF NOT EXISTS products_shop (
     stock INT
 );
 
-CREATE TABLE IF NOT EXISTS login (
-    login_id SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    order_id INT REFERENCES orders(order_id)
-);
 
 CREATE TABLE IF NOT EXISTS customer (
     customer_id SERIAL PRIMARY KEY,
     login_id INT REFERENCES login(login_id),
     customer_addres_id INT REFERENCES customer_addres(customer_addres_id),
     customer_payment_id INT REFERENCES customer_payment(customer_payment_id)
+);
+
+-- Tabelle für User-Adressen (Profil-Einstellungen)
+CREATE TABLE IF NOT EXISTS user_addresses (
+    id SERIAL PRIMARY KEY,
+    login_id INT NOT NULL REFERENCES login(login_id) ON DELETE CASCADE,
+    address_type VARCHAR(20) NOT NULL DEFAULT 'billing', -- 'billing' oder 'shipping'
+    strasse VARCHAR(100),
+    plz VARCHAR(10),
+    stadt VARCHAR(50),
+    land VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(login_id, address_type)
 );
 

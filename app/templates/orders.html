@@ -19,14 +19,46 @@
 
   <!-- Orders Container -->
   <div class="orders-container" id="orders-container">
-    <!-- Orders werden hier dynamisch eingefügt -->
+    {% if orders and orders|length > 0 %}
+      {% for order in orders %}
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-title-section">
+            <h2>Bestellung #{{ order.get('order_id', '?') }}</h2>
+            <span class="order-date">{{ order.get('date', 'Unbekannt')[:10] if order.get('date') else 'Unbekannt' }}</span>
+          </div>
+          <span class="order-status {{ order.get('status', 'unbekannt')|lower }}">{{ order.get('status', 'Unbekannt') }}</span>
+        </div>
+        <div class="order-items">
+          {% for item in order.get('items', []) %}
+          <div class="order-item">
+            <span class="item-name">{{ item.get('name', 'Produkt') }}</span>
+            <span class="item-details">{{ item.get('quantity', 1) }} × CHF {{ "%.2f"|format(item.get('price', 0)) }}</span>
+            <span class="item-subtotal">CHF {{ "%.2f"|format(item.get('quantity', 1) * item.get('price', 0)) }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="order-footer">
+          <span class="order-total-label">Gesamtpreis:</span>
+          <span class="order-total-price">CHF {{ "%.2f"|format(order.get('total', 0)) }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
   </div>
 
   <!-- Empty State (wird angezeigt wenn keine Bestellungen vorhanden) -->
-  <div class="empty-orders" id="empty-orders" style="display: none">
+  <div class="empty-orders" id="empty-orders" {% if orders and orders|length > 0 %}style="display: none"{% endif %}>
     <div class="empty-orders-message">
       <span class="empty-orders-icon">📦</span>
       <h2>Noch keine Bestellungen</h2>
+      {% if not session.get('login_id') %}
+      <p>Bitte melden Sie sich an, um Ihre Bestellungen zu sehen.</p>
+      <a href="{{ url_for('login') }}" class="shop-button">
+        Anmelden
+        <span class="arrow">→</span>
+      </a>
+      {% else %}
       <p>
         Sie haben noch keine Bestellungen aufgegeben. Beginnen Sie jetzt zu
         einkaufen!
@@ -35,88 +67,28 @@
         Zum Shop gehen
         <span class="arrow">→</span>
       </a>
+      {% endif %}
     </div>
   </div>
 </div>
 
 <script>
-  // Funktion um Bestellungen zu laden
-  function getUserOrders() {
-    // Lade gespeicherte Orders aus sessionStorage (wird beim Schließen gelöscht)
-    const savedOrders = sessionStorage.getItem("userOrders");
-
-    if (savedOrders) {
-      return JSON.parse(savedOrders);
-    }
-
-    return []; // Keine Bestellungen
-  }
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("de-DE", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  }
-
-  function renderOrders() {
-    const orders = getUserOrders();
+  // Zeige/Verstecke Container basierend auf Bestellungen
+  document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById("orders-container");
     const emptyState = document.getElementById("empty-orders");
 
-    if (!orders || orders.length === 0) {
-      // Keine Bestellungen vorhanden
+    // Prüfe ob Bestellungen vorhanden sind (vom Server gerendert)
+    const hasOrders = container.querySelectorAll('.order-card').length > 0;
+
+    if (hasOrders) {
+      container.style.display = "block";
+      emptyState.style.display = "none";
+    } else {
       container.style.display = "none";
       emptyState.style.display = "flex";
-      return;
     }
-
-    // Bestellungen vorhanden
-    container.style.display = "block";
-    emptyState.style.display = "none";
-    container.innerHTML = "";
-
-    orders.forEach((order, index) => {
-      const orderCard = document.createElement("div");
-      orderCard.className = "order-card";
-
-      let itemsHTML = order.items
-        .map(
-          (item) => `
-                <div class="order-item">
-                    <span class="item-name">${item.name}</span>
-                    <span class="item-details"> ${item.quantity} × CHF ${item.price.toFixed(2)}</span>
-                    <span class="item-subtotal">CHF ${(item.quantity * item.price).toFixed(2)}</span>
-                </div>
-            `,
-        )
-        .join("");
-
-      orderCard.innerHTML = `
-                <div class="order-header">
-                    <div class="order-title-section">
-                        <h2>Bestellung ${index + 1}</h2>
-                        <span class="order-date">${formatDate(order.date)}</span>
-                    </div>
-                    <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
-                </div>
-                <div class="order-items">
-                    ${itemsHTML}
-                </div>
-                <div class="order-footer">
-                    <span class="order-total-label">Gesamtpreis:</span>
-                    <span class="order-total-price">CHF ${order.total.toFixed(2)}</span>
-                </div>
-            `;
-
-      container.appendChild(orderCard);
-    });
-  }
-
-  // Beim Laden der Seite Bestellungen anzeigen
-  document.addEventListener("DOMContentLoaded", renderOrders);
+  });
 </script>
 
 {% endblock %}

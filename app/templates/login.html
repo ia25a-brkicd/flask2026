@@ -13,7 +13,6 @@
 <div class="contact-wrapper">
     <div class="contact-hero">
         <h1>Anmelden</h1>
-        <p class="hero-subtitle">Willkommen {{ session.get('user_name', 'Gast') }} {{ session.get('user_lastname', '') }}</p>
     </div>
 
     <div class="contact-container">
@@ -55,7 +54,7 @@
         </div>
     </div>
 
-    <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('') }}">
+    <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('', true) }}">
         <div class="icon-circle">
             <i class="fa fa-exclamation"></i>
         </div>
@@ -82,7 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+    //nach seite neu laden wird button klickbar und fehlermeldung automatisch angezeigt!
+
     // Server-Fehlermeldung anzeigen falls vorhanden
     var errorNotification = document.getElementById('error-notification');
     var serverErrorMessage = errorNotification.getAttribute('data-server-error');
@@ -116,7 +116,7 @@ function showError(message) {
         errorNotification.classList.remove('show');
         errorNotification.classList.add('hide');
         registerBtn.style.display = 'none';
-    }, 6000); // Länger anzeigen wenn Button sichtbar ist
+    }, 6000); 
 }
 
 function validateEmail(email) {

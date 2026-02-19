@@ -7,15 +7,144 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ url_for('static', filename='images/ProfilbildLogo.png') }}" type="image/x-icon">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+<style>
+  /* Passwort-Stärke Container */
+  .password-strength-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .password-strength-bar {
+    flex: 1;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .password-strength-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .password-strength-text {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: right;
+    color: #666;
+  }
+
+  /* Stärke-Level Farben */
+  .strength-weak .password-strength-fill {
+    width: 25%;
+    background: linear-gradient(90deg, #ff4444, #ff6b6b);
+  }
+  .strength-weak .password-strength-text { color: #ff4444; }
+
+  .strength-fair .password-strength-fill {
+    width: 50%;
+    background: linear-gradient(90deg, #ffa726, #ffb74d);
+  }
+  .strength-fair .password-strength-text { color: #ffa726; }
+
+  .strength-good .password-strength-fill {
+    width: 75%;
+    background: linear-gradient(90deg, #66bb6a, #81c784);
+  }
+  .strength-good .password-strength-text { color: #66bb6a; }
+
+  .strength-strong .password-strength-fill {
+    width: 100%;
+    background: linear-gradient(90deg, #2d5016, #4a7c23);
+  }
+  .strength-strong .password-strength-text { color: #2d5016; }
+
+  /* Passwort-Anforderungen */
+  .password-requirements {
+    margin-top: 12px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+
+  .requirement {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #666;
+    transition: all 0.2s ease;
+  }
+
+  .requirement i {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .requirement i.fa-times {
+    background: #ffebee;
+    color: #ff4444;
+  }
+
+  .requirement i.fa-check {
+    background: #e8f5e9;
+    color: #2d5016;
+  }
+
+  .requirement.valid {
+    color: #2d5016;
+  }
+
+  .requirement.valid span {
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+
+  /* Passwort-Match Anzeige */
+  .password-match {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .password-match.no-match {
+    background: #ffebee;
+    color: #ff4444;
+  }
+
+  .password-match.match {
+    background: #e8f5e9;
+    color: #2d5016;
+  }
+
+  .password-match i {
+    font-size: 12px;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="contact-wrapper">
   <div class="contact-hero">
     <h1>Profil</h1>
-    <p class="hero-subtitle">
-      Willkommen {{ session.get('user_name', 'Gast') }} {{ session.get('user_lastname', '') }}
-    </p>
   </div>
 
   <div class="contact-container">
@@ -58,6 +187,38 @@
           </label>
           <input type="password" id="password" name="password" placeholder="Passwort erstellen" required />
           <span class="input-border"></span>
+
+          <!-- Passwort-Stärke Anzeige -->
+          <div class="password-strength-container">
+            <div class="password-strength-bar">
+              <div class="password-strength-fill" id="password-strength-fill"></div>
+            </div>
+            <span class="password-strength-text" id="password-strength-text">Passwort-Stärke</span>
+          </div>
+
+          <!-- Passwort-Anforderungen -->
+          <div class="password-requirements" id="password-requirements">
+            <div class="requirement" id="req-length">
+              <i class="fa fa-times"></i>
+              <span>Mindestens 8 Zeichen</span>
+            </div>
+            <div class="requirement" id="req-uppercase">
+              <i class="fa fa-times"></i>
+              <span>Ein Großbuchstabe (A-Z)</span>
+            </div>
+            <div class="requirement" id="req-lowercase">
+              <i class="fa fa-times"></i>
+              <span>Ein Kleinbuchstabe (a-z)</span>
+            </div>
+            <div class="requirement" id="req-number">
+              <i class="fa fa-times"></i>
+              <span>Eine Zahl (0-9)</span>
+            </div>
+            <div class="requirement" id="req-special">
+              <i class="fa fa-times"></i>
+              <span>Ein Sonderzeichen (!@#$%^&*)</span>
+            </div>
+          </div>
         </div>
 
         <div class="input-group">
@@ -67,6 +228,10 @@
           </label>
           <input type="password" id="password_repeat" name="password_repeat" placeholder="Wiederhole dein Passwort" required />
           <span class="input-border"></span>
+          <div class="password-match" id="password-match" style="display: none;">
+            <i class="fa fa-times"></i>
+            <span>Passwörter stimmen nicht überein</span>
+          </div>
         </div>
 
         <button type="button" id="registrieren-btn" class="submit-btn">
@@ -179,7 +344,7 @@
     </div>
   </div>
 
-  <div id="error-notification" class="notification error-notification">
+  <div id="error-notification" class="notification error-notification" data-server-error="{{ error_message|default('', true) }}">
     <i class="fa fa-exclamation-circle"></i>
     <div class="notification-content">
       <h4>Fehler</h4>
@@ -189,6 +354,144 @@
 </div>
 
 <script>
+  // ========================================
+  // PASSWORT-STÄRKE VALIDIERUNG
+  // ========================================
+
+  function checkPasswordStrength(password) {
+    let strength = 0;
+    const requirements = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    };
+
+    // Stärke berechnen
+    if (requirements.length) strength++;
+    if (requirements.uppercase) strength++;
+    if (requirements.lowercase) strength++;
+    if (requirements.number) strength++;
+    if (requirements.special) strength++;
+
+    return { strength, requirements };
+  }
+
+  function updatePasswordUI(password) {
+    const { strength, requirements } = checkPasswordStrength(password);
+    const container = document.querySelector('.password-strength-container');
+    const strengthText = document.getElementById('password-strength-text');
+    const reqContainer = document.getElementById('password-requirements');
+
+    if (!container || !strengthText) return;
+
+    // Alle Klassen entfernen
+    container.classList.remove('strength-weak', 'strength-fair', 'strength-good', 'strength-strong');
+
+    // Stärke-Level setzen
+    if (password.length === 0) {
+      strengthText.textContent = 'Passwort-Stärke';
+      container.classList.remove('strength-weak', 'strength-fair', 'strength-good', 'strength-strong');
+    } else if (strength <= 2) {
+      container.classList.add('strength-weak');
+      strengthText.textContent = 'Schwach';
+    } else if (strength === 3) {
+      container.classList.add('strength-fair');
+      strengthText.textContent = 'Mittel';
+    } else if (strength === 4) {
+      container.classList.add('strength-good');
+      strengthText.textContent = 'Gut';
+    } else {
+      container.classList.add('strength-strong');
+      strengthText.textContent = 'Stark';
+    }
+
+    // Anforderungen aktualisieren
+    updateRequirement('req-length', requirements.length);
+    updateRequirement('req-uppercase', requirements.uppercase);
+    updateRequirement('req-lowercase', requirements.lowercase);
+    updateRequirement('req-number', requirements.number);
+    updateRequirement('req-special', requirements.special);
+  }
+
+  function updateRequirement(id, isValid) {
+    const req = document.getElementById(id);
+    if (!req) return;
+
+    const icon = req.querySelector('i');
+    if (isValid) {
+      req.classList.add('valid');
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-check');
+    } else {
+      req.classList.remove('valid');
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-times');
+    }
+  }
+
+  function checkPasswordMatch() {
+    const password = document.getElementById('password');
+    const passwordRepeat = document.getElementById('password_repeat');
+    const matchDiv = document.getElementById('password-match');
+
+    if (!password || !passwordRepeat || !matchDiv) return;
+
+    const pw = password.value;
+    const pwRepeat = passwordRepeat.value;
+
+    if (pwRepeat.length === 0) {
+      matchDiv.style.display = 'none';
+      return;
+    }
+
+    matchDiv.style.display = 'flex';
+    const icon = matchDiv.querySelector('i');
+    const text = matchDiv.querySelector('span');
+
+    if (pw === pwRepeat) {
+      matchDiv.classList.remove('no-match');
+      matchDiv.classList.add('match');
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-check');
+      text.textContent = 'Passwörter stimmen überein';
+    } else {
+      matchDiv.classList.remove('match');
+      matchDiv.classList.add('no-match');
+      icon.classList.remove('fa-check');
+      icon.classList.add('fa-times');
+      text.textContent = 'Passwörter stimmen nicht überein';
+    }
+  }
+
+  function isPasswordValid(password) {
+    const { requirements } = checkPasswordStrength(password);
+    return requirements.length && requirements.uppercase &&
+           requirements.lowercase && requirements.number && requirements.special;
+  }
+
+  // Event Listeners für Passwort-Felder
+  document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const passwordRepeatInput = document.getElementById('password_repeat');
+
+    if (passwordInput) {
+      passwordInput.addEventListener('input', function() {
+        updatePasswordUI(this.value);
+        checkPasswordMatch();
+      });
+    }
+
+    if (passwordRepeatInput) {
+      passwordRepeatInput.addEventListener('input', checkPasswordMatch);
+    }
+  });
+
+  // ========================================
+  // ORIGINAL CODE
+  // ========================================
+
   const inputs = document.querySelectorAll("input, textarea");
   inputs.forEach((input) => {
     input.addEventListener("focus", function () {
@@ -200,7 +503,7 @@
         this.parentElement.classList.remove("focused");
       }
     });
-  });
+  }); //fokus bei eingabefeld
 
   function validateName(name) {
     var regex = /^[a-zA-ZäöüÄÖÜéèêàâîïôûçß\s\-]+$/;
@@ -231,6 +534,18 @@
 
   var errorTimeoutId = null;
 
+  document.addEventListener('DOMContentLoaded', function () {
+    var errorNotification = document.getElementById('error-notification');
+    if (!errorNotification) {
+      return;
+    }
+
+    var serverErrorMessage = errorNotification.getAttribute('data-server-error');
+    if (serverErrorMessage) {
+      showError(serverErrorMessage);
+    }
+  });
+
   var registerButton = document.getElementById("registrieren-btn");
   if (registerButton) {
     registerButton.addEventListener("click", function (e) {
@@ -258,6 +573,11 @@
         showError('E-Mail muss gueltig sein');
         return;
       }
+      // Passwort-Stärke prüfen
+      if (!isPasswordValid(password)) {
+        showError('Passwort erfuellt nicht alle Sicherheitsanforderungen');
+        return;
+      }
 
       var errorNotification = document.getElementById('error-notification');
       errorNotification.classList.remove('show');
@@ -273,7 +593,7 @@
       formData.append('email', email);
       formData.append('password', password);
 
-      fetch('{{ url_for("profil") }}', {
+      fetch('{{ url_for("profil") }}', { //sendet an pflask route profil
         method: 'POST',
         body: formData
       }).then(function(response) {
@@ -283,6 +603,7 @@
           document.getElementById('email').value = '';
           document.getElementById('password').value = '';
           document.getElementById('password_repeat').value = '';
+          //wenn ok geleert und success notification
 
           var notification = document.getElementById('notification');
           notification.classList.add('show');
@@ -292,11 +613,21 @@
             notification.classList.add('hide');
             window.location.reload();
           }, 4000);
-        } else {
-          showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.');
+          return null;
         }
+
+        return response.json().catch(function () {
+          return null;
+        }).then(function (data) {
+          if (data && data.error) {
+            showError(data.error);
+          } else {
+            showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.'); //liest json und gibt fehlertext
+          }
+          return null;
+        });
       }).catch(function () {
-        showError('Netzwerkfehler. Bitte pruefe deine Verbindung.');
+        showError('Netzwerkfehler. Bitte pruefe deine Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
       });
     });
   }

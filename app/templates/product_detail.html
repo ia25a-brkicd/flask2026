@@ -31,7 +31,9 @@ endblock %} {% block head %}
         >{{ product.category | capitalize }}</span
       >
       <h1 class="product-title">{{ product.name }}</h1>
-      <p class="product-price">{{ "%.2f"|format(product.price) }} CHF</p>
+      <p class="product-price">
+        {{ "%.2f"|format(product.price|int + 0.99) }} CHF
+      </p>
       <p class="product-short-desc">{{ product.short }}</p>
 
       <!-- Pack Selector -->
@@ -41,21 +43,23 @@ endblock %} {% block head %}
           <div class="pack-option active" data-quantity="1" data-discount="0">
             <span class="pack-qty">1 Stück</span>
             <span class="pack-price"
-              >{{ "%.2f"|format(product.price) }} CHF</span
+              >{{ "%.2f"|format(product.price|int + 0.99) }} CHF</span
             >
           </div>
           <div class="pack-option" data-quantity="2" data-discount="10">
             <span class="pack-discount-tag">-10%</span>
             <span class="pack-qty">2 Stück</span>
             <span class="pack-price"
-              >{{ "%.2f"|format(product.price * 2 * 0.9) }} CHF</span
+              >{{ "%.2f"|format((product.price * 2 * 0.9)|int + 0.99) }}
+              CHF</span
             >
           </div>
           <div class="pack-option" data-quantity="3" data-discount="20">
             <span class="pack-discount-tag">-20%</span>
             <span class="pack-qty">3 Stück</span>
             <span class="pack-price"
-              >{{ "%.2f"|format(product.price * 3 * 0.8) }} CHF</span
+              >{{ "%.2f"|format((product.price * 3 * 0.8)|int + 0.99) }}
+              CHF</span
             >
           </div>
         </div>
@@ -121,7 +125,9 @@ endblock %} {% block head %}
           alt="{{ item.name }}"
         />
         <h3>{{ item.name }}</h3>
-        <p class="related-price">{{ "%.2f"|format(item.price) }} CHF</p>
+        <p class="related-price">
+          {{ "%.2f"|format(item.price|int + 0.99) }} CHF
+        </p>
       </a>
       {% endfor %}
     </div>
@@ -134,12 +140,35 @@ endblock %} {% block head %}
   const productName = "{{ product.name }}";
   let selectedQuantity = 1;
 
+  // Function to calculate price with .99 rounding
+  function calculatePrice(quantity) {
+    let total = basePrice * quantity;
+
+    if (quantity === 2) {
+      total = total * 0.9; // 10% discount
+    } else if (quantity >= 3) {
+      total = total * 0.8; // 20% discount
+    }
+
+    // Round to .99
+    total = Math.floor(total) + 0.99;
+    return total;
+  }
+
+  // Update main price display
+  function updateMainPrice(quantity) {
+    const priceElement = document.querySelector(".product-price");
+    const newPrice = calculatePrice(quantity);
+    priceElement.textContent = newPrice.toFixed(2) + " CHF";
+  }
+
   // Pack option selection
   document.querySelectorAll(".pack-option").forEach((option) => {
     option.addEventListener("click", function () {
       document.querySelectorAll(".pack-option").forEach((o) => o.classList.remove("active"));
       this.classList.add("active");
       selectedQuantity = parseInt(this.getAttribute("data-quantity"));
+      updateMainPrice(selectedQuantity);
     });
   });
 

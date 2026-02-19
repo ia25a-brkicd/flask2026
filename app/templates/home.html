@@ -51,9 +51,9 @@ block head %}
               <p class="showcase-description">{{ product['short'] }}</p>
               <p
                 class="showcase-price"
-                aria-label="Preis: {{ product['price'] }} Euro"
+                aria-label="Preis: {{ product['price'] }} CHF"
               >
-                {{ "%.2f"|format(product['price']) }} €
+                {{ "%.2f"|format(product['price']) }} CHF
               </p>
               <a
                 href="{{ url_for('product_detail', product_id=product['id']) }}"

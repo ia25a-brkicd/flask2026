@@ -2,13 +2,13 @@ import db
 import os
 import re
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from dotenv import load_dotenv # Lädt .env Datei
-from mail import send_simple_message, send_order_confirmation
+from dotenv import load_dotenv # Lädt .env Dateien und macht die Variablen verfügbar
+from mail import send_order_confirmation, send_contact_message
 from repository.customer_repo import add_customer_addres, add_customer_payment, add_login
 from services import math_service
 from config import DevelopmentConfig, ProductionConfig
-from flask_mail import Mail, Message
 from repository import product_repo as db_repo
+import requests
 
 # Definieren einer Variable, die die aktuelle Datei zum Zentrum
 # der Anwendung macht.
@@ -38,18 +38,8 @@ else:
 
 db.init_app(app)  # DB-Verbindung in Flask integrieren
 
-# 3. Mail konfigurieren
-app.config.update(
-    MAIL_SERVER=os.getenv("MAIL_SERVER", "smtp.gmail.com"),
-    MAIL_PORT=int(os.getenv("MAIL_PORT", "465")),
-    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
-    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
-    MAIL_USE_TLS=False,
-    MAIL_USE_SSL=True,
-    MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER"),
-)
-
-mail = Mail(app)
+# 3. Mailgun Konfiguration (für render.com)
+# Keine zusätzliche Flask-Konfiguration nötig, da wir Mailgun API verwenden
 #-------------------------------
 
 # mock data
@@ -86,10 +76,6 @@ def submit():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
-    
-    print("MAIL USER:", app.config.get("MAIL_USERNAME"))
-    print("MAIL SERVER:", app.config.get("MAIL_SERVER"))
-
     if request.method == "POST":
         lastname = request.form.get("lastname")
         firstname = request.form.get("firstname")
@@ -100,28 +86,53 @@ def contact():
             return jsonify({"error": "Missing data"}), 400
 
         try:
-            msg = Message(
-                subject=f"New Contact Message from {firstname} {lastname}",
-                recipients=[os.getenv("MAIL_RECIPIENT")],
-                reply_to=email,
-                body=(
-                    f"First Name: {firstname}\n"
-                    f"Last Name: {lastname}\n"
-                    f"Email: {email}\n\n"
-                    f"Message:\n{message}\n"
-                ),
-            )
-            mail.send(msg)
-            return jsonify({"success": True}), 200
+            # Mailgun E-Mail versenden (funktioniert auf render.com)
+            response = send_simple_message(firstname, lastname, email, message)
+            
+            if response and response.status_code == 200:
+                app.logger.info(f"Contact email sent successfully to {os.getenv('RECIPIENT')}")
+                return jsonify({"success": True}), 200
+            else:
+                app.logger.error(f"Mailgun returned error: {response.status_code if response else 'No response'}")
+                return jsonify({"error": "Failed to send email"}), 500
+                
         except Exception as e:
             app.logger.exception("Mail send failed")
-            return jsonify({"error": "Mail failed"}), 500
+            return jsonify({"error": str(e)}), 500
 
     products = db_repo.get_all_products()
     return render_template("contact.html", products=products)
 
+def send_simple_message(firstname, lastname, email, message):
+    """Sendet Kontaktformular-Nachricht via Mailgun"""
+    recipient = os.getenv('RECIPIENT', 'floravis05@gmail.com')
+    domain = os.getenv('DOMAIN')
+    api_key = os.getenv('API_KEY')
+    sender = os.getenv('SENDER_EMAIL')
+    
+    subject = f"Neue Kontaktanfrage von {firstname} {lastname}"
+    text_message = f"""Neue Kontaktanfrage von der FlorAvis Webseite:
 
+Name: {firstname} {lastname}
+Email: {email}
 
+Nachricht:
+{message}
+
+---
+Antworten Sie direkt an: {email}"""
+    
+    return requests.post(
+        f"https://api.mailgun.net/v3/{domain}/messages",
+        auth=("api", api_key),
+        data={
+            "from": f"Floravis Kontaktformular <{sender}>",
+            "to": recipient,
+            "subject": subject,
+            "text": text_message,
+            "h:Reply-To": email
+        }
+    )    
 
 @app.route("/profil", methods=["GET", "POST"])
 def profil():
