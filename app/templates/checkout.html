@@ -10,6 +10,9 @@
     />
 </head>
 
+<!-- QR-Code Bibliothek fuer Twint -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
     <a href="{{ url_for('warenkorb') }}" class="back-arrow" aria-label="Zurück zum Warenkorb">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -215,6 +218,22 @@
         </div>
     </form>
 
+    <!-- ============================================================ -->
+    <!-- TWINT QR-CODE MODAL                                          -->
+    <!-- ============================================================ -->
+    <div id="twint-modal" class="twint-modal-overlay" style="display:none;" onclick="closeTwintModal(event)">
+        <div class="twint-modal-box">
+            <button class="twint-modal-close" onclick="closeTwintModal()">&#10005;</button>
+            <img src="../static/styles/images/twint_floravis.png" alt="Twint" class="twint-logo">
+            <h2>Mit TWINT bezahlen</h2>
+            <p>Scanne den QR-Code</p>
+            <!-- QR-Code wird hier generiert -->
+            <div id="twint-qr-code"></div>
+            <p class="twint-hint">QR-Code scannen &rarr; Betrag bestätigen</p>
+            <button class="twint-confirm-btn" onclick="confirmTwintPayment()">Zahlung bestätigt</button>
+        </div>
+    </div>
+
     <!-- Toast Notification Container -->
     <div id="toast-container" role="region" aria-live="assertive" aria-atomic="true"></div>
 
@@ -234,7 +253,15 @@
     </div>
 
     <script>
+        // ============================================================
+        // TWINT KONFIGURATION
+        // Hier die URL eintragen, auf die der QR-Code zeigen soll
+        // (z.B. dein TWINT-Zahlungslink oder deine Webseite)
+        // ============================================================
+        var TWINT_PAYMENT_URL = 'https://floravis.onrender.com';
+
         var lastSelectedPayment = null;
+        var twintQrGenerated = false;
 
         // Warenkorb-Funktionen
         function getCart() {
@@ -276,7 +303,15 @@
         function toggleCardDetails(clickedValue) {
             var paymentChecked = document.querySelector('input[name="payment"]:checked');
             var cardDetailsFields = document.getElementById('card-details-fields');
-            
+
+            // --- TWINT: QR-Code Modal anzeigen ---
+            if (paymentChecked && paymentChecked.value === 'twint') {
+                cardDetailsFields.style.display = 'none';
+                lastSelectedPayment = 'twint';
+                showTwintQR();
+                return;
+            }
+
             // Wenn auf die gleiche Option geklickt wurde, abwählen
             if (lastSelectedPayment === clickedValue && paymentChecked && paymentChecked.value === clickedValue) {
                 paymentChecked.checked = false;
@@ -293,6 +328,47 @@
                     lastSelectedPayment = null;
                 }
             }
+        }
+
+        // --- Twint QR-Code anzeigen ---
+        function showTwintQR() {
+            var modal = document.getElementById('twint-modal');
+            var qrContainer = document.getElementById('twint-qr-code');
+
+            // QR-Code nur einmal generieren
+            if (!twintQrGenerated) {
+                qrContainer.innerHTML = '';
+                new QRCode(qrContainer, {
+                    text: TWINT_PAYMENT_URL,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                twintQrGenerated = true;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // --- Twint Modal schliessen ---
+        function closeTwintModal(event) {
+            // Nur schliessen wenn auf den Overlay (nicht die Box) geklickt wird
+            if (event && event.target !== document.getElementById('twint-modal')) return;
+            document.getElementById('twint-modal').style.display = 'none';
+            // Auswahl zuruecksetzen
+            var twintRadio = document.querySelector('input[name="payment"][value="twint"]');
+            if (twintRadio) twintRadio.checked = false;
+            lastSelectedPayment = null;
+        }
+
+        // --- Twint Zahlung bestaetigt (Modal schliessen, Checkout fortfahren) ---
+        function confirmTwintPayment() {
+            document.getElementById('twint-modal').style.display = 'none';
+            showToast('TWINT-Zahlung bestätigt! Bestellung wird verarbeitet...', 'success');
+            // Direkt Checkout abschliessen
+            setTimeout(function() { handleCheckout(true); }, 800);
         }
 
         // Speichere Formulardaten in der Session
@@ -462,7 +538,7 @@
             sessionStorage.setItem('userOrders', JSON.stringify(orders));
         }
 
-        function handleCheckout() {
+        function handleCheckout(twintConfirmed) {
             var form = document.getElementById('checkout-form');
             var checkoutBtn = document.getElementById('checkout-btn');
             var btnText = document.getElementById('btn-text');
@@ -543,35 +619,44 @@
                 return false;
             }
 
-            // Prüfe Name auf Karte (keine Zahlen)
-            var cardNameInput = document.querySelector('input[name="card_name"]');
-            if (!cardNameInput || !validateName(cardNameInput.value)) {
-                showToast('Name auf Karte darf keine Zahlen enthalten', 'error');
-                if (cardNameInput) cardNameInput.focus();
-                return false;
+            // Kartenfelder nur validieren wenn NICHT Twint
+            if (paymentChecked.value !== 'twint') {
+                // Prüfe Name auf Karte (keine Zahlen)
+                var cardNameInput = document.querySelector('input[name="card_name"]');
+                if (!cardNameInput || !validateName(cardNameInput.value)) {
+                    showToast('Name auf Karte darf keine Zahlen enthalten', 'error');
+                    if (cardNameInput) cardNameInput.focus();
+                    return false;
+                }
+
+                // Prüfe Kartennummer
+                var cardNumberInput = document.querySelector('input[name="card_number"]');
+                if (!cardNumberInput || !validateCardNumber(cardNumberInput.value)) {
+                    showToast('Kartennummer muss 13-19 Ziffern haben', 'error');
+                    if (cardNumberInput) cardNumberInput.focus();
+                    return false;
+                }
+
+                // Prüfe Ablaufdatum (MM/YY)
+                var expirationInput = document.querySelector('input[name="expiration"]');
+                if (!expirationInput || !validateExpiration(expirationInput.value)) {
+                    showToast('Ablaufdatum muss im Format MM/YY sein (z.B. 03/25)', 'error');
+                    if (expirationInput) expirationInput.focus();
+                    return false;
+                }
+
+                // Prüfe CVV
+                var cvvInput = document.querySelector('input[name="cvv"]');
+                if (!cvvInput || !validateCVV(cvvInput.value)) {
+                    showToast('CVV muss 3-4 Ziffern haben', 'error');
+                    if (cvvInput) cvvInput.focus();
+                    return false;
+                }
             }
 
-            // Prüfe Kartennummer
-            var cardNumberInput = document.querySelector('input[name="card_number"]');
-            if (!cardNumberInput || !validateCardNumber(cardNumberInput.value)) {
-                showToast('Kartennummer muss 13-19 Ziffern haben', 'error');
-                if (cardNumberInput) cardNumberInput.focus();
-                return false;
-            }
-
-            // Prüfe Ablaufdatum (MM/YY)
-            var expirationInput = document.querySelector('input[name="expiration"]');
-            if (!expirationInput || !validateExpiration(expirationInput.value)) {
-                showToast('Ablaufdatum muss im Format MM/YY sein (z.B. 03/25)', 'error');
-                if (expirationInput) expirationInput.focus();
-                return false;
-            }
-
-            // Prüfe CVV
-            var cvvInput = document.querySelector('input[name="cvv"]');
-            if (!cvvInput || !validateCVV(cvvInput.value)) {
-                showToast('CVV muss 3-4 Ziffern haben', 'error');
-                if (cvvInput) cvvInput.focus();
+            // Bei normalem Klick auf "Zahlen" und Twint ausgewaehlt: Modal oeffnen statt direkt bezahlen
+            if (paymentChecked.value === 'twint' && !twintConfirmed) {
+                showTwintQR();
                 return false;
             }
 

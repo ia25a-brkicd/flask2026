@@ -29,8 +29,12 @@
     {% block head %}{% endblock %}
   </head>
   <body data-page="{{ request.endpoint }}">
+    <!-- ============================================================ -->
+    <!-- HEADER -->
+    <!-- ============================================================ -->
     <header class="main-header">
       <div class="header-container">
+        <!-- Mobile Menu Button (nur auf kleinen Bildschirmen sichtbar) -->
         <button
           class="mobile-menu-toggle"
           aria-label="Menu"
@@ -39,6 +43,7 @@
           <i class="fa fa-bars"></i>
         </button>
 
+        <!-- Navigation Links Links (Shop, Über uns, Kontakt) -->
         <nav class="nav-left">
           <div class="nav-item-with-dropdown">
             <a
@@ -85,12 +90,15 @@
           </a>
         </nav>
 
+        <!-- Logo (Mitte) -->
         <a href="{{ url_for('home') }}" class="logo" aria-label="Floravis">
           <img src="../static/floravis.png" alt="Floravis" class="logo-img" />
           <span class="visually-hidden">Floravis</span>
         </a>
 
+        <!-- Navigation Rechts (Suche, Warenkorb, Profil/Login) -->
         <div class="nav-right">
+          <!-- Suche Toggle Button -->
           <button
             class="search-toggle"
             aria-label="Search"
@@ -98,6 +106,7 @@
           >
             <i class="fa fa-search"></i>
           </button>
+          <!-- Warenkorb Link mit Badge -->
           <a
             href="{{ url_for('warenkorb') }}"
             class="nav-link nav-link-with-icon cart-link {% if request.endpoint == 'warenkorb' %}active{% endif %}"
@@ -108,6 +117,7 @@
               <span class="cart-badge" id="cartBadge">0</span>
             </span>
           </a>
+          <!-- Profil / Login Dropdown -->
           <div class="nav-item-with-dropdown">
             {% if session.get('user_id') %}
             <!-- Eingeloggt: Profil-Link -->
@@ -159,6 +169,7 @@
           </div>
         </div>
       </div>
+      <!-- Suchleiste (wird per Toggle ein-/ausgeblendet) -->
       <div class="search-bar-container">
         <form
           class="search-form"
@@ -183,9 +194,22 @@
         </form>
       </div>
     </header>
+    <!-- Ende HEADER -->
+
+    <!-- Overlay für Mobile Menu (abdunkeln des Hintergrunds) -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT (wird von jeder Seite befüllt) -->
+    <!-- ============================================================ -->
     <main class="main-content">{% block content %}{% endblock %}</main>
+    <!-- Ende MAIN CONTENT -->
+
+    <!-- ============================================================ -->
+    <!-- GLOBALE SCRIPTS (Cart, Header, Suche, Mobile Menu) -->
+    <!-- ============================================================ -->
     <script>
+      // --- Suche Toggle ---
       function toggleSearch() {
         const header = document.querySelector(".main-header");
         const searchBar = document.querySelector(".search-bar-container");
@@ -213,6 +237,7 @@
         }
       });
 
+      // --- Header verkleinern beim Scrollen ---
       // Compact header on scroll (with hysteresis to avoid jitter)
       const HEADER_SHRINK_AT = 80;
       const HEADER_EXPAND_AT = 40;
@@ -254,7 +279,7 @@
         }
       });
 
-      // Mobile menu toggle
+      // --- Mobile Menu Toggle ---
       function toggleMobileMenu() {
         const header = document.querySelector(".main-header");
         const overlay = document.querySelector(".mobile-menu-overlay");
@@ -263,7 +288,7 @@
         document.body.classList.toggle("menu-open");
       }
 
-      // Mobile dropdown toggle
+      // --- Mobile Dropdown (Untermenüs auf Mobilgeräten) ---
       function setupMobileDropdown() {
         const isMobile = window.innerWidth <= 720;
         const dropdownTriggers = document.querySelectorAll(
@@ -291,7 +316,7 @@
       window.addEventListener("load", setupMobileDropdown);
       window.addEventListener("resize", setupMobileDropdown);
 
-      // Search loading indicator
+      // --- Suche Lade-Indikator ---
       function showSearchLoading(event) {
         const spinner = document.querySelector(".search-spinner");
         const searchBtn = document.querySelector(".search-form button");
@@ -303,7 +328,7 @@
         }
       }
 
-      // Close dropdowns when clicking outside
+      // --- Dropdowns schliessen beim Klick ausserhalb ---
       document.addEventListener("click", function (event) {
         const dropdowns = document.querySelectorAll(".nav-item-with-dropdown");
         dropdowns.forEach((dropdown) => {
@@ -313,7 +338,9 @@
         });
       });
 
-      // Cart Counter System
+      // ============================================================
+      // WARENKORB SYSTEM (localStorage basiert)
+      // ============================================================
       function initializeCartCounter() {
         const cartBadge = document.getElementById("cartBadge");
         if (cartBadge) {
@@ -390,6 +417,7 @@
         updateCartBadge();
       }
 
+      // --- Warenkorb Benachrichtigung (Toast-Nachricht) ---
       function showCartNotification(productName, quantity) {
         // Remove old notification if exists
         const oldNotif = document.querySelector(".cart-notification");
@@ -410,7 +438,7 @@
         }, 2000);
       }
 
-      // Initialize cart counter on page load
+      // --- Warenkorb beim Laden der Seite initialisieren ---
       document.addEventListener("DOMContentLoaded", initializeCartCounter);
     </script>
   </body>

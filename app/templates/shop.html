@@ -5,6 +5,9 @@
 />
 {% endblock %} {% block content %}
 <div class="shop-container">
+  <!-- ============================================================ -->
+  <!-- PRODUKT KARUSSELL (Hero-Bereich oben) -->
+  <!-- ============================================================ -->
   <div class="product-carousel">
     <div class="carousel-container">
       <!-- Slide 1 -->
@@ -77,7 +80,7 @@
       </div>
     </div>
 
-    <!-- Navigation Arrows -->
+    <!-- Karussell Pfeile & Punkte Navigation -->
     <div class="carousel-navigation">
       <button class="carousel-arrow prev" onclick="changeSlide(-1)">
         <i class="fa fa-chevron-left"></i>
@@ -93,10 +96,13 @@
     </div>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- PRODUKTE SEKTION -->
+  <!-- ============================================================ -->
   <section class="products-section">
     <h2>Unsere Seifen</h2>
 
-    <!-- Category Filter -->
+    <!-- Kategorie Filter (Alle / Klassisch / Luxus) -->
     <div class="category-filter">
       <a
         href="{{ url_for('shop') }}"
@@ -115,6 +121,7 @@
       >
     </div>
 
+    <!-- Produkte Raster (wird dynamisch aus der Datenbank befüllt) -->
     <div class="products-grid">
       {% for product in products %}
       <div class="product-card">
@@ -129,6 +136,7 @@
           <h3>{{ product.name }}</h3>
         </a>
         <p class="price">{{ "%.2f"|format(product.price|int + 0.99) }} CHF</p>
+        <!-- Mengenauswahl (1er / 2er mit -10% / 3er mit -20%) -->
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
             <button class="pack-btn active" data-quantity="1" data-discount="0">
@@ -155,7 +163,11 @@
   </section>
 </div>
 
+<!-- ============================================================ -->
+<!-- SHOP SCRIPTS -->
+<!-- ============================================================ -->
 <script>
+  // --- Karussell Logik ---
   // Carousel functionality
   let currentSlide = 0;
   const totalSlides = 3;
@@ -190,7 +202,7 @@
     });
   }
 
-  // Handle pack selection buttons
+  // --- Mengenauswahl (Preis wird dynamisch berechnet) ---
   document.querySelectorAll(".pack-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       // Get the product card and original price
@@ -238,7 +250,7 @@
     });
   });
 
-  // Handle add to cart buttons
+  // --- "In den Warenkorb" Button Handler ---
   document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const productCard = this.closest(".product-card");
@@ -261,7 +273,7 @@
     });
   });
 
-  // Handle carousel buy now buttons
+  // --- Karussell "Jetzt kaufen" Button ---
   function carouselBuyNow(productName, price) {
     addToCart(productName, 1, price); // In der add-to-cart-btn Event Listener Funktion
     document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
