@@ -665,7 +665,7 @@
             // Prüfe Vorname (leer vs. Zahlen)
             var surnameInput = document.querySelector('input[name="surname"]');
             if (!surnameInput || surnameInput.value.trim() === '') {
-                showToast('Bitte fülle das Feld "Vorname" aus', 'error');
+                showToast('Bitte füllen Sie das Feld "Vorname" aus', 'error');
                 if (surnameInput) surnameInput.focus();
                 return false;
             }
@@ -678,7 +678,7 @@
             // Prüfe Adresse
             var addressInput = document.querySelector('input[name="address"]');
             if (!addressInput || addressInput.value.trim() === '') {
-                showToast('Bitte fülle das Feld "Straße + Nr." aus', 'error');
+                showToast('Bitte füllen Sie das Feld "Straße + Nr." aus', 'error');
                 if (addressInput) addressInput.focus();
                 return false;
             }
@@ -694,7 +694,7 @@
             // Prüfe Ort (leer vs. Zahlen)
             var cityInput = document.querySelector('input[name="city"]');
             if (!cityInput || cityInput.value.trim() === '') {
-                showToast('Bitte fülle das Feld "Stadt" aus', 'error');
+                showToast('Bitte füllen Sie das Feld "Stadt" aus', 'error');
                 if (cityInput) cityInput.focus();
                 return false;
             }
@@ -723,7 +723,7 @@
             // Prüfe Zahlungsmethode (Radio)
             var paymentChecked = document.querySelector('input[name="payment"]:checked');
             if (!paymentChecked) {
-                showToast('Bitte wähle eine Zahlungsmethode aus', 'error');
+                showToast('Bitte wählen Sie eine Zahlungsmethode aus', 'error');
                 return false;
             }
 
