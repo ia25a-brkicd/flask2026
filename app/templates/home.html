@@ -321,6 +321,16 @@ block head %}
 
   // Cleanup on page unload
   window.addEventListener("unload", stopAutoplay);
+
+  // Check for registration success
+  document.addEventListener("DOMContentLoaded", function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "1") {
+      showSuccessToast("Erfolgreich angemeldet!");
+      // Remove the success parameter from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
 </script>
 
 {% endblock %}

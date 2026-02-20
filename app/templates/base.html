@@ -429,6 +429,26 @@
         }, 2000);
       }
 
+      // --- Success Toast für Registrierung ---
+      function showSuccessToast(message) {
+        const oldToast = document.querySelector(".success-toast");
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement("div");
+        toast.className = "success-toast";
+        toast.innerHTML = `<i class="fa fa-check-circle"></i> ${message}`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 10);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
       // --- Warenkorb beim Laden der Seite initialisieren ---
       document.addEventListener("DOMContentLoaded", initializeCartCounter);
     </script>

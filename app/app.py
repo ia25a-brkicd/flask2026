@@ -15,6 +15,7 @@ from repository.customer_repo import (
     add_login,
     verify_login,
     get_login_by_email,
+    geister_anmeldung,
     create_order,
     get_orders_by_login_id,
     get_orders_by_email,
@@ -166,6 +167,29 @@ def profil():
         print(f"Passwort: {password}")
         print("========================")
 
+        # Geister-Anmeldung: Überprüfe ob E-Mail bereits registriert ist
+        if geister_anmeldung(email):
+            app.logger.warning(f"Registration attempt with existing email: {email}")
+            adresse = session.get("adresse", {})
+            versandadresse_same = session.get("versandadresse_same", False)
+            versandadresse = adresse if versandadresse_same else session.get("versandadresse", {})
+            user_profile = {
+                "firstname": session.get("user_name", "-"),
+                "lastname": session.get("user_lastname", "-"),
+                "email": session.get("user_id", "-"),
+                "password": "********" if session.get("user_id") else "-",
+                "strasse": adresse.get("strasse", "-"),
+                "plz": adresse.get("plz", "-"),
+                "stadt": adresse.get("stadt", "-"),
+                "land": adresse.get("land", "-"),
+                "versand_strasse": versandadresse.get("strasse", "-"),
+                "versand_plz": versandadresse.get("plz", "-"),
+                "versand_stadt": versandadresse.get("stadt", "-"),
+                "versand_land": versandadresse.get("land", "-"),
+            }
+            error_message = "Diese E-Mail existiert bereits."
+            return render_template("profil.html", user_profile=user_profile, error_message=error_message)
+
         # HIER: "einloggen"
         session['user_id'] = email          # oder irgendeine ID
         session['user_name'] = firstname    # optional
@@ -173,7 +197,7 @@ def profil():
 
         add_login(email,firstname, lastname,password)# optional
 
-        return redirect(url_for("home"))    # zurück zur Startseite
+        return redirect(url_for("home", success=1))    # zurück zur Startseite mit Erfolgsmeldung
 
     adresse = session.get("adresse", {})
     versandadresse_same = session.get("versandadresse_same", False)

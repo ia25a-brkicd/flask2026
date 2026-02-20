@@ -47,6 +47,21 @@ def add_customer_payment(payment_method,card_name,card_number,expiry_date,cvv):
 
 #push test
 
+def geister_anmeldung(email):
+    """
+    Überprüft, ob ein Benutzer mit dieser E-Mail bereits existiert (Geister-Anmeldung Prävention).
+    
+    Parameters:
+    - email: E-Mail-Adresse zu überprüfen
+    
+    Returns:
+    - True, wenn E-Mail bereits existiert (Duplikat)
+    - False, wenn E-Mail noch nicht registriert ist (Registrierung erlaubt)
+    """
+    existing_user = get_login_by_email(email)
+    return existing_user is not None
+
+
 def add_login(email, first_name, last_name, password):
     conn = get_db()
     cur = conn.cursor()

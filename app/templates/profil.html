@@ -150,6 +150,12 @@
   <div class="contact-container">
     {% if not session.get("user_id") %}
     <div class="form-section">
+      {% if error_message %}
+      <div style="padding: 15px; margin-bottom: 20px; background: #ffebee; border: 1px solid #ef5350; border-radius: 8px; color: #d32f2f; font-size: 14px;">
+        <i class="fa fa-exclamation-circle" style="margin-right: 8px;"></i>
+        {{ error_message }}
+      </div>
+      {% endif %}
       <form action="{{ url_for('profil') }}" method="post">
         <div class="form-grid">
           <div class="input-group">
