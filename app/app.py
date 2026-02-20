@@ -2,6 +2,7 @@ import db
 import os
 import re
 import json
+import uuid
 from dotenv import load_dotenv
 load_dotenv()
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
@@ -496,9 +497,26 @@ def twint_pay():
         total = float(request.args.get('total', 0))
     except ValueError:
         total = 0.0
+    token = request.args.get('token', '')
     shipping = 5.00 if total > 0 else 0.0
     subtotal = total - shipping
-    return render_template("twint_pay.html", total=total, subtotal=subtotal, shipping=shipping)
+    return render_template("twint_pay.html", total=total, subtotal=subtotal, shipping=shipping, token=token)
+
+# In-memory Speicher für Twint-Tokens (reicht für Single-Instance auf Render)
+_twint_paid_tokens = set()
+
+@app.route("/twint-confirm/<token>", methods=["POST"])
+def twint_confirm(token):
+    if token:
+        _twint_paid_tokens.add(token)
+    return jsonify({"ok": True})
+
+@app.route("/twint-status/<token>")
+def twint_status(token):
+    paid = token in _twint_paid_tokens
+    if paid:
+        _twint_paid_tokens.discard(token)  # einmal verwenden, dann löschen
+    return jsonify({"paid": paid})
 
 # Route zum Speichern der Checkout-Daten in der Session
 @app.route("/save_checkout_data", methods=["POST"])

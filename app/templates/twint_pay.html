@@ -383,14 +383,18 @@
     </div>
 
     <script>
+      var TWINT_TOKEN = "{{ token }}";
+
       function confirmPayment() {
         var btn = document.querySelector(".pay-btn");
-        btn.textContent = "Verarbeite Zahlung…";
+        btn.textContent = "Verarbeite Zahlung\u2026";
         btn.disabled = true;
-        // Flag setzen damit Checkout-Seite es erkennt
-        try {
-          localStorage.setItem("twint_payment_done", "1");
-        } catch (e) {}
+
+        // Server informieren dass bezahlt wurde
+        fetch("/twint-confirm/" + TWINT_TOKEN, { method: "POST" }).catch(
+          function () {},
+        ); // Fehler ignorieren
+
         setTimeout(function () {
           document.getElementById("success-overlay").style.display = "flex";
         }, 900);

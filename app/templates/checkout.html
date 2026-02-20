@@ -392,21 +392,25 @@
         // --- Twint QR-Code anzeigen ---
         var twintPollInterval = null;
 
-        function startTwintPolling() {
-            // Flag zurücksetzen
-            localStorage.removeItem('twint_payment_done');
+        function generateToken() {
+            return 'tw-' + Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+        }
 
+        function startTwintPolling(token) {
             if (twintPollInterval) clearInterval(twintPollInterval);
             twintPollInterval = setInterval(function() {
-                if (localStorage.getItem('twint_payment_done') === '1') {
-                    clearInterval(twintPollInterval);
-                    localStorage.removeItem('twint_payment_done');
-                    // Kurz Erfolg zeigen dann direkt durchgehen
-                    var waiting = document.getElementById('twint-waiting');
-                    if (waiting) waiting.innerHTML = '<span style="font-size:14px; color:#7ddf9b; font-weight:600;">✓ Zahlung erhalten!</span>';
-                    setTimeout(function() { confirmTwintPayment(); }, 800);
-                }
-            }, 500);
+                fetch('/twint-status/' + token)
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.paid) {
+                            clearInterval(twintPollInterval);
+                            var waiting = document.getElementById('twint-waiting');
+                            if (waiting) waiting.innerHTML = '<span style="font-size:14px; color:#7ddf9b; font-weight:600;">✓ Zahlung erhalten!</span>';
+                            setTimeout(function() { confirmTwintPayment(); }, 800);
+                        }
+                    })
+                    .catch(function() {});
+            }, 1000);
         }
 
         function showTwintQR() {
@@ -415,13 +419,14 @@
 
             // Aktuellen Betrag berechnen und URL generieren
             var totals = calculateTotals();
-            var twintUrl = TWINT_BASE_URL + '?total=' + totals.total.toFixed(2);
+            var token = generateToken();
+            var twintUrl = TWINT_BASE_URL + '?total=' + totals.total.toFixed(2) + '&token=' + token;
 
             // Test-Link aktualisieren
             document.getElementById('twint-test-link').href = twintUrl;
 
-            // Polling starten
-            startTwintPolling();
+            // Server-Polling starten
+            startTwintPolling(token);
 
             // QR-Code immer neu generieren (damit Betrag stimmt)
             qrContainer.innerHTML = '';
