@@ -1,0 +1,268 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 380px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* ---- Header ---- */
+.header {
+  background: #000000;
+  padding: 24px 24px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-logo {
+  height: 36px;
+}
+
+.header-title {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Merchant info ---- */
+.merchant {
+  padding: 24px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.merchant-icon {
+  width: 52px;
+  height: 52px;
+  background: #f5ebe8;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.merchant-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.merchant-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.merchant-sub {
+  font-size: 13px;
+  color: #888888;
+  margin-top: 2px;
+}
+
+/* ---- Amount ---- */
+.amount-section {
+  padding: 28px 24px 20px;
+  text-align: center;
+}
+
+.amount-label {
+  font-size: 13px;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.amount {
+  font-size: 52px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.amount-currency {
+  font-size: 24px;
+  font-weight: 600;
+  color: #555555;
+  margin-right: 4px;
+}
+
+/* ---- Divider ---- */
+.divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 0 24px;
+}
+
+/* ---- Details ---- */
+.details {
+  padding: 16px 24px 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.detail-label {
+  color: #888888;
+}
+
+.detail-value {
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* ---- Pay button ---- */
+.pay-section {
+  padding: 8px 24px 28px;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 18px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.pay-btn:hover {
+  background: #222222;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.pay-btn:active {
+  transform: translateY(0);
+}
+
+.cancel-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  background: transparent;
+  color: #888888;
+  font-size: 15px;
+  font-family: "Inter", sans-serif;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: color 0.2s;
+}
+
+.cancel-btn:hover {
+  color: #333333;
+}
+
+/* ---- Success overlay ---- */
+.success-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInBg 0.4s ease;
+}
+
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.success-checkmark {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #27ae60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.success-checkmark svg {
+  width: 48px;
+  height: 48px;
+  stroke: white;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: drawCheck 0.4s ease 0.3s forwards;
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+.success-title {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.success-sub {
+  color: #aaaaaa;
+  font-size: 15px;
+}
+
+.success-amount {
+  color: #27ae60;
+  font-size: 36px;
+  font-weight: 800;
+  margin-top: 20px;
+}
+
+/* ---- Security note ---- */
+.security-note {
+  text-align: center;
+  padding: 0 24px 20px;
+  font-size: 12px;
+  color: #bbbbbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
