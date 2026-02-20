@@ -30,17 +30,40 @@
           <span class="order-status {{ order.get('status', 'unbekannt')|lower }}">{{ order.get('status', 'Unbekannt') }}</span>
         </div>
         <div class="order-items">
+          {% set ns = namespace(qty=0, subtotal=0) %}
           {% for item in order.get('items', []) %}
+          {% set ns.qty = ns.qty + item.get('quantity', 1) %}
+          {% set item_total = ((item.get('quantity', 1) * item.get('price', 0))|int) + 0.99 %}
+          {% set ns.subtotal = ns.subtotal + item_total %}
           <div class="order-item">
             <span class="item-name">{{ item.get('name', 'Produkt') }}</span>
             <span class="item-details">{{ item.get('quantity', 1) }} × CHF {{ "%.2f"|format(item.get('price', 0)) }}</span>
-            <span class="item-subtotal">CHF {{ "%.2f"|format(item.get('quantity', 1) * item.get('price', 0)) }}</span>
+            <span class="item-subtotal">CHF {{ "%.2f"|format(item_total) }}</span>
           </div>
           {% endfor %}
         </div>
+        {% if ns.qty == 2 %}
+          {% set discount_percent = 10 %}
+        {% elif ns.qty >= 3 %}
+          {% set discount_percent = 20 %}
+        {% else %}
+          {% set discount_percent = 0 %}
+        {% endif %}
+        {% set discounted_subtotal = ns.subtotal %}
+        {% if discount_percent > 0 %}
+          {% set discounted_subtotal = (ns.subtotal * (1 - discount_percent / 100))|int + 0.99 %}
+        {% endif %}
+        {% set final_total = (discounted_subtotal + 5.00)|int + 0.99 %}
         <div class="order-footer">
+          {% if discount_percent > 0 %}
+          <div class="discount-badge-circle order-discount-badge">
+            <span>-{{ discount_percent }}%</span>
+          </div>
+          {% endif %}
           <span class="order-total-label">Gesamtpreis:</span>
-          <span class="order-total-price">CHF {{ "%.2f"|format(order.get('total', 0)) }}</span>
+          <span class="order-discount">Rabatt: {{ discount_percent }}%</span>
+          <span class="order-shipping">Versand: CHF 5.00</span>
+          <span class="order-total-price">CHF {{ "%.2f"|format(final_total) }}</span>
         </div>
       </div>
       {% endfor %}

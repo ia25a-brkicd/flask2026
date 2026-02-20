@@ -325,26 +325,35 @@
         function calculateTotals() {
             var cart = getCart();
             var subtotal = 0;
+            var totalQuantity = 0;
             
             cart.forEach(function(item) {
-                var total = item.price * item.quantity;
-
-                if (item.quantity === 2) {
-                total = total * 0.9; // 10% discount
-                } else if (item.quantity >= 3) {
-                total = total * 0.8; // 20% discount
-                }
-                
-                total = Math.floor(total) + 0.99;
-
-                subtotal += total;
+                var lineTotal = item.price * item.quantity;
+                subtotal += lineTotal;
+                totalQuantity += item.quantity;
             });
+
+            var discountPercent = 0;
+            if (totalQuantity === 2) {
+                discountPercent = 10;
+            } else if (totalQuantity >= 3) {
+                discountPercent = 20;
+            }
+
+            var discountedSubtotal = subtotal;
+            if (subtotal > 0 && discountPercent > 0) {
+                discountedSubtotal = subtotal * (1 - discountPercent / 100);
+            }
+
+            if (discountedSubtotal > 0) {
+                discountedSubtotal = Math.floor(discountedSubtotal) + 0.99;
+            }
             
-            var shipping = subtotal > 0 ? 5.00 : 0; // CHF 5 Versandkosten, falls Warenkorb nicht leer
-            var total = subtotal + shipping;
+            var shipping = discountedSubtotal > 0 ? 5.00 : 0; // CHF 5 Versandkosten, falls Warenkorb nicht leer
+            var total = discountedSubtotal + shipping;
             
             return {
-                subtotal: subtotal,
+                subtotal: discountedSubtotal,
                 shipping: shipping,
                 total: total
             };

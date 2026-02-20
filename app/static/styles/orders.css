@@ -56,6 +56,29 @@ h1{
     margin-bottom: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+    position: relative;
+}
+
+/* Discount Badge Circle for Orders */
+.discount-badge-circle {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+    z-index: 10;
+}
+
+.order-discount-badge {
+    position: absolute;
+    top: -30px;
+    left: 10px;
 }
 
 .order-card:hover {
@@ -150,7 +173,16 @@ h1{
 .item-details {
     font-size: 14px;
     color: #666;
-    text-align: center;
+    text-align: left;
+}
+
+
+.order-discount {
+    font-size: 14px;
+    color: #666;
+    text-align: right;
+    justify-self: end;
+    margin-right: 30px;
 }
 
 .item-subtotal {
@@ -162,11 +194,20 @@ h1{
 
 /* === ORDER FOOTER === */
 .order-footer {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
     align-items: center;
+    column-gap: 16px;
     padding-top: 15px;
     border-top: 2px solid #f6cec1;
+}
+
+.order-shipping {
+    font-size: 14px;
+    color: #666;
+    text-align: right;
+    justify-self: end;
+    margin-right: 20px;
 }
 
 .order-total-label {
@@ -180,6 +221,8 @@ h1{
     font-weight: 700;
     color: #f08669;
     font-family: "Inter", sans-serif;
+    text-align: right;
+    justify-self: end;
 }
 
 /* === EMPTY STATE === */

@@ -56,6 +56,9 @@
   role="region"
   aria-label="Warenkorb Zusammenfassung"
 >
+  <div class="discount-badge-circle" id="discount-badge" style="display: none;">
+    <span id="discount-text">0%</span>
+  </div>
   <div class="cart-total" aria-live="assertive">
     <span class="cart-total-label">Gesamt:</span>
     <span class="cart-total-price"
@@ -100,19 +103,22 @@
 </div>
 
 <script>
-  // Calculate discounted price based on quantity
-  function calculateDiscountedPrice(basePrice, quantity) {
+  // Calculate item line total without discount
+  function calculateLineTotal(basePrice, quantity) {
     var total = basePrice * quantity;
-
-    if (quantity === 2) {
-      total = total * 0.9; // 10% discount
-    } else if (quantity >= 3) {
-      total = total * 0.8; // 20% discount
-    }
-
     // Round to .99
     total = Math.floor(total) + 0.99;
     return total;
+  }
+
+  // Calculate discount based on total quantity
+  function calculateDiscountPercent(totalQuantity) {
+    if (totalQuantity === 2) {
+      return 10;
+    } else if (totalQuantity >= 3) {
+      return 20;
+    }
+    return 0;
   }
 
   // Lade den Warenkorb aus localStorage und rendere die Items
@@ -137,7 +143,7 @@
     div.setAttribute("data-name", item.name);
     div.setAttribute("role", "listitem");
 
-    var itemTotal = calculateDiscountedPrice(item.price, item.quantity);
+    var itemTotal = calculateLineTotal(item.price, item.quantity);
 
     var cartImageByProductName = {
       "Vanille & Lemon Mix": "Green Apple & Lemon & Vanille Mix.jpg",
@@ -173,21 +179,39 @@
   // Berechne das Total und aktualisiere die Anzeige
   function updateTotal() {
     var items = document.querySelectorAll("#shoppingcart .item");
-    var total = 0;
+    var subtotal = 0;
     var itemCount = 0;
 
     for (var i = 0; i < items.length; i++) {
       var countEl = items[i].querySelector(".count");
       var quantity = parseInt(countEl.textContent);
       var price = parseFloat(items[i].getAttribute("data-price"));
-      var itemTotal = calculateDiscountedPrice(price, quantity);
+      var itemTotal = calculateLineTotal(price, quantity);
 
-      // Aktualisiere den Preis pro Zeile
+      // Aktualisiere den Preis pro Zeile (ohne Rabatt)
       var priceEl = items[i].querySelector(".item-price");
       priceEl.textContent = itemTotal.toFixed(2);
 
-      total += itemTotal;
+      subtotal += itemTotal;
       itemCount += quantity;
+    }
+
+    // Apply discount based on total quantity
+    var discountPercent = calculateDiscountPercent(itemCount);
+    var total = subtotal;
+    if (discountPercent > 0) {
+      total = subtotal * (1 - discountPercent / 100);
+      total = Math.floor(total) + 0.99;
+    }
+
+    // Update discount badge
+    var discountBadge = document.getElementById("discount-badge");
+    var discountText = document.getElementById("discount-text");
+    if (discountPercent > 0) {
+      discountText.textContent = "-" + discountPercent + "%";
+      discountBadge.style.display = "flex";
+    } else {
+      discountBadge.style.display = "none";
     }
 
     // Aktualisiere Total

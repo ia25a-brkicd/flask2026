@@ -136,22 +136,20 @@
           <h3>{{ product.name }}</h3>
         </a>
         <p class="price">{{ "%.2f"|format(product.price|int + 0.99) }} CHF</p>
-        <!-- Mengenauswahl (1er / 2er mit -10% / 3er mit -20%) -->
+        <!-- Mengenauswahl (1er / 2er / 3er) -->
         <div class="pack-selector">
           <div class="pack-btn-wrapper">
-            <button class="pack-btn active" data-quantity="1" data-discount="0">
+            <button class="pack-btn active" data-quantity="1">
               1
             </button>
           </div>
           <div class="pack-btn-wrapper">
-            <span class="discount-badge">-10%</span>
-            <button class="pack-btn" data-quantity="2" data-discount="10">
+            <button class="pack-btn" data-quantity="2">
               2
             </button>
           </div>
           <div class="pack-btn-wrapper">
-            <span class="discount-badge">-20%</span>
-            <button class="pack-btn" data-quantity="3" data-discount="20">
+            <button class="pack-btn" data-quantity="3">
               3
             </button>
           </div>
@@ -225,13 +223,8 @@
         priceText.replace(" CHF", "").replace(",", "."),
       );
 
-      // Calculate new price with discounts
+      // Calculate new price without discounts
       let newPrice = basePrice * quantity;
-      if (quantity === 2) {
-        newPrice = newPrice * 0.9; // 10% discount
-      } else if (quantity === 3) {
-        newPrice = newPrice * 0.8; // 20% discount
-      }
 
       // Round to .99
       newPrice = Math.floor(newPrice) + 0.99;
