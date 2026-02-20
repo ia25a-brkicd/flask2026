@@ -224,6 +224,7 @@
             <!-- QR-Code wird hier generiert -->
             <div id="twint-qr-code"></div>
             <p class="twint-hint">QR-Code scannen &rarr; Betrag bestätigen</p>
+            <a id="twint-test-link" href="#" target="_blank" style="display:block; margin-top: 6px; font-size: 12px; color: rgba(255,255,255,0.55); text-decoration: underline;">Ohne Handy hier klicken zum Testen</a>
             <button class="twint-confirm-btn" onclick="confirmTwintPayment()">Zahlung bestätigt</button>
         </div>
     </div>
@@ -332,6 +333,9 @@
             // Aktuellen Betrag berechnen und URL generieren
             var totals = calculateTotals();
             var twintUrl = TWINT_BASE_URL + '?total=' + totals.total.toFixed(2);
+
+            // Test-Link aktualisieren
+            document.getElementById('twint-test-link').href = twintUrl;
 
             // QR-Code immer neu generieren (damit Betrag stimmt)
             qrContainer.innerHTML = '';
