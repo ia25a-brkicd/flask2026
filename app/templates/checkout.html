@@ -252,7 +252,7 @@
         // Hier die URL eintragen, auf die der QR-Code zeigen soll
         // (z.B. dein TWINT-Zahlungslink oder deine Webseite)
         // ============================================================
-        var TWINT_BASE_URL = window.location.origin + '/twint-pay';
+        var TWINT_BASE_URL = '{{ twint_pay_base_url }}';
 
         var lastSelectedPayment = null;
         var twintQrGenerated = false;

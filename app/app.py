@@ -482,7 +482,13 @@ def checkout():
 
     # GET: Lade gespeicherte Daten aus Session
     checkout_data = session.get('checkout_data', {})
-    return render_template("checkout.html", checkout_data=checkout_data)
+    # RENDER_EXTERNAL_URL wird von Render automatisch gesetzt (z.B. https://floravis.onrender.com)
+    render_url = os.environ.get('RENDER_EXTERNAL_URL', '').rstrip('/')
+    if render_url:
+        twint_pay_base_url = render_url + '/twint-pay'
+    else:
+        twint_pay_base_url = url_for('twint_pay', _external=True)
+    return render_template("checkout.html", checkout_data=checkout_data, twint_pay_base_url=twint_pay_base_url)
 
 @app.route("/twint-pay")
 def twint_pay():
