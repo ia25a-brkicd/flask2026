@@ -246,7 +246,7 @@
             <h1>Vielen Dank!</h1>
             <p>Ihre Bestellung wurde erfolgreich aufgegeben</p>
             <div class="thank-you-message">
-                <p>Wir haben Ihre Bestellung erhalten und werden sie kürze verarbeiten.</p>
+                <p>Wir haben Ihre Bestellung erhalten und werden sie in Kürze verarbeiten.</p>
                 <p>Eine Bestätigungse-Mail wird in den nächsten Minuten an Sie versendet.</p>
             </div>
             <a href="{{ url_for('shop') }}" class="back-to-shop">Zurück zum Shop</a>
@@ -646,19 +646,29 @@
                 return false;
             }
 
-            // Prüfe Name (keine Zahlen)
+            // Prüfe Nachname (leer vs. Zahlen)
             var nameInput = document.querySelector('input[name="name"]');
-            if (!nameInput || !validateName(nameInput.value)) {
-                showToast('Nachname darf keine Zahlen enthalten', 'error');
+            if (!nameInput || nameInput.value.trim() === '') {
+                showToast('Bitte fülle das Feld "Nachname" aus', 'error');
                 if (nameInput) nameInput.focus();
                 return false;
             }
+            if (!validateName(nameInput.value)) {
+                showToast('Nachname darf keine Zahlen enthalten', 'error');
+                nameInput.focus();
+                return false;
+            }
 
-            // Prüfe Vorname (keine Zahlen)
+            // Prüfe Vorname (leer vs. Zahlen)
             var surnameInput = document.querySelector('input[name="surname"]');
-            if (!surnameInput || !validateName(surnameInput.value)) {
-                showToast('Vorname darf keine Zahlen enthalten', 'error');
+            if (!surnameInput || surnameInput.value.trim() === '') {
+                showToast('Bitte fülle das Feld "Vorname" aus', 'error');
                 if (surnameInput) surnameInput.focus();
+                return false;
+            }
+            if (!validateName(surnameInput.value)) {
+                showToast('Vorname darf keine Zahlen enthalten', 'error');
+                surnameInput.focus();
                 return false;
             }
 
@@ -678,11 +688,16 @@
                 return false;
             }
 
-            // Prüfe Ort
+            // Prüfe Ort (leer vs. Zahlen)
             var cityInput = document.querySelector('input[name="city"]');
-            if (!cityInput || !validateName(cityInput.value)) {
-                showToast('Stadt darf keine Zahlen enthalten', 'error');
+            if (!cityInput || cityInput.value.trim() === '') {
+                showToast('Bitte fülle das Feld "Stadt" aus', 'error');
                 if (cityInput) cityInput.focus();
+                return false;
+            }
+            if (!validateName(cityInput.value)) {
+                showToast('Stadt darf keine Zahlen enthalten', 'error');
+                cityInput.focus();
                 return false;
             }
 
