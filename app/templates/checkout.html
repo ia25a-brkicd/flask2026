@@ -273,7 +273,17 @@
             var subtotal = 0;
             
             cart.forEach(function(item) {
-                subtotal += item.price * item.quantity;
+                var total = item.price * item.quantity;
+
+                if (item.quantity === 2) {
+                total = total * 0.9; // 10% discount
+                } else if (item.quantity >= 3) {
+                total = total * 0.8; // 20% discount
+                }
+                
+                total = Math.floor(total) + 0.99;
+
+                subtotal += total;
             });
             
             var shipping = subtotal > 0 ? 5.00 : 0; // CHF 5 Versandkosten, falls Warenkorb nicht leer
