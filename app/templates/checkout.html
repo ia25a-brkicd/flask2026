@@ -101,24 +101,28 @@
                 <div class="card-details-title">Kartendetails</div>
 
                 <div class="payment-methods">Zahlungsmethoden</div>
+                <p id="payment-lock-hint" style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:6px; margin-top:-4px; display:flex; align-items:center; gap:5px;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Zuerst Adressdetails ausfüllen
+                </p>
 
-                <div class="payment-methods-buttons">
+                <div class="payment-methods-buttons" id="payment-methods-buttons">
                     <label class="payment-method">
-                        <input type="radio" name="payment" value="mastercard" {% if checkout_data.get('payment') == 'mastercard' %}checked{% endif %} onchange="toggleCardDetails()">
+                        <input type="radio" name="payment" value="mastercard" {% if checkout_data.get('payment') == 'mastercard' %}checked{% endif %} onchange="toggleCardDetails()" disabled>
                         <span class="payment-methods-button">
                             <img class="payment-methods-img" src="../static/styles/images/mastercard_floravis.png" alt="Mastercard">
                         </span>
                     </label>
 
                     <label class="payment-method">
-                        <input type="radio" name="payment" value="visa" {% if checkout_data.get('payment') == 'visa' %}checked{% endif %} onchange="toggleCardDetails()">
+                        <input type="radio" name="payment" value="visa" {% if checkout_data.get('payment') == 'visa' %}checked{% endif %} onchange="toggleCardDetails()" disabled>
                         <span class="payment-methods-button">
                             <img class="payment-methods-img" src="../static/styles/images/visa_floravis.png" alt="Visa">
                         </span>
                     </label>
 
                     <label class="payment-method">
-                        <input type="radio" name="payment" value="twint" {% if checkout_data.get('payment') == 'twint' %}checked{% endif %} onchange="toggleCardDetails()">
+                        <input type="radio" name="payment" value="twint" {% if checkout_data.get('payment') == 'twint' %}checked{% endif %} onchange="toggleCardDetails()" disabled>
                         <span class="payment-methods-button">
                             <img class="payment-methods-img" src="../static/styles/images/twint_floravis.png" alt="Twint">
                         </span>
@@ -225,7 +229,10 @@
             <div id="twint-qr-code"></div>
             <p class="twint-hint">QR-Code scannen &rarr; Betrag bestätigen</p>
             <a id="twint-test-link" href="#" target="_blank" style="display:block; margin-top: 6px; font-size: 12px; color: rgba(255,255,255,0.55); text-decoration: underline;">Ohne Handy hier klicken zum Testen</a>
-            <button class="twint-confirm-btn" onclick="confirmTwintPayment()">Zahlung bestätigt</button>
+            <div id="twint-waiting" style="margin-top:18px; display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:#fff; border-radius:50%; animation:twintSpin 0.8s linear infinite;"></div>
+                <span style="font-size:12px; color:rgba(255,255,255,0.5);">Warte auf Zahlung…</span>
+            </div>
         </div>
     </div>
 
@@ -257,6 +264,53 @@
 
         var lastSelectedPayment = null;
         var twintQrGenerated = false;
+
+        // ============================================================
+        // ADRESS-VALIDIERUNG → Zahlungsmethoden freischalten
+        // ============================================================
+        function checkAddressComplete() {
+            var salutation = document.querySelector('input[name="salutation"]:checked');
+            var name     = document.querySelector('input[name="name"]').value.trim();
+            var surname  = document.querySelector('input[name="surname"]').value.trim();
+            var address  = document.querySelector('input[name="address"]').value.trim();
+            var plz      = document.querySelector('input[name="plz"]').value.trim();
+            var city     = document.querySelector('input[name="city"]').value.trim();
+            var tel      = document.querySelector('input[name="tel"]').value.trim();
+            var email    = document.querySelector('input[name="email"]').value.trim();
+
+            var complete = salutation && name && surname && address && plz && city && tel && email;
+
+            document.querySelectorAll('input[name="payment"]').forEach(function(r) {
+                r.disabled = !complete;
+            });
+
+            var btns = document.getElementById('payment-methods-buttons');
+            var hint = document.getElementById('payment-lock-hint');
+            if (complete) {
+                btns.style.opacity = '1';
+                btns.style.pointerEvents = 'auto';
+                hint.style.display = 'none';
+            } else {
+                btns.style.opacity = '0.4';
+                btns.style.pointerEvents = 'none';
+                hint.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auf alle Adressfelder hören
+            ['input[name="name"]','input[name="surname"]','input[name="address"]',
+             'input[name="plz"]','input[name="city"]','input[name="tel"]','input[name="email"]'
+            ].forEach(function(sel) {
+                var el = document.querySelector(sel);
+                if (el) el.addEventListener('input', checkAddressComplete);
+            });
+            document.querySelectorAll('input[name="salutation"]').forEach(function(r) {
+                r.addEventListener('change', checkAddressComplete);
+            });
+            // Beim Laden sofort prüfen (falls Felder bereits ausgefüllt sind)
+            checkAddressComplete();
+        });
 
         // Warenkorb-Funktionen
         function getCart() {
@@ -326,6 +380,25 @@
         }
 
         // --- Twint QR-Code anzeigen ---
+        var twintPollInterval = null;
+
+        function startTwintPolling() {
+            // Flag zurücksetzen
+            localStorage.removeItem('twint_payment_done');
+
+            if (twintPollInterval) clearInterval(twintPollInterval);
+            twintPollInterval = setInterval(function() {
+                if (localStorage.getItem('twint_payment_done') === '1') {
+                    clearInterval(twintPollInterval);
+                    localStorage.removeItem('twint_payment_done');
+                    // Kurz Erfolg zeigen dann direkt durchgehen
+                    var waiting = document.getElementById('twint-waiting');
+                    if (waiting) waiting.innerHTML = '<span style="font-size:14px; color:#7ddf9b; font-weight:600;">✓ Zahlung erhalten!</span>';
+                    setTimeout(function() { confirmTwintPayment(); }, 800);
+                }
+            }, 500);
+        }
+
         function showTwintQR() {
             var modal = document.getElementById('twint-modal');
             var qrContainer = document.getElementById('twint-qr-code');
@@ -336,6 +409,9 @@
 
             // Test-Link aktualisieren
             document.getElementById('twint-test-link').href = twintUrl;
+
+            // Polling starten
+            startTwintPolling();
 
             // QR-Code immer neu generieren (damit Betrag stimmt)
             qrContainer.innerHTML = '';

@@ -387,7 +387,10 @@
         var btn = document.querySelector(".pay-btn");
         btn.textContent = "Verarbeite Zahlung…";
         btn.disabled = true;
-
+        // Flag setzen damit Checkout-Seite es erkennt
+        try {
+          localStorage.setItem("twint_payment_done", "1");
+        } catch (e) {}
         setTimeout(function () {
           document.getElementById("success-overlay").style.display = "flex";
         }, 900);
