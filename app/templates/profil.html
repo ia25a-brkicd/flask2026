@@ -301,7 +301,7 @@
       <div class="input-group">
         <label for="profil-password">
           <i class="fa fa-lock"></i>
-          Passwort (verschluesselt)
+          Passwort (verschlüsselt)
         </label>
         <input type="text" id="profil-password" value="{{ user_profile.password }}" readonly />
         <span class="input-border"></span>
@@ -340,7 +340,7 @@
     <i class="fa fa-check-circle"></i>
     <div class="notification-content">
       <h4>Erfolg!</h4>
-      <p>Vielen Dank fuer deine Registrierung!</p>
+      <p>Vielen Dank für deine Registrierung!</p>
     </div>
   </div>
 
@@ -348,7 +348,7 @@
     <i class="fa fa-exclamation-circle"></i>
     <div class="notification-content">
       <h4>Fehler</h4>
-      <p id="error-text">Nicht alle Felder wurden ausgefuellt!</p>
+      <p id="error-text">Nicht alle Felder wurden ausgefüllt!</p>
     </div>
   </div>
 </div>
@@ -558,11 +558,11 @@
       var passwordRepeat = document.getElementById('password_repeat').value;
 
       if (!lastname || !firstname || !email || !password || !passwordRepeat) {
-        showError('Nicht alle Felder wurden ausgefuellt!');
+        showError('Nicht alle Felder wurden ausgefüllt!');
         return;
       }
       if (password !== passwordRepeat) {
-        showError('Passwoerter stimmen nicht ueberein');
+        showError('Passwoerter stimmen nicht überein');
         return;
       }
       if (!validateName(lastname)) {
@@ -570,12 +570,12 @@
         return;
       }
       if (!validateEmail(email)) {
-        showError('E-Mail muss gueltig sein');
+        showError('E-Mail muss gültig sein');
         return;
       }
       // Passwort-Stärke prüfen
       if (!isPasswordValid(password)) {
-        showError('Passwort erfuellt nicht alle Sicherheitsanforderungen');
+        showError('Passwort erfüllt nicht alle Sicherheitsanforderungen');
         return;
       }
 
@@ -622,12 +622,12 @@
           if (data && data.error) {
             showError(data.error);
           } else {
-            showError('Ein Fehler ist aufgetreten. Bitte versuche es spaeter erneut.'); //liest json und gibt fehlertext
+            showError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.'); //liest json und gibt fehlertext
           }
           return null;
         });
       }).catch(function () {
-        showError('Netzwerkfehler. Bitte pruefe deine Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
+        showError('Netzwerkfehler. Bitte prüfe deine Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
       });
     });
   }
