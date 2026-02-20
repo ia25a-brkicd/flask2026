@@ -29,7 +29,7 @@
     <!-- ============================================================ -->
     <header class="main-header">
       <div class="header-container">
-        <!-- Mobile Menu Button (nur auf kleinen Bildschirmen sichtbar) -->
+        <!-- Mobile Menu Button (nur auf kleinen Bildschirmen sichtbar) -->V
         <button
           class="mobile-menu-toggle"
           aria-label="Menu"
@@ -109,7 +109,7 @@
           <!-- Profil / Login Dropdown -->
           <div class="nav-item-with-dropdown">
           {% if session.get('user_id') %}
-    <!-- Eingeloggt: Profil-Link -->
+            <!-- Eingeloggt: Profil-Link -->
             <a
               href="{{ url_for('profil') }}"
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
@@ -118,7 +118,7 @@
               Profil
             </a>
           {% else %}
-          <!-- Nicht eingeloggt: Login-Link -->
+            <!-- Nicht eingeloggt: Profil-Link fuer Hover-Menue -->
             <a
               href="{{ url_for('profil') }}"
               class="nav-link nav-link-with-icon {% if request.endpoint == 'profil' %}active{% endif %}"
@@ -129,30 +129,34 @@
           {% endif %}
 
             <div class="dropdown-menu dropdown-menu-right">
-              <a href="{{ url_for('profil') }}" class="dropdown-item">
-                <i class="fa fa-user-circle"></i>
-                Mein Profil
-              </a>
               {% if session.get('user_id') %}
-              <a href="{{ url_for('orders') }}" class="dropdown-item">
-                <i class="fa fa-box"></i>
-                Bestellungen
-              </a>
-              <a href="{{ url_for('settings') }}" class="dropdown-item">
-                <i class="fa fa-cog"></i>
-                Einstellungen
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="{{ url_for('logout') }}" class="dropdown-item">
-                <i class="fa fa-sign-out-alt"></i>
-                Abmelden
-              </a>
+                <a href="{{ url_for('profil') }}" class="dropdown-item">
+                  <i class="fa fa-user-circle"></i>
+                  Profil
+                </a>
+                <a href="{{ url_for('orders') }}" class="dropdown-item">
+                  <i class="fa fa-box"></i>
+                  Bestellungen
+                </a>
+                <a href="{{ url_for('settings') }}" class="dropdown-item">
+                  <i class="fa fa-cog"></i>
+                  Einstellungen
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ url_for('logout') }}" class="dropdown-item">
+                  <i class="fa fa-sign-out-alt"></i>
+                  Abmelden
+                </a>
               {% else %}
-              <div class="dropdown-divider"></div>
-              <a href="{{ url_for('login') }}" class="dropdown-item">
-                <i class="fa fa-sign-in-alt"></i>
-                Anmelden
-              </a>
+                <a href="{{ url_for('profil') }}" class="dropdown-item">
+                  <i class="fa fa-user-circle"></i>
+                  Registrieren
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ url_for('login') }}" class="dropdown-item">
+                  <i class="fa fa-sign-in-alt"></i>
+                  Anmelden
+                </a>
               {% endif %}
             </div>
           </div>

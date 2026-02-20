@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Profil | Flor'Avis{% endblock %}
+{% block title %}{% if not session.get("user_id") %}Registrieren{% else %}Profil{% endif %} | Flor'Avis{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +144,7 @@
 {% block content %}
 <div class="contact-wrapper">
   <div class="contact-hero">
-    <h1>Profil</h1>
+    <h1>{% if not session.get("user_id") %}Registrieren{% else %}Profil{% endif %}</h1>
   </div>
 
   <div class="contact-container">
