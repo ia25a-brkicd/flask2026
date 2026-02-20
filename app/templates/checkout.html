@@ -228,7 +228,9 @@
             <!-- QR-Code wird hier generiert -->
             <div id="twint-qr-code"></div>
             <p class="twint-hint">QR-Code scannen &rarr; Betrag bestätigen</p>
+            {% if is_local %}
             <a id="twint-test-link" href="#" target="_blank" style="display:block; margin-top: 6px; font-size: 12px; color: rgba(255,255,255,0.55); text-decoration: underline;">Ohne Handy hier klicken zum Testen</a>
+            {% endif %}
             <div id="twint-waiting" style="margin-top:18px; display:flex; flex-direction:column; align-items:center; gap:8px;">
                 <div style="width:22px; height:22px; border:3px solid rgba(255,255,255,0.2); border-top-color:#fff; border-radius:50%; animation:twintSpin 0.8s linear infinite;"></div>
                 <span style="font-size:12px; color:rgba(255,255,255,0.5);">Warte auf Zahlung…</span>
@@ -246,7 +248,7 @@
             <h1>Vielen Dank!</h1>
             <p>Ihre Bestellung wurde erfolgreich aufgegeben</p>
             <div class="thank-you-message">
-                <p>Wir haben Ihre Bestellung erhalten und werden sie kürze verarbeiten.</p>
+                <p>Wir haben Ihre Bestellung erhalten und werden sie in Kürze verarbeiten.</p>
                 <p>Eine Bestätigungse-Mail wird in den nächsten Minuten an Sie versendet.</p>
             </div>
             <a href="{{ url_for('shop') }}" class="back-to-shop">Zurück zum Shop</a>
@@ -431,8 +433,9 @@
             var token = generateToken();
             var twintUrl = TWINT_BASE_URL + '?total=' + totals.total.toFixed(2) + '&token=' + token;
 
-            // Test-Link aktualisieren
-            document.getElementById('twint-test-link').href = twintUrl;
+            // Test-Link aktualisieren (nur lokal vorhanden)
+            var testLink = document.getElementById('twint-test-link');
+            if (testLink) testLink.href = twintUrl;
 
             // Server-Polling starten
             startTwintPolling(token);
@@ -655,26 +658,36 @@
                 return false;
             }
 
-            // Prüfe Name (keine Zahlen)
+            // Prüfe Nachname (leer vs. Zahlen)
             var nameInput = document.querySelector('input[name="name"]');
-            if (!nameInput || !validateName(nameInput.value)) {
-                showToast('Nachname darf keine Zahlen enthalten', 'error');
+            if (!nameInput || nameInput.value.trim() === '') {
+                showToast('Bitte fülle das Feld "Nachname" aus', 'error');
                 if (nameInput) nameInput.focus();
                 return false;
             }
+            if (!validateName(nameInput.value)) {
+                showToast('Nachname darf keine Zahlen enthalten', 'error');
+                nameInput.focus();
+                return false;
+            }
 
-            // Prüfe Vorname (keine Zahlen)
+            // Prüfe Vorname (leer vs. Zahlen)
             var surnameInput = document.querySelector('input[name="surname"]');
-            if (!surnameInput || !validateName(surnameInput.value)) {
-                showToast('Vorname darf keine Zahlen enthalten', 'error');
+            if (!surnameInput || surnameInput.value.trim() === '') {
+                showToast('Bitte füllen Sie das Feld "Vorname" aus', 'error');
                 if (surnameInput) surnameInput.focus();
+                return false;
+            }
+            if (!validateName(surnameInput.value)) {
+                showToast('Vorname darf keine Zahlen enthalten', 'error');
+                surnameInput.focus();
                 return false;
             }
 
             // Prüfe Adresse
             var addressInput = document.querySelector('input[name="address"]');
             if (!addressInput || addressInput.value.trim() === '') {
-                showToast('Bitte fülle das Feld "Straße + Nr." aus', 'error');
+                showToast('Bitte füllen Sie das Feld "Straße + Nr." aus', 'error');
                 if (addressInput) addressInput.focus();
                 return false;
             }
@@ -687,11 +700,16 @@
                 return false;
             }
 
-            // Prüfe Ort
+            // Prüfe Ort (leer vs. Zahlen)
             var cityInput = document.querySelector('input[name="city"]');
-            if (!cityInput || !validateName(cityInput.value)) {
-                showToast('Stadt darf keine Zahlen enthalten', 'error');
+            if (!cityInput || cityInput.value.trim() === '') {
+                showToast('Bitte füllen Sie das Feld "Stadt" aus', 'error');
                 if (cityInput) cityInput.focus();
+                return false;
+            }
+            if (!validateName(cityInput.value)) {
+                showToast('Stadt darf keine Zahlen enthalten', 'error');
+                cityInput.focus();
                 return false;
             }
 
@@ -714,7 +732,7 @@
             // Prüfe Zahlungsmethode (Radio)
             var paymentChecked = document.querySelector('input[name="payment"]:checked');
             if (!paymentChecked) {
-                showToast('Bitte wähle eine Zahlungsmethode aus', 'error');
+                showToast('Bitte wählen Sie eine Zahlungsmethode aus', 'error');
                 return false;
             }
 
@@ -802,10 +820,7 @@
                         radios[k].checked = false;
                     }
 
-                    // Nach 5 Sekunden zum Shop weiterleiten
-                    setTimeout(function() {
-                        window.location.href = '{{ url_for("shop") }}';
-                    }, 5000);
+                    // Auto-Redirect entfernt: Danke-Screen bleibt bis Button-Klick
                 } else {
                     throw new Error('Checkout failed');
                 }
