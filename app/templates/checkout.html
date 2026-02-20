@@ -788,10 +788,7 @@
                         radios[k].checked = false;
                     }
 
-                    // Nach 5 Sekunden zum Shop weiterleiten
-                    setTimeout(function() {
-                        window.location.href = '{{ url_for("shop") }}';
-                    }, 5000);
+                    // Auto-Redirect entfernt: Danke-Screen bleibt bis Button-Klick
                 } else {
                     throw new Error('Checkout failed');
                 }
