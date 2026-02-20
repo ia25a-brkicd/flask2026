@@ -340,7 +340,7 @@
     <i class="fa fa-check-circle"></i>
     <div class="notification-content">
       <h4>Erfolg!</h4>
-      <p>Vielen Dank für deine Registrierung!</p>
+      <p>Vielen Dank für Ihre Registrierung!</p>
     </div>
   </div>
 
@@ -562,7 +562,7 @@
         return;
       }
       if (password !== passwordRepeat) {
-        showError('Passwoerter stimmen nicht überein');
+        showError('Passwörter stimmen nicht überein');
         return;
       }
       if (!validateName(lastname)) {
@@ -622,12 +622,12 @@
           if (data && data.error) {
             showError(data.error);
           } else {
-            showError('Ein Fehler ist aufgetreten. Bitte versuche es später erneut.'); //liest json und gibt fehlertext
+            showError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'); //liest json und gibt fehlertext
           }
           return null;
         });
       }).catch(function () {
-        showError('Netzwerkfehler. Bitte prüfe deine Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
+        showError('Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung.'); //wenn kein genauer fehler, kommt netzwerkfehler
       });
     });
   }
